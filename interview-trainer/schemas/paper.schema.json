@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "paper_id": { "type": "string" },
+    "questions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/question" }
+    },
+    "chains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["topic", "questions"],
+        "properties": {
+          "chain_id": { "type": "string" },
+          "topic": { "type": "string" },
+          "root_knowledge_point": { "type": "string" },
+          "chain_goal": { "type": "string" },
+          "difficulty_progression": { "type": "array", "items": { "type": "string" } },
+          "questions": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 5,
+            "items": { "$ref": "#/$defs/question" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "question": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["topic", "source_type", "difficulty", "question", "expected_points", "reference_answer"],
+      "properties": {
+        "question_id": { "type": "string" },
+        "topic": { "type": "string" },
+        "topic_id": { "type": "string" },
+        "source_type": { "enum": ["bagu_local", "note_readonly", "expanded"] },
+        "difficulty": { "enum": ["basic", "medium", "hard"] },
+        "question": { "type": "string" },
+        "expected_points": { "type": "array", "items": { "type": "string" } },
+        "reference_answer": { "type": "string" },
+        "follow_up_direction": { "type": "string" },
+        "source_chunks": { "type": "array", "items": { "type": "string" } },
+        "quality_flags": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

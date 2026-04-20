@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interview Trainer</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>知识点背诵系统</h1>
+        <p>选择 Topic，生成试卷，语音答题，Codex 评分，自动更新记忆。</p>
+      </div>
+      <button id="rebuildTopicsBtn" class="secondary">手动解析 Topic</button>
+    </header>
+
+    <main>
+      <section class="band">
+        <div class="section-head">
+          <h2>生成试卷</h2>
+          <span id="topicStatus">加载中</span>
+        </div>
+        <div id="indexSummary" class="muted">索引统计加载中</div>
+        <div class="controls">
+          <label>
+            题量
+            <select id="questionCount">
+              <option value="10">10 题</option>
+              <option value="30">30 题</option>
+              <option value="50">50 题</option>
+            </select>
+          </label>
+          <label>
+            模式
+            <select id="paperMode">
+              <option value="normal">普通模式</option>
+              <option value="followup">追问模式</option>
+              <option value="mixed">混合模式</option>
+            </select>
+          </label>
+          <label class="checkline">
+            <input id="includeExpanded" type="checkbox" checked>
+            包含扩展高频知识
+          </label>
+          <button id="createPaperBtn">生成试卷</button>
+        </div>
+        <div id="topics" class="topic-grid"></div>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
+          <h2>生成八股文档</h2>
+          <span>只写入 八股/</span>
+        </div>
+        <div class="controls doc-controls">
+          <label>
+            技术栈关键词
+            <input id="docKeywords" type="text" placeholder="例如 Redis, 缓存, 分布式锁">
+          </label>
+          <label>
+            问题规模
+            <input id="docQuestionCount" type="number" min="5" max="200" value="20">
+          </label>
+          <label>
+            文档标题
+            <input id="docTitle" type="text" placeholder="可选，例如 Redis高频面试知识">
+          </label>
+          <button id="generateDocBtn">生成文档</button>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
+          <h2>任务队列</h2>
+          <span>Codex 任务串行执行</span>
+        </div>
+        <div id="tasks" class="task-list"></div>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
+          <h2>当前试卷</h2>
+          <div class="paper-actions">
+            <button id="saveAnswersBtn" class="secondary">保存答案</button>
+            <button id="gradePaperBtn">提交评分</button>
+          </div>
+        </div>
+        <div id="paperInfo" class="muted">还没有加载试卷。</div>
+        <div id="paper"></div>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
+          <h2>反馈</h2>
+          <button id="loadFeedbackBtn" class="secondary">刷新反馈</button>
+        </div>
+        <pre id="feedback" class="feedback"></pre>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
+          <h2>记忆</h2>
+          <button id="loadMemoryBtn" class="secondary">刷新记忆</button>
+        </div>
+        <div id="memory" class="memory-grid"></div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
