@@ -165,7 +165,7 @@ function renderTasks() {
 }
 
 function canArchiveTask(task) {
-  return task.status === 'completed' && ['generate_paper', 'grade_paper', 'generate_bagu_doc', 'rebuild_topics', 'rebuild_index'].includes(task.type);
+  return task.status === 'completed' && ['generate_paper', 'grade_paper', 'generate_bagu_doc', 'rebuild_topics', 'rebuild_index', 'extract_memory_insights'].includes(task.type);
 }
 
 async function archiveTask(taskId) {
@@ -328,17 +328,43 @@ async function loadFeedback() {
 
 async function loadMemory() {
   const memory = await api('/api/memory');
-  const topics = Object.entries(memory.topics || {})
-    .sort((a, b) => (b[1].next_review_priority || 0) - (a[1].next_review_priority || 0))
-    .slice(0, 12);
-  el('memory').innerHTML = topics.map(([id, item]) => `
+  const topicCards = (memory.weak_topics || []).slice(0, 6).map((item) => `
     <div class="memory-card">
-      <h3>${escapeHtml(item.name || id)}</h3>
+      <h3>${escapeHtml(item.name || item.id || 'Topic')}</h3>
       <p>掌握度：${escapeHtml(item.mastery_level || 'new')}</p>
       <p>最近得分：${escapeHtml(String(item.last_score || 0))}</p>
-      <p>练习次数：${escapeHtml(String(item.attempt_count || 0))}</p>
     </div>
-  `).join('') || '<div class="muted">暂无记忆，完成评分后会更新。</div>';
+  `).join('');
+  const conceptCards = (memory.weak_concepts || []).slice(0, 6).map((item) => `
+    <div class="memory-card">
+      <h3>${escapeHtml(item.topic || 'Concept')}</h3>
+      <p>${escapeHtml(item.question || '')}</p>
+      <p>掌握度：${escapeHtml(item.mastery_level || 'new')} · 池：${escapeHtml(item.pool || '-')}</p>
+    </div>
+  `).join('');
+  const skillCards = (memory.weak_skills || []).slice(0, 6).map((item) => `
+    <div class="memory-card">
+      <h3>${escapeHtml(item.label || item.skill_id || 'Skill')}</h3>
+      <p>掌握度：${escapeHtml(item.mastery_level || 'new')}</p>
+      <p>最近得分：${escapeHtml(String(item.last_score || 0))}</p>
+    </div>
+  `).join('');
+  const recoveryCards = (memory.recovery_watchlist || []).slice(0, 4).map((item) => `
+    <div class="memory-card">
+      <h3>${escapeHtml(item.topic || 'Recovery')}</h3>
+      <p>${escapeHtml(item.question || '')}</p>
+      <p>恢复连续：${escapeHtml(String(item.recovery_streak || 0))}</p>
+    </div>
+  `).join('');
+  const profileLines = (memory.profile_summary || []).slice(0, 5).map((item) => `<li>${escapeHtml(item)}</li>`).join('');
+  const html = `
+    ${topicCards ? `<div class="memory-card"><h3>Topic 弱项</h3><div class="muted">近期最弱的技术栈</div></div>${topicCards}` : ''}
+    ${conceptCards ? `<div class="memory-card"><h3>知识点弱项</h3><div class="muted">后续出题重点复现</div></div>${conceptCards}` : ''}
+    ${skillCards ? `<div class="memory-card"><h3>技能弱项</h3><div class="muted">表达与追问能力问题</div></div>${skillCards}` : ''}
+    ${recoveryCards ? `<div class="memory-card"><h3>恢复观察</h3><div class="muted">刚从错误中恢复的点</div></div>${recoveryCards}` : ''}
+    ${profileLines ? `<div class="memory-card"><h3>长期画像</h3><ul>${profileLines}</ul></div>` : ''}
+  `;
+  el('memory').innerHTML = html.trim() || '<div class="muted">暂无记忆，完成评分后会更新。</div>';
 }
 
 function startVoice(questionId) {

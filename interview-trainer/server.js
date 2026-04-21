@@ -29,6 +29,11 @@ const DIRS = {
 const FILES = {
   topics: path.join(DIRS.topics, 'topics.json'),
   memory: path.join(DIRS.memory, 'memory.json'),
+  memoryEvents: path.join(DIRS.memory, 'memory_events.jsonl'),
+  conceptMemory: path.join(DIRS.memory, 'concept_memory.json'),
+  skillMemory: path.join(DIRS.memory, 'skill_memory.json'),
+  profileMemory: path.join(DIRS.memory, 'profile_memory.json'),
+  memorySummary: path.join(DIRS.memory, 'memory_summary.json'),
   tasks: path.join(DIRS.tasks, 'tasks.json'),
   chunks: path.join(DIRS.rag, 'chunks.json'),
   topicIndex: path.join(DIRS.rag, 'topic_index.json'),
@@ -87,6 +92,56 @@ async function ensureDataDirs() {
 }
 
 async function ensureMemory() {
+  if (!existsSync(FILES.memory)) {
+    await writeJson(FILES.memory, {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      topics: {},
+      knowledge: {},
+      questions: {},
+      chains: {}
+    });
+  }
+  if (!existsSync(FILES.conceptMemory)) {
+    await writeJson(FILES.conceptMemory, {
+      version: 2,
+      updated_at: new Date().toISOString(),
+      concepts: {},
+      topics: {}
+    });
+  }
+  if (!existsSync(FILES.skillMemory)) {
+    await writeJson(FILES.skillMemory, {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      skills: {}
+    });
+  }
+  if (!existsSync(FILES.profileMemory)) {
+    await writeJson(FILES.profileMemory, {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      profile_summary: [],
+      patterns: {}
+    });
+  }
+  if (!existsSync(FILES.memorySummary)) {
+    await writeJson(FILES.memorySummary, {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      weak_topics: [],
+      weak_concepts: [],
+      weak_skills: [],
+      recovery_watchlist: [],
+      profile_summary: []
+    });
+  }
+  if (!existsSync(FILES.memoryEvents)) {
+    await fs.writeFile(FILES.memoryEvents, '', 'utf8');
+  }
+}
+
+async function ensureLegacyMemory() {
   if (existsSync(FILES.memory)) return;
   await writeJson(FILES.memory, {
     version: 1,
@@ -171,6 +226,7 @@ async function processQueue() {
         if (task.type === 'generate_paper') task.result = await taskGeneratePaper(task.payload, task);
         if (task.type === 'grade_paper') task.result = await taskGradePaper(task.payload, task);
         if (task.type === 'generate_bagu_doc') task.result = await taskGenerateBaguDoc(task.payload, task);
+        if (task.type === 'extract_memory_insights') task.result = await taskExtractMemoryInsights(task.payload, task);
         task.status = 'completed';
         task.progress = 100;
         task.stage = '完成';
@@ -270,6 +326,9 @@ async function assertTaskCanArchive(task) {
     if (!task.result?.file) throw new Error('生成八股任务没有可归档的八股文件。');
     return;
   }
+  if (task.type === 'extract_memory_insights') {
+    return;
+  }
   throw new Error(`任务类型 ${task.type} 不支持归档。`);
 }
 
@@ -290,6 +349,7 @@ function estimateTaskSeconds(type, payload = {}) {
   }
   if (type === 'grade_paper') return 90;
   if (type === 'generate_bagu_doc') return Math.round(60 + Number(payload.question_count || 20) * 4);
+  if (type === 'extract_memory_insights') return 45;
   if (type === 'rebuild_topics' || type === 'rebuild_index') return 45;
   return 60;
 }
@@ -390,7 +450,7 @@ async function handleApi(req, res) {
   }
 
   if (req.method === 'GET' && route === '/api/memory') {
-    sendJson(res, 200, await readJson(FILES.memory, {}));
+    sendJson(res, 200, await readMemoryView());
     return;
   }
 
@@ -473,7 +533,7 @@ async function taskGeneratePaper(payload, task = null) {
   const library = await ensureRagIndex();
   await updateTaskProgress(task, 16, '读取 Topic 和记忆');
   const topics = await readAvailableTopics();
-  const memory = await readJson(FILES.memory, {});
+  const memory = await readMemoryView();
   const selectedTopics = topics.topics.filter((topic) => payload.selected_topics.includes(topic.topic_id));
   await updateTaskProgress(task, 25, '检索相关知识片段');
   const context = await retrieveContext(payload, selectedTopics, memory);
@@ -587,6 +647,7 @@ async function taskGradePaper(payload, task = null) {
   await writePaper(paper);
   await updateMemoryFromPaper(paper);
   await writeKnowledgeCandidates(paper);
+  await enqueueTask('extract_memory_insights', { paper_id: paper.paper_id });
   return { paper_id: paper.paper_id, average_score: paper.grade.average_score, feedback_file: paper.feedback_file };
 }
 
@@ -713,7 +774,7 @@ async function taskGenerateBaguDoc(payload, task = null) {
     question_count: Math.min(50, questionCount),
     mode: 'normal',
     keywords
-  }, pseudoTopics, await readJson(FILES.memory, {}));
+  }, pseudoTopics, await readMemoryView());
   const schema = path.join(SCHEMA_DIR, 'bagu-doc.schema.json');
   const prompt = [
     '你是一个资深技术面试资料整理者，请生成一份可直接写入 八股/ 的 Markdown 面试知识文档。',
@@ -739,6 +800,53 @@ async function taskGenerateBaguDoc(payload, task = null) {
     question_count: questionCount,
     rag_rebuilt: true,
     chunks_count: rebuilt.chunks.length
+  };
+}
+
+async function taskExtractMemoryInsights(payload, task = null) {
+  await updateTaskProgress(task, 15, '读取评分结果与记忆状态');
+  const paper = await readPaper(payload.paper_id);
+  if (!paper.grade) throw new Error('Paper grade not found for memory extraction');
+  const profileState = await readJson(FILES.profileMemory, { version: 1, updated_at: null, profile_summary: [], patterns: {} });
+  const summary = await readJson(FILES.memorySummary, { weak_concepts: [], weak_skills: [], recovery_watchlist: [], profile_summary: [] });
+  const prompt = [
+    '你是一个面试训练系统的记忆抽取器。',
+    '请根据评分结果，提炼少量高价值的长期训练信号。',
+    '只关注稳定、可复用、可指导下次训练的模式，不要复述整张试卷。',
+    '输出 JSON，字段包括：profile_summary(string[])、patterns(object)。',
+    'patterns 的 key 使用短标识，value 包含 label、evidence、severity。',
+    '不要输出超过 6 条 profile_summary，也不要输出超过 8 个 patterns。',
+    JSON.stringify({
+      paper_id: paper.paper_id,
+      weak_concepts: summary.weak_concepts || [],
+      weak_skills: summary.weak_skills || [],
+      reviews: (paper.grade.reviews || []).map((review) => ({
+        question_id: review.question_id,
+        score: review.score,
+        level: review.level,
+        missed_points: review.missed_points,
+        incorrect_points: review.incorrect_points,
+        feedback: review.feedback
+      })),
+      chain_reviews: paper.grade.chain_reviews || [],
+      current_profile: profileState
+    })
+  ].join('\n\n');
+  await updateTaskProgress(task, 55, 'Codex 抽取长期模式');
+  const extracted = await runCodexJsonLoose(`${prompt}\n\n只输出一个 JSON 对象。`, task).catch(() => null);
+  await updateTaskProgress(task, 82, '写入画像记忆摘要');
+  if (extracted) {
+    profileState.version = 1;
+    profileState.updated_at = new Date().toISOString();
+    profileState.profile_summary = uniqueStrings([...(extracted.profile_summary || []).slice(0, 6)]);
+    profileState.patterns = normalizeProfilePatterns(extracted.patterns || {}, profileState.patterns || {});
+    await writeJson(FILES.profileMemory, profileState);
+    await refreshMemorySummary();
+  }
+  return {
+    paper_id: paper.paper_id,
+    extracted: Boolean(extracted),
+    profile_items: extracted?.profile_summary?.length || 0
   };
 }
 
@@ -1330,23 +1438,30 @@ function normalizeGrade(input, paper) {
 }
 
 async function updateMemoryFromPaper(paper) {
-  const memory = await readJson(FILES.memory, {});
-  memory.version = 1;
-  memory.updated_at = new Date().toISOString();
-  memory.topics ||= {};
-  memory.knowledge ||= {};
-  memory.questions ||= {};
-  memory.chains ||= {};
+  const legacy = await readJson(FILES.memory, {});
+  legacy.version = 1;
+  legacy.updated_at = new Date().toISOString();
+  legacy.topics ||= {};
+  legacy.knowledge ||= {};
+  legacy.questions ||= {};
+  legacy.chains ||= {};
+  const conceptState = await readJson(FILES.conceptMemory, { version: 2, updated_at: null, concepts: {}, topics: {} });
+  const skillState = await readJson(FILES.skillMemory, { version: 1, updated_at: null, skills: {} });
+  const profileState = await readJson(FILES.profileMemory, { version: 1, updated_at: null, profile_summary: [], patterns: {} });
   const reviewById = new Map(paper.grade.reviews.map((review) => [review.question_id, review]));
   const chainReviewById = new Map((paper.grade.chain_reviews || []).map((review) => [review.chain_id, review]));
+  const events = [];
   for (const question of flattenPaperQuestions(paper)) {
     const review = reviewById.get(question.question_id);
     if (!review) continue;
     const topicIdValue = question.topic_id || topicId(question.topic || 'General');
     const questionKey = question.question_key || buildStableQuestionKey(question, topicIdValue);
     const knowledgeId = hash(`${topicIdValue}:${questionKey}`);
-    updateStats(memory.topics, topicIdValue, review.score, { name: question.topic || topicIdValue });
-    updateStats(memory.knowledge, knowledgeId, review.score, {
+    const conceptId = knowledgeId;
+    const skillTags = inferSkillTags(question, review);
+    events.push(buildConceptEvent(paper, question, review, conceptId, questionKey, skillTags));
+    updateStats(legacy.topics, topicIdValue, review.score, { name: question.topic || topicIdValue });
+    updateStats(legacy.knowledge, knowledgeId, review.score, {
       topic_id: topicIdValue,
       topic: question.topic,
       source_type: question.source_type,
@@ -1357,7 +1472,7 @@ async function updateMemoryFromPaper(paper) {
       last_feedback: review.feedback,
       can_write_back_to_bagu: question.source_type !== 'note_readonly'
     });
-    updateStats(memory.questions, questionKey, review.score, {
+    updateStats(legacy.questions, questionKey, review.score, {
       topic_id: topicIdValue,
       topic: question.topic,
       source_type: question.source_type,
@@ -1369,13 +1484,18 @@ async function updateMemoryFromPaper(paper) {
       source_chunks: question.source_chunks || [],
       last_feedback: review.feedback
     });
+    updateConceptState(conceptState.concepts, conceptId, review, question, questionKey, topicIdValue, skillTags);
+    updateStats(conceptState.topics, topicIdValue, review.score, { name: question.topic || topicIdValue });
+    for (const skillId of skillTags) {
+      updateSkillState(skillState.skills, skillId, review, question, topicIdValue);
+    }
   }
   for (const chain of paper.chains || []) {
     const chainReviews = chain.questions.map((question) => reviewById.get(question.question_id)).filter(Boolean);
     if (!chainReviews.length) continue;
     const score = Math.round(chainReviews.reduce((sum, review) => sum + review.score, 0) / chainReviews.length);
     const chainReview = chainReviewById.get(chain.chain_id);
-    updateStats(memory.chains, chain.chain_id, score, {
+    updateStats(legacy.chains, chain.chain_id, score, {
       topic: chain.topic,
       topic_id: topicId(chain.topic || 'General'),
       root_knowledge_point: chain.root_knowledge_point,
@@ -1383,12 +1503,42 @@ async function updateMemoryFromPaper(paper) {
       weakest_follow_up_type: chainReview?.weakest_follow_up_type || '',
       last_chain_feedback: chainReviews.map((review) => review.feedback).join('\n')
     });
+    events.push({
+      type: 'followup_breakdown',
+      created_at: new Date().toISOString(),
+      paper_id: paper.paper_id,
+      chain_id: chain.chain_id,
+      topic_id: topicId(chain.topic || 'General'),
+      topic: chain.topic || 'General',
+      chain_score: score,
+      breakdown_question_index: chainReview?.breakdown_question_index || 0,
+      weakest_follow_up_type: chainReview?.weakest_follow_up_type || '',
+      feedback: chainReview?.feedback || ''
+    });
+    const weakestSkill = mapFollowupTypeToSkill(chainReview?.weakest_follow_up_type || '');
+    if (weakestSkill) {
+      updateSkillState(skillState.skills, weakestSkill, { score, feedback: chainReview?.feedback || '', level: scoreLevel(score) }, { topic: chain.topic, question: chain.root_knowledge_point }, topicId(chain.topic || 'General'));
+    }
   }
-  await writeJson(FILES.memory, memory);
+  conceptState.updated_at = new Date().toISOString();
+  skillState.updated_at = new Date().toISOString();
+  profileState.updated_at = new Date().toISOString();
+  await appendJsonl(FILES.memoryEvents, events);
+  await writeJson(FILES.memory, legacy);
+  await writeJson(FILES.conceptMemory, conceptState);
+  await writeJson(FILES.skillMemory, skillState);
+  await writeJson(FILES.profileMemory, profileState);
+  await refreshMemorySummary();
 }
 
 function updateStats(bucket, id, score, patch) {
-  const current = bucket[id] || {
+  const current = advanceReviewStats(bucket[id], score);
+  current.updated_at = new Date().toISOString();
+  bucket[id] = { ...current, ...patch };
+}
+
+function advanceReviewStats(existing, score) {
+  const current = existing || {
     attempt_count: 0,
     correct_count: 0,
     wrong_count: 0,
@@ -1396,7 +1546,9 @@ function updateStats(bucket, id, score, patch) {
     streak_wrong: 0,
     best_score: 0,
     last_score: 0,
-    recent_scores: []
+    recent_scores: [],
+    failure_streak: 0,
+    recovery_streak: 0
   };
   current.attempt_count += 1;
   current.last_score = score;
@@ -1406,18 +1558,61 @@ function updateStats(bucket, id, score, patch) {
     current.correct_count += 1;
     current.streak_correct += 1;
     current.streak_wrong = 0;
+    current.failure_streak = 0;
+    current.recovery_streak = (current.recovery_streak || 0) + 1;
   } else if (score < 60) {
     current.wrong_count += 1;
     current.streak_wrong += 1;
     current.streak_correct = 0;
+    current.failure_streak = (current.failure_streak || 0) + 1;
+    current.recovery_streak = 0;
   } else {
     current.streak_correct = 0;
     current.streak_wrong = 0;
+    current.failure_streak = 0;
+    current.recovery_streak = Math.max(0, current.recovery_streak || 0);
   }
   current.mastery_level = masteryLevel(current);
   current.next_review_priority = reviewPriority(current);
-  current.updated_at = new Date().toISOString();
-  bucket[id] = { ...current, ...patch };
+  return current;
+}
+
+function updateConceptState(bucket, id, review, question, questionKey, topicIdValue, skillTags = []) {
+  const updated = advanceReviewStats(bucket[id], review.score);
+  Object.assign(updated, {
+    concept_id: id,
+    topic_id: topicIdValue,
+    topic: question.topic || topicIdValue,
+    canonical_name: question.question,
+    question_key: questionKey,
+    linked_questions: uniqueStrings([...(updated.linked_questions || []), questionKey]).slice(-12),
+    linked_chunks: uniqueStrings([...(updated.linked_chunks || []), ...(question.source_chunks || [])]).slice(-20),
+    last_error_types: uniqueStrings(inferErrorTypes(question, review)),
+    last_feedback: review.feedback || '',
+    source_type: question.source_type,
+    expected_points: question.expected_points || [],
+    skill_tags: uniqueStrings([...(updated.skill_tags || []), ...skillTags])
+  });
+  updated.mastery_score = computeMasteryScore(updated);
+  updated.stability_score = computeStabilityScore(updated);
+  updated.difficulty_score = computeDifficultyScore(updated);
+  updated.forget_risk = computeForgetRisk(updated);
+  updated.pool = classifyConceptPool(updated);
+  updated.updated_at = new Date().toISOString();
+  bucket[id] = updated;
+}
+
+function updateSkillState(bucket, id, review, question, topicIdValue) {
+  const updated = advanceReviewStats(bucket[id], review.score);
+  updated.skill_id = id;
+  updated.label = id;
+  updated.last_feedback = review.feedback || '';
+  updated.last_question = question.question || '';
+  updated.topic_id = topicIdValue;
+  updated.mastery_score = computeMasteryScore(updated);
+  updated.stability_score = computeStabilityScore(updated);
+  updated.updated_at = new Date().toISOString();
+  bucket[id] = updated;
 }
 
 function masteryLevel(stats) {
@@ -1434,6 +1629,35 @@ function reviewPriority(stats) {
   if (stats.mastery_level === 'new') return 60;
   if (stats.mastery_level === 'familiar') return 35;
   return 10;
+}
+
+function computeMasteryScore(stats) {
+  return clamp(Math.round((stats.best_score || 0) * 0.35 + (stats.last_score || 0) * 0.45 + ((stats.correct_count || 0) / Math.max(stats.attempt_count || 1, 1)) * 20), 0, 100);
+}
+
+function computeStabilityScore(stats) {
+  const scores = stats.recent_scores || [];
+  if (!scores.length) return 0;
+  const avg = scores.reduce((sum, item) => sum + item, 0) / scores.length;
+  const variance = scores.reduce((sum, item) => sum + ((item - avg) ** 2), 0) / scores.length;
+  return clamp(Math.round(100 - Math.sqrt(variance) * 4 - (stats.wrong_count || 0) * 6), 0, 100);
+}
+
+function computeDifficultyScore(stats) {
+  return clamp(Math.round(60 + (stats.wrong_count || 0) * 8 - (stats.correct_count || 0) * 4), 0, 100);
+}
+
+function computeForgetRisk(stats) {
+  const recent = stats.recent_scores || [];
+  const last = recent.at(-1) || stats.last_score || 0;
+  return clamp(Math.round(100 - (stats.stability_score || computeStabilityScore(stats)) * 0.45 - (stats.mastery_score || computeMasteryScore(stats)) * 0.35 + (last < 60 ? 18 : 0)), 0, 100);
+}
+
+function classifyConceptPool(stats) {
+  if ((stats.failure_streak || stats.streak_wrong || 0) >= 2 || (stats.last_score || 0) < 60) return 'urgent_remediation';
+  if ((stats.recovery_streak || 0) >= 1 && (stats.last_score || 0) >= 60 && (stats.last_score || 0) < 85) return 'recovery_watchlist';
+  if ((stats.last_score || 0) < 85 || (stats.wrong_count || 0) > 0) return 'unstable_concepts';
+  return 'exploration_pool';
 }
 
 async function writeFeedback(paper) {
@@ -1564,6 +1788,159 @@ async function writeJson(file, value) {
   await fs.writeFile(file, JSON.stringify(value, null, 2), 'utf8');
 }
 
+async function appendJsonl(file, entries) {
+  const items = (entries || []).filter(Boolean);
+  if (!items.length) return;
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  const payload = items.map((item) => JSON.stringify(item)).join('\n') + '\n';
+  await fs.appendFile(file, payload, 'utf8');
+}
+
+async function readMemoryView() {
+  const [legacy, conceptState, skillState, profileState, summary] = await Promise.all([
+    readJson(FILES.memory, { topics: {}, knowledge: {}, questions: {}, chains: {} }),
+    readJson(FILES.conceptMemory, { concepts: {}, topics: {} }),
+    readJson(FILES.skillMemory, { skills: {} }),
+    readJson(FILES.profileMemory, { profile_summary: [], patterns: {} }),
+    readJson(FILES.memorySummary, null)
+  ]);
+  const effectiveConceptState = Object.keys(conceptState.concepts || {}).length
+    ? conceptState
+    : deriveConceptStateFromLegacy(legacy);
+  const effectiveSkillState = Object.keys(skillState.skills || {}).length
+    ? skillState
+    : deriveSkillStateFromLegacy(legacy);
+  const hasSummaryData = summary && (
+    (summary.weak_topics || []).length ||
+    (summary.weak_concepts || []).length ||
+    (summary.weak_skills || []).length ||
+    (summary.recovery_watchlist || []).length ||
+    (summary.profile_summary || []).length
+  );
+  const generatedSummary = hasSummaryData ? summary : buildMemorySummary(effectiveConceptState, effectiveSkillState, profileState);
+  return {
+    version: 2,
+    updated_at: generatedSummary.updated_at || new Date().toISOString(),
+    topics: legacy.topics || {},
+    knowledge: legacy.knowledge || {},
+    questions: legacy.questions || {},
+    chains: legacy.chains || {},
+    concepts: effectiveConceptState.concepts || {},
+    topic_state: effectiveConceptState.topics || {},
+    skills: effectiveSkillState.skills || {},
+    profile: profileState,
+    weak_topics: generatedSummary.weak_topics || [],
+    weak_concepts: generatedSummary.weak_concepts || [],
+    weak_skills: generatedSummary.weak_skills || [],
+    recovery_watchlist: generatedSummary.recovery_watchlist || [],
+    profile_summary: generatedSummary.profile_summary || []
+  };
+}
+
+function buildMemorySummary(conceptState, skillState, profileState) {
+  const weakConcepts = Object.values(conceptState.concepts || {})
+    .filter((item) => ['weak', 'unstable'].includes(item.mastery_level))
+    .sort((a, b) => (b.next_review_priority || 0) - (a.next_review_priority || 0))
+    .slice(0, 12)
+    .map((item) => ({
+      concept_id: item.concept_id,
+      topic_id: item.topic_id,
+      topic: item.topic,
+      question: item.canonical_name,
+      last_score: item.last_score,
+      mastery_level: item.mastery_level,
+      pool: item.pool
+    }));
+  const weakTopics = Object.entries(conceptState.topics || {})
+    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
+    .sort((a, b) => (b[1].next_review_priority || 0) - (a[1].next_review_priority || 0))
+    .slice(0, 12)
+    .map(([id, item]) => ({ id, name: item.name || id, last_score: item.last_score, mastery_level: item.mastery_level }));
+  const weakSkills = Object.values(skillState.skills || {})
+    .filter((item) => ['weak', 'unstable'].includes(item.mastery_level))
+    .sort((a, b) => (b.next_review_priority || 0) - (a.next_review_priority || 0))
+    .slice(0, 8)
+    .map((item) => ({
+      skill_id: item.skill_id,
+      label: item.label,
+      last_score: item.last_score,
+      mastery_level: item.mastery_level
+    }));
+  const recovery = Object.values(conceptState.concepts || {})
+    .filter((item) => item.pool === 'recovery_watchlist')
+    .sort((a, b) => (b.recovery_streak || 0) - (a.recovery_streak || 0))
+    .slice(0, 8)
+    .map((item) => ({
+      concept_id: item.concept_id,
+      topic: item.topic,
+      question: item.canonical_name,
+      recovery_streak: item.recovery_streak || 0,
+      last_score: item.last_score
+    }));
+  return {
+    version: 1,
+    updated_at: new Date().toISOString(),
+    weak_topics: weakTopics,
+    weak_concepts: weakConcepts,
+    weak_skills: weakSkills,
+    recovery_watchlist: recovery,
+    profile_summary: profileState.profile_summary || []
+  };
+}
+
+function deriveConceptStateFromLegacy(legacy) {
+  const concepts = {};
+  for (const [id, item] of Object.entries(legacy.knowledge || {})) {
+    concepts[id] = {
+      concept_id: id,
+      topic_id: item.topic_id || topicId(item.topic || 'General'),
+      topic: item.topic || 'General',
+      canonical_name: item.question || id,
+      mastery_level: item.mastery_level || 'weak',
+      next_review_priority: item.next_review_priority || 80,
+      last_score: item.last_score || 0,
+      attempt_count: item.attempt_count || 0,
+      wrong_count: item.wrong_count || 0,
+      recovery_streak: item.recovery_streak || 0,
+      pool: (item.last_score || 0) < 60 ? 'urgent_remediation' : 'unstable_concepts',
+      linked_chunks: item.source_chunks || [],
+      last_feedback: item.last_feedback || '',
+      expected_points: item.expected_points || []
+    };
+  }
+  return { version: 2, updated_at: new Date().toISOString(), concepts, topics: legacy.topics || {} };
+}
+
+function deriveSkillStateFromLegacy(legacy) {
+  const skills = {};
+  for (const item of Object.values(legacy.knowledge || {})) {
+    const text = `${item.question || ''} ${item.last_feedback || ''}`;
+    for (const skillId of inferSkillTags({ question: text, expected_points: item.expected_points || [] }, { feedback: item.last_feedback || '', missed_points: [], incorrect_points: [], level: item.mastery_level === 'weak' ? 'wrong' : 'partial' })) {
+      const current = advanceReviewStats(skills[skillId], item.last_score || 0);
+      current.skill_id = skillId;
+      current.label = skillId;
+      current.last_feedback = item.last_feedback || '';
+      current.last_question = item.question || '';
+      current.mastery_score = computeMasteryScore(current);
+      current.stability_score = computeStabilityScore(current);
+      current.updated_at = new Date().toISOString();
+      skills[skillId] = current;
+    }
+  }
+  return { version: 1, updated_at: new Date().toISOString(), skills };
+}
+
+async function refreshMemorySummary() {
+  const [conceptState, skillState, profileState] = await Promise.all([
+    readJson(FILES.conceptMemory, { concepts: {}, topics: {} }),
+    readJson(FILES.skillMemory, { skills: {} }),
+    readJson(FILES.profileMemory, { profile_summary: [] })
+  ]);
+  const summary = buildMemorySummary(conceptState, skillState, profileState);
+  await writeJson(FILES.memorySummary, summary);
+  return summary;
+}
+
 async function readPaper(paperId) {
   const file = path.join(DIRS.papers, `${paperId}.json`);
   if (!existsSync(file)) throw new Error('Paper not found');
@@ -1586,33 +1963,13 @@ function countPaperQuestions(paper) {
 }
 
 function summarizeMemory(memory) {
-  const weakTopics = Object.entries(memory.topics || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
-    .slice(0, 20)
-    .map(([id, item]) => ({ id, name: item.name, last_score: item.last_score, mastery_level: item.mastery_level }));
-  const weakKnowledgePoints = Object.entries(memory.knowledge || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
-    .sort((a, b) => (b[1].next_review_priority || 0) - (a[1].next_review_priority || 0))
-    .slice(0, 12)
-    .map(([id, item]) => ({
-      id,
-      topic: item.topic,
-      question: item.question,
-      last_score: item.last_score,
-      mastery_level: item.mastery_level
-    }));
-  const weakChains = Object.entries(memory.chains || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
-    .sort((a, b) => (b[1].next_review_priority || 0) - (a[1].next_review_priority || 0))
-    .slice(0, 8)
-    .map(([id, item]) => ({
-      id,
-      topic: item.topic,
-      root_knowledge_point: item.root_knowledge_point,
-      weakest_follow_up_type: item.weakest_follow_up_type || '',
-      breakdown_question_index: item.breakdown_question_index || 0
-    }));
-  return { weak_topics: weakTopics, weak_knowledge_points: weakKnowledgePoints, weak_chains: weakChains };
+  return {
+    weak_topics: memory.weak_topics || [],
+    weak_knowledge_points: memory.weak_concepts || [],
+    weak_skills: memory.weak_skills || [],
+    recovery_watchlist: memory.recovery_watchlist || [],
+    profile_summary: memory.profile_summary || []
+  };
 }
 
 function tryNormalizePaperLocally(input, payload, paperId) {
@@ -1743,7 +2100,7 @@ function overlapCount(left, right) {
 
 function buildWeakKnowledgeSignals(memory, selectedIds) {
   const selected = selectedIds instanceof Set ? selectedIds : new Set(selectedIds || []);
-  return Object.entries(memory.knowledge || {})
+  return Object.entries(memory.concepts || {})
     .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
     .filter(([, item]) => {
       const signalTopicId = item.topic_id || topicId(item.topic || 'General');
@@ -1755,8 +2112,8 @@ function buildWeakKnowledgeSignals(memory, selectedIds) {
       id,
       topic_id: item.topic_id || topicId(item.topic || 'General'),
       priority: item.next_review_priority || 0,
-      source_chunks: new Set(Array.isArray(item.source_chunks) ? item.source_chunks : []),
-      keywords: new Set(extractKeywords(`${item.question || ''} ${(item.expected_points || []).join(' ')} ${item.last_feedback || ''}`))
+      source_chunks: new Set(Array.isArray(item.linked_chunks) ? item.linked_chunks : []),
+      keywords: new Set(extractKeywords(`${item.canonical_name || item.question || ''} ${(item.expected_points || []).join(' ')} ${item.last_feedback || ''}`))
     }));
 }
 
@@ -1776,6 +2133,80 @@ function buildWeakChainSignals(memory, selectedIds) {
       priority: item.next_review_priority || 0,
       keywords: new Set(extractKeywords(`${item.root_knowledge_point || ''} ${item.weakest_follow_up_type || ''} ${item.last_chain_feedback || ''}`))
     }));
+}
+
+function uniqueStrings(items) {
+  return [...new Set((items || []).map((item) => String(item)).filter(Boolean))];
+}
+
+function inferErrorTypes(question, review) {
+  const tags = [];
+  if ((review.incorrect_points || []).length) tags.push('incorrect_claim');
+  if ((review.missed_points || []).length >= 2) tags.push('missing_core_points');
+  const skillTags = inferSkillTags(question, review);
+  if (skillTags.includes('definition')) tags.push('definition_weak');
+  if (skillTags.includes('mechanism')) tags.push('mechanism_weak');
+  if (skillTags.includes('comparison')) tags.push('comparison_weak');
+  if (skillTags.includes('boundary_conditions')) tags.push('boundary_weak');
+  if (review.level === 'wrong') tags.push('concept_unstable');
+  return tags;
+}
+
+function inferSkillTags(question, review) {
+  const text = `${question.question || ''} ${(question.expected_points || []).join(' ')} ${review.feedback || ''} ${(review.missed_points || []).join(' ')}`.toLowerCase();
+  const tags = [];
+  if (/(什么是|定义|强类型|语义)/.test(text)) tags.push('definition');
+  if (/(为什么|机制|底层|原理|如何影响)/.test(text)) tags.push('mechanism');
+  if (/(区别|对比|不同|比较)/.test(text)) tags.push('comparison');
+  if (/(边界|条件|哪里不严谨|不能直接说|返回 true|返回 false)/.test(text)) tags.push('boundary_conditions');
+  if (/(追问|breakdown|承压)/.test(text)) tags.push('followup_resilience');
+  return uniqueStrings(tags.length ? tags : ['mechanism']);
+}
+
+function mapFollowupTypeToSkill(type) {
+  const text = String(type || '').toLowerCase();
+  if (!text) return '';
+  if (text.includes('define')) return 'definition';
+  if (text.includes('mechan')) return 'mechanism';
+  if (text.includes('compar')) return 'comparison';
+  if (text.includes('bound')) return 'boundary_conditions';
+  return 'followup_resilience';
+}
+
+function buildConceptEvent(paper, question, review, conceptId, questionKey, skillTags) {
+  const eventType = review.level === 'correct' ? 'concept_correct' : review.level === 'partial' ? 'concept_partial' : 'concept_wrong';
+  return {
+    type: eventType,
+    created_at: new Date().toISOString(),
+    paper_id: paper.paper_id,
+    concept_id: conceptId,
+    question_key: questionKey,
+    question_id: question.question_id,
+    topic_id: question.topic_id || topicId(question.topic || 'General'),
+    topic: question.topic || 'General',
+    score: review.score,
+    level: review.level,
+    skill_tags: skillTags,
+    missed_points: review.missed_points || [],
+    incorrect_points: review.incorrect_points || [],
+    source_chunks: question.source_chunks || []
+  };
+}
+
+function normalizeProfilePatterns(nextPatterns, previousPatterns = {}) {
+  const normalized = {};
+  for (const [key, value] of Object.entries(nextPatterns || {})) {
+    const patternId = String(key || '').trim();
+    if (!patternId) continue;
+    const prev = previousPatterns[patternId] || {};
+    normalized[patternId] = {
+      label: String(value?.label || prev.label || patternId),
+      evidence: String(value?.evidence || prev.evidence || ''),
+      severity: clamp(Number(value?.severity ?? prev.severity ?? 50), 0, 100),
+      updated_at: new Date().toISOString()
+    };
+  }
+  return normalized;
 }
 
 function sanitizeFileTitle(title) {
