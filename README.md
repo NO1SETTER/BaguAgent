@@ -21,6 +21,9 @@
 它会读取 `八股/` 中的知识文档，结合你本地可选的 `笔记/` 私有资料，自动生成试卷、支持语音作答、调用 Codex 评分，并在你完整做完一整张卷子后更新记忆，帮助你持续反复锤薄弱点。  
 一句话概括：**把“背八股”这件事，做成一个真能练、真会追问、真会记仇的本地 agent** 🤖
 
+这个项目目前最核心的亮点，不只是“能出题”，而是 **AgentMemory 会在你背诵过程中持续更新，并反过来影响下一轮出题**。  
+也就是说，它不是单纯刷题器，而是一个会根据你真实作答表现不断调整策略的练习系统。
+
 ## 功能总览
 
 ### 📝 出卷
@@ -56,16 +59,24 @@
 
 ### 🧠 记忆
 
-- 记录 Topic 层表现
-- 记录知识点层表现
-- 记录具体题目表现
-- 记录追问链表现
+- 不是只记“你做过哪些题”，而是会记：
+  - 哪些 Topic 总掉分
+  - 哪些知识点总答错
+  - 哪类表达能力最弱
+  - 哪些点是“刚答对，但其实还不稳”
+- 记忆结构已经拆成：
+  - 事件日志
+  - 知识点记忆
+  - 技能记忆
+  - 画像摘要
 - 后续出题会优先照顾你的薄弱点，而不是每次都随机刷题
+- 评分完成后还会异步抽取长期错误模式，让系统不只知道“你不会”，还知道“你为什么老答不好”
 - 你反复答错的点，系统会记得；你以为它忘了，它其实没有 😌
 
 ### 🔎 检索与任务管理
 
 - 内置轻量 RAG，会从知识文档中检索相关上下文再出题
+- RAG 不会把整个知识库都喂给模型，而是只取少量高相关摘要与记忆片段
 - Topic 解析改为手动触发，避免不必要的模型开销
 - 所有模型任务串行执行，避免并发冲突
 - 任务列表支持查看进度、删除、归档
@@ -125,6 +136,11 @@ npm run check
 - `interview-trainer/data/topics/`
 - `interview-trainer/data/rag/*.json`
 - `interview-trainer/data/memory/memory.json`
+- `interview-trainer/data/memory/memory_events.jsonl`
+- `interview-trainer/data/memory/concept_memory.json`
+- `interview-trainer/data/memory/skill_memory.json`
+- `interview-trainer/data/memory/profile_memory.json`
+- `interview-trainer/data/memory/memory_summary.json`
 - `interview-trainer/data/knowledge_candidates/`
 - `笔记/` 下的私有资料
 - `简历/`
@@ -145,6 +161,7 @@ npm run check
 - `笔记/` 是只读上下文来源
 - 应用只会写入 `八股/` 和 `interview-trainer/data/`
 - 记忆更新只发生在**整张试卷完整作答并提交评分之后**
+- 记忆系统采用“文件化 + 按需召回”的方式，不会把全部历史直接塞进 prompt
 
 ## License
 
