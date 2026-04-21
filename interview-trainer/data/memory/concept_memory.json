@@ -1,0 +1,1395 @@
+{
+  "version": 2,
+  "updated_at": "2026-04-21T14:14:26.208Z",
+  "concepts": {
+    "591819e2441cec267f275a2312adb6448029239a": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 11,
+      "last_score": 11,
+      "recent_scores": [
+        11
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "591819e2441cec267f275a2312adb6448029239a",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "Kafka 里 ISR 是什么集合？它存在的核心目的是什么？",
+      "question_key": "eae549dd5af34b60cf36aceb4be876c36e5f59c7",
+      "aliases": [
+        "kafka 里 isr 是什么集合？它存在的核心目的是什么？"
+      ],
+      "summary": "ISR（In-Sync Replicas）是某个 Partition 中与 Leader 保持同步、延迟在阈值内的副本集合。它的核心目的，是让写入确认与故障切换只依赖“同步健康副本”，避免慢副本拖垮写入，同时减少选到落后副本导致的数据风险。",
+      "linked_chunks": [
+        "e8a2c93b8223fb8a5ba07ca360e84a051d133bd9"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "ISR=In-Sync Replicas，是与 Leader 同步达标的副本集合",
+        "ISR 是 Replica 的子集，落后过多的 Follower 会被踢出 ISR",
+        "核心目的：把写入确认/选主限定在“同步健康副本”，兼顾可靠性与可用性/吞吐"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 9,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "22b52389925d89edb78db2e0ea559d0a94a8c5f5": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 11,
+      "last_score": 11,
+      "recent_scores": [
+        11
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "22b52389925d89edb78db2e0ea559d0a94a8c5f5",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "候选人说“acks=all 就是所有副本都确认才返回”，这句话哪里不严谨？",
+      "question_key": "2b249bcad9b4b86f4a9a6b0182e0d9446426f4be",
+      "aliases": [
+        "候选人说acks=all 就是所有副本都确认才返回，这句话哪里不严谨？"
+      ],
+      "summary": "不严谨点在于：acks=all 等待的是“所有 ISR 副本”确认，而不是“所有 Replica”。Replica 是分区的全部副本集合，ISR 是其中同步达标的子集；落后副本不在 ISR 时不会被纳入确认条件。",
+      "linked_chunks": [
+        "734c034e6d4bff7d3291ad45a1ee237934c39e69",
+        "e8a2c93b8223fb8a5ba07ca360e84a051d133bd9"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "acks=all 等价于等待所有 ISR 副本确认，不是等待所有 Replica",
+        "Replica 与 ISR 不是同一个集合",
+        "慢/落后副本被踢出 ISR 后不参与 acks=all 的确认"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 9,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "f2b20b8c4d215358942b2c42757009ab9da9af91": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 11,
+      "last_score": 11,
+      "recent_scores": [
+        11
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "f2b20b8c4d215358942b2c42757009ab9da9af91",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "只把 Producer 设成 acks=all 还不够稳，这句话在 Kafka 里具体指哪一个 Broker 端约束必须一起成立？",
+      "question_key": "4ec4eae95c1b77b0d6502d6cd7e67a6a97d5eea3",
+      "aliases": [
+        "只把 producer 设成 acks=all 还不够稳，这句话在 kafka 里具体指哪一个 broker 端约束必须一起成立？"
+      ],
+      "summary": "指必须配合 Broker 端的 min.insync.replicas 约束：即使 Producer 设为 acks=all，也需要保证 ISR 中至少有 min.insync.replicas 个副本可用并参与确认；否则应拒绝写入，避免只剩一个副本仍然接受写入带来的数据风险。",
+      "linked_chunks": [
+        "337316e0ddaf3d27ff624b0bb41039e9371d5db1",
+        "653f6633473e87cb0273dd3b5686479b6a6af333"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "note_readonly",
+      "expected_points": [
+        "需要配合 Broker 端 min.insync.replicas",
+        "min.insync.replicas 约束“写入至少要有多少个 ISR 副本确认才允许成功”",
+        "ISR 数量低于阈值时应拒绝写入以避免单副本继续写导致风险"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 9,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "a9d337e52f8868ff3558c0eab287f03acc220b5d": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 11,
+      "last_score": 11,
+      "recent_scores": [
+        11
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "a9d337e52f8868ff3558c0eab287f03acc220b5d",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "acks=1 在什么精确时序下会出现“Producer 认为写成功但最终丢消息”？",
+      "question_key": "58ff921839732a29974fc64f7b1b59df8f9978cc",
+      "aliases": [
+        "acks=1 在什么精确时序下会出现producer 认为写成功但最终丢消息？"
+      ],
+      "summary": "在 acks=1 下，Producer 只等 Leader 本地写入就返回；如果 Leader 刚写入就宕机，而该消息还没同步到其他副本，新 Leader 从不含该消息的副本产生，那么外部看起来就是“写成功但最终丢消息”。",
+      "linked_chunks": [
+        "337316e0ddaf3d27ff624b0bb41039e9371d5db1"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "acks=1 仅等待 Leader 本地写入成功即返回",
+        "Leader 写入后尚未复制到足够副本/尚未进入其他副本日志",
+        "Leader 随后宕机且新 Leader 选自未包含该消息的副本，导致消息丢失"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 9,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "46c7eb90d98ef5957dc7547713541c9b36416fe2": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 11,
+      "last_score": 11,
+      "recent_scores": [
+        11
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "46c7eb90d98ef5957dc7547713541c9b36416fe2",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "Kafka 里 Topic、Partition、Broker 三者的关系，用一句话说清楚分别是“逻辑单位/存储并发单位/部署节点”的哪一个？",
+      "question_key": "83365db51cbba8f3c5f5ed937e47f3a879a4ca09",
+      "aliases": [
+        "kafka 里 topic、partition、broker 三者的关系，用一句话说清楚分别是逻辑单位/存储并发单位/部署节点的哪一个？"
+      ],
+      "summary": "Topic 是逻辑分类单位；Partition 是 Topic 的拆分后用于存储与并行的基本单位；Broker 是集群中的服务节点，负责承载分区副本并处理读写请求。",
+      "linked_chunks": [
+        "d2d99adaa923af51c3ae20ae49dbef7b309acd0e",
+        "f37485a94316c9aa288fd1a689cd72577b062d77"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "Topic：逻辑分类单位",
+        "Partition：存储与并行的基本单位（Topic 被拆分为多个 Partition）",
+        "Broker：集群服务节点，承载并存储分区数据、处理读写"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 9,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "55ea72176f6b77b46bbc498d7c16507440d30260": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 13,
+      "last_score": 13,
+      "recent_scores": [
+        13
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "55ea72176f6b77b46bbc498d7c16507440d30260",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "Kafka 的“顺序性”默认成立的边界是什么？说成“Topic 全局有序”哪里错？",
+      "question_key": "2ed9ab40bca4aa43a72b77c7a939e9ed58fe3ec5",
+      "aliases": [
+        "kafka 的顺序性默认成立的边界是什么？说成topic 全局有序哪里错？"
+      ],
+      "summary": "Kafka 默认提供的是分区级顺序：同一个 Partition 内按写入顺序被消费；不同 Partition 之间不存在全局顺序保证。所以把它说成“Topic 全局有序”是错误的。",
+      "linked_chunks": [
+        "6ff54c75a0a254db08aa47f4cf521db299a8a1f9"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "默认顺序性是分区级（Partition 内有序）",
+        "不同 Partition 之间没有全局顺序保证",
+        "说 Topic 全局有序忽略了多分区并行带来的无全序"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 10,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "3fc6849800819c7f399597d47c6a5c81caf42698": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 13,
+      "last_score": 13,
+      "recent_scores": [
+        13
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "3fc6849800819c7f399597d47c6a5c81caf42698",
+      "topic_id": "kafka",
+      "topic": "kafka",
+      "name": "有人说“Kafka 快是因为不落盘”，这句话哪里错？正确的底层原因里只挑一个最关键点说清楚。",
+      "question_key": "def3a295c5b3cbca95367c77e90fd1ed43fbd3be",
+      "aliases": [
+        "有人说kafka 快是因为不落盘，这句话哪里错？正确的底层原因里只挑一个最关键点说清楚。"
+      ],
+      "summary": "错在 Kafka 其实是落盘持久化的。最关键的底层原因之一是顺序追加写：日志型 append-only 让磁盘写从随机写变成顺序写，IO 模式更高效，从而显著提升吞吐。",
+      "linked_chunks": [
+        "734c034e6d4bff7d3291ad45a1ee237934c39e69",
+        "098ea4d3313b947be769e20905ca04fc09b8b88c"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "Kafka 是持久化到磁盘的，不是不落盘",
+        "关键点可选其一：顺序追加写（append-only log）或 Page Cache 或批量处理或零拷贝或分区并行",
+        "回答需聚焦一个机制并说明为什么提升吞吐"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 10,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "e714196219ceb25df36a610b7e7d261077a59dae": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 12,
+      "last_score": 12,
+      "recent_scores": [
+        12
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "e714196219ceb25df36a610b7e7d261077a59dae",
+      "topic_id": "docker",
+      "topic": "docker",
+      "name": "Docker 里的 Image 和 Container 分别是什么？两者的差别用“静态/运行态”一句话讲清楚。",
+      "question_key": "abb7ba32964f9d031a2b8381ee98f409c5a722c0",
+      "aliases": [
+        "docker 里的 image 和 container 分别是什么？两者的差别用静态/运行态一句话讲清楚。"
+      ],
+      "summary": "Image 是静态的、只读的分层构建产物；Container 是镜像的运行态实例，在镜像之上叠加可写层并承载实际进程与隔离配置。",
+      "linked_chunks": [
+        "c298e4fa6cec8ef2e27a168abd1ed58726e80576",
+        "56f27788b466f489f0b1bb8dc1350d6445a65b7c"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "expanded",
+      "expected_points": [
+        "Image：只读的分层文件系统与元数据（静态）",
+        "Container：镜像启动后的运行实例（运行态），在镜像之上叠加可写层并包含进程/隔离配置"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 10,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "bc248d8bcb968280489a7f466ae09fc98874a080": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 12,
+      "last_score": 12,
+      "recent_scores": [
+        12
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "bc248d8bcb968280489a7f466ae09fc98874a080",
+      "topic_id": "docker",
+      "topic": "docker",
+      "name": "Dockerfile 的分层缓存为什么会导致“某一行变动后，后面的层缓存都失效”？底层机制一句话说明白。",
+      "question_key": "aa5254d630fe3ecb8405cfc1092c2a1ef7509915",
+      "aliases": [
+        "dockerfile 的分层缓存为什么会导致某一行变动后，后面的层缓存都失效？底层机制一句话说明白。"
+      ],
+      "summary": "因为 Dockerfile 每条指令都会产出一层，缓存命中依赖该指令与其输入形成的摘要；一旦某层的输入或结果变化，该层摘要改变，后续层都基于新父层构建，旧缓存自然无法复用。",
+      "linked_chunks": [
+        "56f27788b466f489f0b1bb8dc1350d6445a65b7c"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "expanded",
+      "expected_points": [
+        "每条指令生成一层，层的缓存命中依赖该指令及其输入上下文（如 COPY 的文件内容）",
+        "某层内容变了会改变该层的缓存 key/摘要",
+        "后续层的构建以该层为基础，因此只能重建"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 10,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "0610ab299edcefab17f23e7589a7d2650266e750": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 14,
+      "last_score": 14,
+      "recent_scores": [
+        14
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "0610ab299edcefab17f23e7589a7d2650266e750",
+      "topic_id": "docker",
+      "topic": "docker",
+      "name": "Docker 里 volume 和 bind mount 的区别是什么？只考“数据在宿主机的位置由谁管理”这一点。",
+      "question_key": "6014e31ef8c18a167aed7159aba1b60457e2bf99",
+      "aliases": [
+        "docker 里 volume 和 bind mount 的区别是什么？只考数据在宿主机的位置由谁管理这一点。"
+      ],
+      "summary": "volume 的数据位置由 Docker 统一管理；bind mount 则是把宿主机上你指定的路径直接挂进容器，位置由你自己决定并负责管理。",
+      "linked_chunks": [
+        "6b5d28854304e33cce11f841aff12990bd6b2ca2"
+      ],
+      "source_files": [],
+      "last_feedback": "回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。",
+      "source_type": "note_readonly",
+      "expected_points": [
+        "volume：由 Docker 管理其实际存储位置（Docker 管理的目录/driver）",
+        "bind mount：直接绑定宿主机指定路径，位置由用户指定并自行管理"
+      ],
+      "last_reviewed_at": "2026-04-21T08:19:51.553Z",
+      "mastery_score": 11,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T08:19:51.553Z"
+    },
+    "c3a675d6e7f406089e60f10e346f0b10bde0b002": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "c3a675d6e7f406089e60f10e346f0b10bde0b002",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "面试里说 Python 是“强类型”具体是什么意思？请用一个会在运行时报 TypeError 的例子说明它不是“弱类型”。",
+      "question_key": "c08b6a7d3ea21ebe61b77a0c6a6ee6402537fc7a",
+      "aliases": [
+        "面试里说 python 是强类型具体是什么意思？请用一个会在运行时报 typeerror 的例子说明它不是弱类型。"
+      ],
+      "summary": "下面这些点如果按更严谨的说法回答，会更稳： - Python 通常说是“强类型”，不建议说“弱类型”；- `range()` 返回的是 `range` 对象，不是迭代器；- `Template` 用的是 `substitute()`",
+      "linked_chunks": [
+        "chunk_id:a61c5a3816541af31321b5ab36793b8d18822327 (Python基础与进阶面试笔记.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "回答没有给出任何关于“强类型”的定义或 TypeError 例子，属于不可评分的泛化表述。建议按“定义 + 反例”结构作答。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "下面这些点如果按更严谨的说法回答，会更稳： - Python 通常说是“强类型”，不建议说“弱类型”",
+        "- `range()` 返回的是 `range` 对象，不是迭代器",
+        "- `Template` 用的是 `substitute()`",
+        "- `asyncio.Queue` 不是线程安全队列"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "3826a8c3aea63314ed79a807afef899579a58e90": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "3826a8c3aea63314ed79a807afef899579a58e90",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "CPython 的 GIL 是什么？它为什么会让 CPU 密集型多线程很难利用多核并行？",
+      "question_key": "37de434c5c7366dc2b08813c348a170feb8b84d3",
+      "aliases": [
+        "cpython 的 gil 是什么？它为什么会让 cpu 密集型多线程很难利用多核并行？"
+      ],
+      "summary": "GIL 是 CPython 中的全局解释器锁；核心影响： - 同一时刻只有一个线程执行 Python 字节码；- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+      "linked_chunks": [
+        "chunk_id:0c9ffc5409ef37520bac552376843cdd5eff6ee7 (Python基础与进阶面试笔记.md)",
+        "chunk_id:84789d26e439662dda43cd282a1a39ad81f6c9a2 (大模型技术栈面试题汇总.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "没有回答 GIL 是什么、锁住了什么、对多核并行的直接后果。请用“定义 + 影响”两句讲清。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "GIL 是 CPython 中的全局解释器锁",
+        "核心影响： - 同一时刻只有一个线程执行 Python 字节码",
+        "- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+        "- I/O 密集型任务，多线程仍然有用，因为线程在等待 I/O 时会释放 GIL"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "bb24012eb1746752095155a123bf08c31fefdb1f": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "bb24012eb1746752095155a123bf08c31fefdb1f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "同样在 CPython 下，为什么 I/O 密集型场景多线程仍然常常有效？请从“线程阻塞等待 I/O 时会发生什么/是否释放 GIL”的时序讲清楚。",
+      "question_key": "685e3f83bf83ca7b28da1a7f55b6ada01bd34680",
+      "aliases": [
+        "同样在 cpython 下，为什么 i/o 密集型场景多线程仍然常常有效？请从线程阻塞等待 i/o 时会发生什么/是否释放 gil的时序讲清楚。"
+      ],
+      "summary": "GIL 是 CPython 中的全局解释器锁；核心影响： - 同一时刻只有一个线程执行 Python 字节码；- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+      "linked_chunks": [
+        "chunk_id:0c9ffc5409ef37520bac552376843cdd5eff6ee7 (Python基础与进阶面试笔记.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "题目要求“时序讲清楚”，但回答没有涉及阻塞 I/O、释放 GIL、其他线程获得执行权的过程。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "GIL 是 CPython 中的全局解释器锁",
+        "核心影响： - 同一时刻只有一个线程执行 Python 字节码",
+        "- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+        "- I/O 密集型任务，多线程仍然有用，因为线程在等待 I/O 时会释放 GIL"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "58cb20c39247c975ff6f0ab39a23264a074b74f8": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "58cb20c39247c975ff6f0ab39a23264a074b74f8",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "要在 Python 里把 CPU 密集型任务跑满多核，你会优先选 multiprocessing 还是“用能释放 GIL 的 C 扩展/NumPy”？请给出一个最关键的决策依据。",
+      "question_key": "8207aece7b4b0203bf159fcfbb5836241c142723",
+      "aliases": [
+        "要在 python 里把 cpu 密集型任务跑满多核，你会优先选 multiprocessing 还是用能释放 gil 的 c 扩展/numpy？请给出一个最关键的决策依据。"
+      ],
+      "summary": "GIL 是 CPython 中的全局解释器锁；核心影响： - 同一时刻只有一个线程执行 Python 字节码；- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+      "linked_chunks": [
+        "chunk_id:0c9ffc5409ef37520bac552376843cdd5eff6ee7 (Python基础与进阶面试笔记.md)",
+        "chunk_id:3e23b2d7177fc00c12b26096f11e96b43af8591c (大模型技术栈面试题汇总.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "没有做方案选择，也没有给出任何决策依据（题目只要“最关键的一条”）。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "GIL 是 CPython 中的全局解释器锁",
+        "核心影响： - 同一时刻只有一个线程执行 Python 字节码",
+        "- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+        "- I/O 密集型任务，多线程仍然有用，因为线程在等待 I/O 时会释放 GIL"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "12512d17c94cd00f8b6f8faec715a0efb66d38d1": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "12512d17c94cd00f8b6f8faec715a0efb66d38d1",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "`range()` 返回的是什么对象？为什么不能直接把它说成“迭代器”？（请点到它和迭代器在协议/行为上的区别）",
+      "question_key": "c25c352755fdfd25d675091c36b7041ebef3a321",
+      "aliases": [
+        "range() 返回的是什么对象？为什么不能直接把它说成迭代器？（请点到它和迭代器在协议/行为上的区别）"
+      ],
+      "summary": "下面这些点如果按更严谨的说法回答，会更稳： - Python 通常说是“强类型”，不建议说“弱类型”；- `range()` 返回的是 `range` 对象，不是迭代器；- `Template` 用的是 `substitute()`",
+      "linked_chunks": [
+        "chunk_id:1ac95630dc6a74ae1c0cc62b22d24508b14be903 (Python基础与进阶面试笔记.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "没有回答 `range()` 的返回类型，也没有对比“可迭代对象 vs 迭代器”的协议/行为差异。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "下面这些点如果按更严谨的说法回答，会更稳： - Python 通常说是“强类型”，不建议说“弱类型”",
+        "- `range()` 返回的是 `range` 对象，不是迭代器",
+        "- `Template` 用的是 `substitute()`",
+        "- `asyncio.Queue` 不是线程安全队列"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "ca71c3526ec2fa466f80a4efed752c22954bbff4": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "ca71c3526ec2fa466f80a4efed752c22954bbff4",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "现代 CPython 的 `dict` 为什么能保持插入顺序？在什么场景下 `OrderedDict` 仍然更合适（请至少点名 `move_to_end()` 或 LRU）？",
+      "question_key": "05ea2b45c29c19077df630b82d5563afc6e8a7f4",
+      "aliases": [
+        "现代 cpython 的 dict 为什么能保持插入顺序？在什么场景下 ordereddict 仍然更合适（请至少点名 move_to_end() 或 lru）？"
+      ],
+      "summary": "`OrderedDict` 仍然有价值，主要因为： - 提供 `move_to_end()` - 提供更明确的顺序语义 - 适合实现 LRU 等需要频繁调整顺序的结构 注意： - 现代 CPython 的 `dict` 不是“额外维护一个列表”来记录顺序，而是使用了更紧凑的哈希表布局；下面这些点如果按更严谨的说法回答，会更稳： - Python 通常说是“强类型”，不建议说“弱类型”；- `range()` 返回的是 `range` 对象，不是迭代器",
+      "linked_chunks": [
+        "chunk_id:d812cfdd6feb342f758b874376130e1d57710752 (Python基础与进阶面试笔记.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "没有解释 dict 为什么保序，也没说明 OrderedDict 何时更合适（题目明确点名 `move_to_end()`/LRU）。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "`OrderedDict` 仍然有价值，主要因为： - 提供 `move_to_end()` - 提供更明确的顺序语义 - 适合实现 LRU 等需要频繁调整顺序的结构 注意： - 现代 CPython 的 `dict` 不是“额外维护一个列表”来记录顺序，而是使用了更紧凑的哈希表布局",
+        "下面这些点如果按更严谨的说法回答，会更稳： - Python 通常说是“强类型”，不建议说“弱类型”",
+        "- `range()` 返回的是 `range` 对象，不是迭代器",
+        "- `Template` 用的是 `substitute()`"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "12e6c91bb74c932647fa3f9f0d60af9ac923c181": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "12e6c91bb74c932647fa3f9f0d60af9ac923c181",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "为什么说 `asyncio.Queue` 不是线程安全队列？如果要做“线程间通信”和“进程间通信”，分别应该用哪个队列类？",
+      "question_key": "1bee21512681dc4b84ec5b3f380ee482b39ebfe5",
+      "aliases": [
+        "为什么说 asyncio.queue 不是线程安全队列？如果要做线程间通信和进程间通信，分别应该用哪个队列类？"
+      ],
+      "summary": "如果面试官让你概括 Python，你可以这样答： Python 是一种解释型、动态类型、强类型的高级语言，语法简洁，开发效率高，支持面向对象、函数式和异步编程。它在 Web、爬虫、运维、数据分析和 AI 领域应用非常广。Python 的优势是生态成熟、表达力强、迭代快；劣势是原生执行效率相对一般，并且在 CPython 下受 GIL 影响，CPU 密集型任务通常更适合多进程或结合 C 扩展优化；--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符",
+      "linked_chunks": [
+        "chunk_id:d2a5633c687e38b4c641ee597236b5b9dd52117e (Python基础与进阶面试笔记.md)"
+      ],
+      "source_files": [],
+      "last_feedback": "未回答线程安全边界，也未给出线程间/进程间的正确队列选型。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "如果面试官让你概括 Python，你可以这样答： Python 是一种解释型、动态类型、强类型的高级语言，语法简洁，开发效率高，支持面向对象、函数式和异步编程。它在 Web、爬虫、运维、数据分析和 AI 领域应用非常广。Python 的优势是生态成熟、表达力强、迭代快；劣势是原生执行效率相对一般，并且在 CPython 下受 GIL 影响，CPU 密集型任务通常更适合多进程或结合 C 扩展优化",
+        "--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符、属性查找链、`__getattr__",
+        "--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符、属性查找链、`__getattr__` / `__getattribute_",
+        "GIL 是 CPython 中的全局解释器锁"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "e3473c9f262ab6b649bf2aaaaa417eadd069b4e9": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "e3473c9f262ab6b649bf2aaaaa417eadd069b4e9",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "`asyncio` 的事件循环在单线程里是如何调度多个协程的？当一个协程执行到 `await` 时，调用栈/控制权发生了什么变化？",
+      "question_key": "664cf4de90f9142c0b45f034f191a86353a70531",
+      "aliases": [
+        "asyncio 的事件循环在单线程里是如何调度多个协程的？当一个协程执行到 await 时，调用栈/控制权发生了什么变化？"
+      ],
+      "summary": "如果面试官让你概括 Python，你可以这样答： Python 是一种解释型、动态类型、强类型的高级语言，语法简洁，开发效率高，支持面向对象、函数式和异步编程。它在 Web、爬虫、运维、数据分析和 AI 领域应用非常广。Python 的优势是生态成熟、表达力强、迭代快；劣势是原生执行效率相对一般，并且在 CPython 下受 GIL 影响，CPU 密集型任务通常更适合多进程或结合 C 扩展优化；--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符",
+      "linked_chunks": [
+        "a61c5a3816541af31321b5ab36793b8d18822327",
+        "0c9ffc5409ef37520bac552376843cdd5eff6ee7",
+        "1ac95630dc6a74ae1c0cc62b22d24508b14be903"
+      ],
+      "source_files": [],
+      "last_feedback": "问题在考“await 时控制权如何切换”，但回答没有涉及事件循环、Task/Future、挂起与恢复。",
+      "source_type": "expanded",
+      "expected_points": [
+        "如果面试官让你概括 Python，你可以这样答： Python 是一种解释型、动态类型、强类型的高级语言，语法简洁，开发效率高，支持面向对象、函数式和异步编程。它在 Web、爬虫、运维、数据分析和 AI 领域应用非常广。Python 的优势是生态成熟、表达力强、迭代快；劣势是原生执行效率相对一般，并且在 CPython 下受 GIL 影响，CPU 密集型任务通常更适合多进程或结合 C 扩展优化",
+        "--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符、属性查找链、`__getattr__",
+        "--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符、属性查找链、`__getattr__` / `__getattribute_",
+        "GIL 是 CPython 中的全局解释器锁"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "dae06ca86769252f7c43930bc77b86feb84c5a70": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "dae06ca86769252f7c43930bc77b86feb84c5a70",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "CPython 的“引用计数”和“循环垃圾回收（gc）”各自解决什么问题？为什么仅靠引用计数无法回收循环引用？",
+      "question_key": "4c8202522a53938b15b2a016421f83cbaad688a9",
+      "aliases": [
+        "cpython 的引用计数和循环垃圾回收（gc）各自解决什么问题？为什么仅靠引用计数无法回收循环引用？"
+      ],
+      "summary": "GIL 是 CPython 中的全局解释器锁；核心影响： - 同一时刻只有一个线程执行 Python 字节码；- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+      "linked_chunks": [
+        "0c9ffc5409ef37520bac552376843cdd5eff6ee7",
+        "a61c5a3816541af31321b5ab36793b8d18822327",
+        "d812cfdd6feb342f758b874376130e1d57710752"
+      ],
+      "source_files": [],
+      "last_feedback": "未回答引用计数与循环 GC 的分工，也没有解释“循环引用导致计数不为 0”这一关键原因。",
+      "source_type": "expanded",
+      "expected_points": [
+        "GIL 是 CPython 中的全局解释器锁",
+        "核心影响： - 同一时刻只有一个线程执行 Python 字节码",
+        "- 因此 CPU 密集型任务，多线程通常无法真正利用多核",
+        "- I/O 密集型任务，多线程仍然有用，因为线程在等待 I/O 时会释放 GIL"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "126fd0a2a1e203bb21aef9be8ad850450b535ccd": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 15,
+      "last_score": 15,
+      "recent_scores": [
+        15
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "126fd0a2a1e203bb21aef9be8ad850450b535ccd",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 的描述符协议（`__get__`/`__set__`/`__delete__`）解决了什么问题？`property` 为什么能把方法变成“受控的属性访问”？",
+      "question_key": "c4e68633a996aaec80f15d6065732c778d32f79d",
+      "aliases": [
+        "python 的描述符协议（__get__/__set__/__delete__）解决了什么问题？property 为什么能把方法变成受控的属性访问？"
+      ],
+      "summary": "如果面试官让你概括 Python，你可以这样答： Python 是一种解释型、动态类型、强类型的高级语言，语法简洁，开发效率高，支持面向对象、函数式和异步编程。它在 Web、爬虫、运维、数据分析和 AI 领域应用非常广。Python 的优势是生态成熟、表达力强、迭代快；劣势是原生执行效率相对一般，并且在 CPython 下受 GIL 影响，CPU 密集型任务通常更适合多进程或结合 C 扩展优化；--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符",
+      "linked_chunks": [
+        "a61c5a3816541af31321b5ab36793b8d18822327",
+        "0c9ffc5409ef37520bac552376843cdd5eff6ee7",
+        "1ac95630dc6a74ae1c0cc62b22d24508b14be903"
+      ],
+      "source_files": [],
+      "last_feedback": "没有描述描述符协议的用途，也没解释 property 如何通过描述符把方法变成属性式访问。",
+      "source_type": "expanded",
+      "expected_points": [
+        "如果面试官让你概括 Python，你可以这样答： Python 是一种解释型、动态类型、强类型的高级语言，语法简洁，开发效率高，支持面向对象、函数式和异步编程。它在 Web、爬虫、运维、数据分析和 AI 领域应用非常广。Python 的优势是生态成熟、表达力强、迭代快；劣势是原生执行效率相对一般，并且在 CPython 下受 GIL 影响，CPU 密集型任务通常更适合多进程或结合 C 扩展优化",
+        "--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符、属性查找链、`__getattr__",
+        "--- 如果后续你要继续扩展，这份文档最适合再补三块： 1. Python 描述符、属性查找链、`__getattr__` / `__getattribute_",
+        "GIL 是 CPython 中的全局解释器锁"
+      ],
+      "last_reviewed_at": "2026-04-21T12:08:40.536Z",
+      "mastery_score": 12,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-21T12:08:40.536Z"
+    },
+    "a1e3b2c4d5f60718293a4b5c6d7e8f9012345678": {
+      "concept_id": "a1e3b2c4d5f60718293a4b5c6d7e8f9012345678",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 生成器与迭代器协议",
+      "aliases": [
+        "Python 生成器与迭代器协议"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "b2c4d5e6f708192a3b4c5d6e7f8091a234567890": {
+      "concept_id": "b2c4d5e6f708192a3b4c5d6e7f8091a234567890",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 装饰器的闭包机制与 functools.wraps",
+      "aliases": [
+        "Python 装饰器的闭包机制与 functools.wraps"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "c3d5e6f8091a2b3c4d5e6f708192a3b4c5d6e7f8": {
+      "concept_id": "c3d5e6f8091a2b3c4d5e6f708192a3b4c5d6e7f8",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 上下文管理器协议（__enter__/__exit__）",
+      "aliases": [
+        "Python 上下文管理器协议（__enter__/__exit__）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "d4e6f8091a2b3c4d5e6f708192a3b4c5d6e7f809": {
+      "concept_id": "d4e6f8091a2b3c4d5e6f708192a3b4c5d6e7f809",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 类型注解系统（typing）与运行时行为",
+      "aliases": [
+        "Python 类型注解系统（typing）与运行时行为"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "e5f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a": {
+      "concept_id": "e5f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ RAII 与资源生命周期管理",
+      "aliases": [
+        "C++ RAII 与资源生命周期管理"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "f6a01b2c3d4e5f60718293a4b5c6d7e8f9012345": {
+      "concept_id": "f6a01b2c3d4e5f60718293a4b5c6d7e8f9012345",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 智能指针（unique_ptr/shared_ptr/weak_ptr）",
+      "aliases": [
+        "C++ 智能指针（unique_ptr/shared_ptr/weak_ptr）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "0a1b2c3d4e5f60718293a4b5c6d7e8f901234567": {
+      "concept_id": "0a1b2c3d4e5f60718293a4b5c6d7e8f901234567",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 左值右值与移动语义",
+      "aliases": [
+        "C++ 左值右值与移动语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "1b2c3d4e5f60718293a4b5c6d7e8f90123456789": {
+      "concept_id": "1b2c3d4e5f60718293a4b5c6d7e8f90123456789",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 虚函数表机制与运行时多态",
+      "aliases": [
+        "C++ 虚函数表机制与运行时多态"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "2c3d4e5f60718293a4b5c6d7e8f901234567890a": {
+      "concept_id": "2c3d4e5f60718293a4b5c6d7e8f901234567890a",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB 聚簇索引与二级索引结构",
+      "aliases": [
+        "InnoDB 聚簇索引与二级索引结构"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "3d4e5f60718293a4b5c6d7e8f901234567890a1b": {
+      "concept_id": "3d4e5f60718293a4b5c6d7e8f901234567890a1b",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 事务隔离级别与 MVCC 一致性读",
+      "aliases": [
+        "MySQL 事务隔离级别与 MVCC 一致性读"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "4e5f60718293a4b5c6d7e8f901234567890a1b2c": {
+      "concept_id": "4e5f60718293a4b5c6d7e8f901234567890a1b2c",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 执行计划分析（EXPLAIN）与索引选择",
+      "aliases": [
+        "MySQL 执行计划分析（EXPLAIN）与索引选择"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.750Z",
+      "updated_at": "2026-04-21T14:10:39.750Z"
+    },
+    "5f60718293a4b5c6d7e8f901234567890a1b2c3d": {
+      "concept_id": "5f60718293a4b5c6d7e8f901234567890a1b2c3d",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 慢查询诊断与覆盖索引（covering index）",
+      "aliases": [
+        "MySQL 慢查询诊断与覆盖索引（covering index）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "60718293a4b5c6d7e8f901234567890a1b2c3d4e": {
+      "concept_id": "60718293a4b5c6d7e8f901234567890a1b2c3d4e",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 镜像分层与联合文件系统（OverlayFS）",
+      "aliases": [
+        "Docker 镜像分层与联合文件系统（OverlayFS）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "718293a4b5c6d7e8f901234567890a1b2c3d4e5f": {
+      "concept_id": "718293a4b5c6d7e8f901234567890a1b2c3d4e5f",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 网络模型（bridge/host/none）",
+      "aliases": [
+        "Docker 网络模型（bridge/host/none）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "8293a4b5c6d7e8f901234567890a1b2c3d4e5f60": {
+      "concept_id": "8293a4b5c6d7e8f901234567890a1b2c3d4e5f60",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker Compose 服务编排与依赖关系",
+      "aliases": [
+        "Docker Compose 服务编排与依赖关系"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "93a4b5c6d7e8f901234567890a1b2c3d4e5f6071": {
+      "concept_id": "93a4b5c6d7e8f901234567890a1b2c3d4e5f6071",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 资源限制与 cgroups（CPU/内存）",
+      "aliases": [
+        "Docker 资源限制与 cgroups（CPU/内存）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "a4b5c6d7e8f901234567890a1b2c3d4e5f607182": {
+      "concept_id": "a4b5c6d7e8f901234567890a1b2c3d4e5f607182",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 消费者组与 Rebalance 机制",
+      "aliases": [
+        "Kafka 消费者组与 Rebalance 机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "b5c6d7e8f901234567890a1b2c3d4e5f60718293": {
+      "concept_id": "b5c6d7e8f901234567890a1b2c3d4e5f60718293",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 幂等生产者与事务消息语义",
+      "aliases": [
+        "Kafka 幂等生产者与事务消息语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "c6d7e8f901234567890a1b2c3d4e5f60718293a4": {
+      "concept_id": "c6d7e8f901234567890a1b2c3d4e5f60718293a4",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 分区副本与 Leader 选举机制",
+      "aliases": [
+        "Kafka 分区副本与 Leader 选举机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "d7e8f901234567890a1b2c3d4e5f60718293a4b5": {
+      "concept_id": "d7e8f901234567890a1b2c3d4e5f60718293a4b5",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 日志压缩（Log Compaction）与保留策略",
+      "aliases": [
+        "Kafka 日志压缩（Log Compaction）与保留策略"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:10:39.751Z",
+      "updated_at": "2026-04-21T14:10:39.751Z"
+    },
+    "c1a7f0c2d74b4f3f9c1b18d6e2f0a9b6d3c4e501": {
+      "concept_id": "c1a7f0c2d74b4f3f9c1b18d6e2f0a9b6d3c4e501",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 内存模型与 happens-before 关系",
+      "aliases": [
+        "C++ 内存模型与 happens-before 关系"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "8e2c3b4a9d5f1a0c7b6e4d3c2a1f0e9d8c7b6a52": {
+      "concept_id": "8e2c3b4a9d5f1a0c7b6e4d3c2a1f0e9d8c7b6a52",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 原子类型与无锁编程基础（std::atomic）",
+      "aliases": [
+        "C++ 原子类型与无锁编程基础（std::atomic）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "4b9d2c7e1a6f0c3d8e5b1a7c9d2e4f6a8b0c1d53": {
+      "concept_id": "4b9d2c7e1a6f0c3d8e5b1a7c9d2e4f6a8b0c1d53",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 内存序（memory_order）与可见性语义",
+      "aliases": [
+        "C++ 内存序（memory_order）与可见性语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "a7c2d9e1f0b3c4d5e6f7a8b9c0d1e2f3a4b5c654": {
+      "concept_id": "a7c2d9e1f0b3c4d5e6f7a8b9c0d1e2f3a4b5c654",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ Rule of Zero/Three/Five 与拷贝控制",
+      "aliases": [
+        "C++ Rule of Zero/Three/Five 与拷贝控制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "0f1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c756": {
+      "concept_id": "0f1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c756",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 异常安全保证（basic/strong/nothrow）",
+      "aliases": [
+        "C++ 异常安全保证（basic/strong/nothrow）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "1a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b57": {
+      "concept_id": "1a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b57",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ RTTI 与 dynamic_cast 的适用边界",
+      "aliases": [
+        "C++ RTTI 与 dynamic_cast 的适用边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "2b4d6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e858": {
+      "concept_id": "2b4d6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e858",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 模板实例化与编译期多态",
+      "aliases": [
+        "C++ 模板实例化与编译期多态"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b8c59": {
+      "concept_id": "3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b8c59",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ SFINAE 与重载决议",
+      "aliases": [
+        "C++ SFINAE 与重载决议"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "4d6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0d5a": {
+      "concept_id": "4d6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0d5a",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ constexpr 与编译期计算",
+      "aliases": [
+        "C++ constexpr 与编译期计算"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b8c0d5b": {
+      "concept_id": "5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b8c0d5b",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB 锁机制（记录锁/间隙锁/临键锁）",
+      "aliases": [
+        "InnoDB 锁机制（记录锁/间隙锁/临键锁）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e5c": {
+      "concept_id": "6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e5c",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB 两阶段锁协议与一致性约束",
+      "aliases": [
+        "InnoDB 两阶段锁协议与一致性约束"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "7a91b3c5d7e9f0a1b2c3d4e5f6a7b8c9d0e1f2a5d": {
+      "concept_id": "7a91b3c5d7e9f0a1b2c3d4e5f6a7b8c9d0e1f2a5d",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB Undo Log 与回滚段",
+      "aliases": [
+        "InnoDB Undo Log 与回滚段"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "8b0c1d2e3f405162738495a6b7c8d9e0f1a2b3c5e": {
+      "concept_id": "8b0c1d2e3f405162738495a6b7c8d9e0f1a2b3c5e",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB Redo Log 与崩溃恢复（crash recovery）",
+      "aliases": [
+        "InnoDB Redo Log 与崩溃恢复（crash recovery）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "9c1b2a3d4e5f60718293a4b5c6d7e8f9012345c6f": {
+      "concept_id": "9c1b2a3d4e5f60718293a4b5c6d7e8f9012345c6f",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL Binlog 格式（STATEMENT/ROW/MIXED）",
+      "aliases": [
+        "MySQL Binlog 格式（STATEMENT/ROW/MIXED）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "a0b1c2d3e4f5061728394a5b6c7d8e9f001122d70": {
+      "concept_id": "a0b1c2d3e4f5061728394a5b6c7d8e9f001122d70",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 主从复制原理与延迟成因",
+      "aliases": [
+        "MySQL 主从复制原理与延迟成因"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "b1c2d3e4f5061728394a5b6c7d8e9f00112233471": {
+      "concept_id": "b1c2d3e4f5061728394a5b6c7d8e9f00112233471",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 死锁检测与死锁日志分析",
+      "aliases": [
+        "MySQL 死锁检测与死锁日志分析"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.207Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "c2d3e4f5061728394a5b6c7d8e9f00112233445572": {
+      "concept_id": "c2d3e4f5061728394a5b6c7d8e9f00112233445572",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL Join 算法（Nested Loop/Block Nested Loo",
+      "aliases": [
+        "MySQL Join 算法（Nested Loop/Block Nested Loo"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.208Z",
+      "updated_at": "2026-04-21T14:14:26.208Z"
+    },
+    "d3e4f5061728394a5b6c7d8e9f0011223344556673": {
+      "concept_id": "d3e4f5061728394a5b6c7d8e9f0011223344556673",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 索引下推（Index Condition Pushdown, ICP）",
+      "aliases": [
+        "MySQL 索引下推（Index Condition Pushdown, ICP）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.208Z",
+      "updated_at": "2026-04-21T14:14:26.208Z"
+    },
+    "e4f5061728394a5b6c7d8e9f001122334455667784": {
+      "concept_id": "e4f5061728394a5b6c7d8e9f001122334455667784",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 分区表（Partitioning）与查询裁剪（pruning）",
+      "aliases": [
+        "MySQL 分区表（Partitioning）与查询裁剪（pruning）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-21T14:14:26.208Z",
+      "updated_at": "2026-04-21T14:14:26.208Z"
+    }
+  },
+  "topics": {},
+  "name": "Topic-Concept Memory"
+}

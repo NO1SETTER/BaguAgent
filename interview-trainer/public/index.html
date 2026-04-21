@@ -12,16 +12,34 @@
         <h1>知识点背诵系统</h1>
         <p>选择 Topic，生成试卷，语音答题，Codex 评分，自动更新记忆。</p>
       </div>
-      <button id="rebuildTopicsBtn" class="secondary">手动解析 Topic</button>
+      <button id="updateTopicsBtn" class="secondary">创建/更新 Topic</button>
     </header>
 
     <main>
       <section class="band">
         <div class="section-head">
+          <h2>创建/更新 Topic</h2>
+          <span>用关键词或自然语言描述更新 Memory</span>
+        </div>
+        <div class="controls">
+          <label>
+            技术栈描述
+            <input id="topicDescription" type="text" placeholder="例如：Python 后端面试，重点包括 GIL、协程、GC、装饰器">
+          </label>
+          <label>
+            Concept 数量
+            <input id="topicConceptCount" type="number" min="3" max="100" value="20">
+          </label>
+          <button id="updateTopicsSubmitBtn">更新 Topic Memory</button>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
           <h2>生成试卷</h2>
           <span id="topicStatus">加载中</span>
         </div>
-        <div id="indexSummary" class="muted">索引统计加载中</div>
+        <div id="indexSummary" class="muted">Memory 统计加载中</div>
         <div class="controls">
           <label>
             题量
@@ -46,28 +64,6 @@
           <button id="createPaperBtn">生成试卷</button>
         </div>
         <div id="topics" class="topic-grid"></div>
-      </section>
-
-      <section class="band">
-        <div class="section-head">
-          <h2>生成八股文档</h2>
-          <span>只写入 八股/</span>
-        </div>
-        <div class="controls doc-controls">
-          <label>
-            技术栈关键词
-            <input id="docKeywords" type="text" placeholder="例如 Redis, 缓存, 分布式锁">
-          </label>
-          <label>
-            问题规模
-            <input id="docQuestionCount" type="number" min="5" max="200" value="20">
-          </label>
-          <label>
-            文档标题
-            <input id="docTitle" type="text" placeholder="可选，例如 Redis高频面试知识">
-          </label>
-          <button id="generateDocBtn">生成文档</button>
-        </div>
       </section>
 
       <section class="band">
@@ -98,13 +94,6 @@
         <pre id="feedback" class="feedback"></pre>
       </section>
 
-      <section class="band">
-        <div class="section-head">
-          <h2>记忆</h2>
-          <button id="loadMemoryBtn" class="secondary">刷新记忆</button>
-        </div>
-        <div id="memory" class="memory-grid"></div>
-      </section>
     </main>
 
     <script src="/app.js"></script>

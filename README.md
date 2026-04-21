@@ -1,95 +1,116 @@
-# Interview Trainer Demo
+# BaguAgent
 
-给正在找工作的宝子们准备基于codex的本地背八股系统 🫡📚
+给准备找工作的宝子们一个更像“真面试排练器”的八股 Agent。  
+不是背 agent 的八股，是让 agent 帮你背八股。
 
-面试前最可怕的事，通常不是不会，而是：
+很多人背八股的问题不是没看过，而是：
 
-- 明明看过
-- 明明记得
-- 一张嘴就开始“呃……这个我大概知道”
+- 看过
+- 记过
+- 真被问到时开始说“这个我大概知道……”
 
-然后面试官点点头，你开始怀疑人生。  
-所以这个项目的目标很直接：**把八股从“我好像会”练到“你问我就答”**。  
+BaguAgent 的目标很直接：**把“我好像会”练成“你问我就答”**。
 
-先说清楚一句：这是一个 **背八股的 agent**，不是 **背 agent 的八股**。  
-别把方向背反了，不然最后可能变成：
+它现在的核心不是本地知识库检索，而是 **Codex 自身技术能力 + Memory 驱动的练习闭环**：
 
-> 面试官：你讲一下 Python 的 GIL  
-> 你：我先介绍一下 multi-agent memory architecture  
-> 面试官：？
+1. 你手动输入一个技术栈关键词，或者一段自然语言描述
+2. 系统把它整理成 Topic 和 Concepts，写入 Memory
+3. 你勾选 Topic 生成试卷
+4. 你完整作答后提交评分
+5. 系统更新薄弱知识点和长期总结
+6. 下一轮试卷优先追着你的薄弱点问
 
-它会读取 `八股/` 中的知识文档，结合你本地可选的 `笔记/` 私有资料，自动生成试卷、支持语音作答、调用 Codex 评分，并在你完整做完一整张卷子后更新记忆，帮助你持续反复锤薄弱点。  
-一句话概括：**把“背八股”这件事，做成一个真能练、真会追问、真会记仇的本地 agent** 🤖
+一句话：**这不是刷题页，这是个会记仇的背诵系统。**
 
-这个项目目前最核心的亮点，不只是“能出题”，而是 **AgentMemory 会在你背诵过程中持续更新，并反过来影响下一轮出题**。  
-也就是说，它不是单纯刷题器，而是一个会根据你真实作答表现不断调整策略的练习系统。
+## 功能
 
-## 功能总览
+### 🧠 Memory First
 
-### 📝 出卷
+- `agents.md` 作为全局策略和第 1 层记忆，所有模型调用都会注入
+- `Topic-Concept Memory` 维护当前可练的技术栈和知识点
+- `Weak Knowledge Memory` 记录答错、部分正确和不稳定的知识点
+- `Long-term Summary` 汇总长期表现，驱动下一轮出卷
+- Memory 只在**整张试卷完整作答并提交评分后**更新
 
-- 支持勾选 Topic 定向出卷，不是胡乱抽题
-- 支持 `10 / 30 / 50` 题三档题量
+### 🏷️ 手动创建 / 更新 Topic
+
+- 支持输入关键词：`Python`
+- 也支持输入自然语言描述：
+  - `Python 后端面试，重点包括 GIL、协程、GC、装饰器、容器和 asyncio`
+- 系统会自动理解描述，生成 Topic 与 Concepts
+- 如果 Topic 已存在，只补充新增 Concept，不覆盖现有训练状态
+- Concept 被约束为**知识点名词短语**，不是问题，不带答案
+
+### 📝 试卷生成
+
+- 支持 `10 / 30 / 50` 题
 - 支持三种模式：
-  - 普通模式：一题一题刷
-  - 追问模式：像面试官一样顺着一个点往下追
-  - 混合模式：先铺开，再深挖
-- 追问模式会围绕同一 Topic 连续追问，模拟“第一问答出来了，第二问开始上强度”的真实面试节奏
-- 支持根据技术栈关键词生成新的 `八股/` 文档，省掉手工整理提纲的时间
+  - `normal`
+  - `followup`
+  - `mixed`
+- 试卷生成使用 `gpt-5.4`
+- 出卷默认**不读取 `八股/`、`笔记/` 或任何本地知识正文**
+- 出卷只依赖：
+  - 全局策略
+  - 用户勾选的 Topic
+  - Topic-Concept Memory
+  - Weak Knowledge Memory
+  - Long-term Summary
 
 ### 🎙️ 作答
 
-- 浏览器内直接语音输入，适合练嘴而不是只练眼睛
-- 也支持手动文本编辑，避免语音转写把 `GIL` 听成奇怪的东西
-- 支持逐题保存答案
-- 必须完整作答后才能提交评分，防止“只答会的，剩下装没看见”
+- 浏览器内语音输入
+- 支持手动编辑文本
+- 支持逐题保存
+- 未完整作答不能提交评分
 
-### 🤖 评分
+### 🤖 评分与反馈
 
-- 使用 Codex 对整张试卷进行语义评分
-- 支持部分正确、擦边正确、明显错误的分层评分，不是只有“会”与“不会”两档
-- 每次评分后自动生成反馈文件
-- 反馈内容包含：
-  - 每题得分
-  - 覆盖要点
-  - 遗漏要点
+- 评分任务使用结构化 JSON 输出
+- 依据 `question + expected_points + 用户答案` 评分
+- `reference_answer` 不是评分唯一依据
+- 每次评分会产出：
+  - 分数
+  - 覆盖点
+  - 遗漏点
   - 错误点
-  - 参考改进答案
-- 答得不严谨，它会指出你哪里虚；答得跑偏，它会直接把你拽回来
+  - feedback
+  - better_answer
+- 评分完成后生成反馈文件，并更新 Weak Knowledge Memory 与 Long-term Summary
 
-### 🧠 记忆
+### 📋 任务队列
 
-- 不是只记“你做过哪些题”，而是会记：
-  - 哪些 Topic 总掉分
-  - 哪些知识点总答错
-  - 哪类表达能力最弱
-  - 哪些点是“刚答对，但其实还不稳”
-- 记忆结构已经拆成：
-  - 事件日志
-  - 知识点记忆
-  - 技能记忆
-  - 画像摘要
-- 后续出题会优先照顾你的薄弱点，而不是每次都随机刷题
-- 评分完成后还会异步抽取长期错误模式，让系统不只知道“你不会”，还知道“你为什么老答不好”
-- 你反复答错的点，系统会记得；你以为它忘了，它其实没有 😌
+- 所有模型任务统一进入 FIFO 队列
+- 不并发执行多个 Codex 任务
+- 支持排队、运行、删除、归档
 
-### 🔎 检索与任务管理
+## 当前架构
 
-- 内置轻量 RAG，会从知识文档中检索相关上下文再出题
-- RAG 不会把整个知识库都喂给模型，而是只取少量高相关摘要与记忆片段
-- Topic 解析改为手动触发，避免不必要的模型开销
-- 所有模型任务串行执行，避免并发冲突
-- 任务列表支持查看进度、删除、归档
-- 该排队就排队，该取消就取消，不会一边评分一边再偷偷起三份活
+当前版本已经从“本地知识库 RAG 出卷”切换为 **Memory-only 出卷**：
 
-## 目录约定
+- 不再依赖扫描 `八股/`、`笔记/` 自动解析 Topic
+- 不再默认把本地知识正文送进 prompt
+- Topic 和 Concept 由你手动创建 / 更新
+- Codex 根据自身知识和 Memory 生成试卷并评分
 
-- `八股/`: 可提交到仓库，也允许应用运行时新增或补充 Markdown 文档
-- `笔记/`: 仓库中只保留空目录占位；你自己的私有资料放这里，本项目只读，不提交
-- `截图/`: 页面截图
-- `interview-trainer/`: 本地 Web 应用
+更详细的系统结构见：
 
-`简历/` 不属于项目的一部分，已被 `.gitignore` 排除。
+- [ARCHITECTURE.md](/Users/zhouyux/Documents/Workspace/interview/ARCHITECTURE.md)
+- [agents.md](/Users/zhouyux/Documents/Workspace/interview/interview-trainer/data/memory/agents.md)
+
+## 目录
+
+- `interview-trainer/`: 应用代码
+- `interview-trainer/data/memory/`: 当前纳入版本控制的 Memory 初始状态
+- `截图/`: 项目截图
+
+以下目录**不再跟踪**：
+
+- `八股/`
+- `笔记/`
+- `简历/`
+
+它们可以继续留在你本地，但不会进入仓库。
 
 ## 运行环境
 
@@ -101,7 +122,7 @@
 
 ```bash
 cd interview-trainer
-npm run start
+npm run dev
 ```
 
 默认地址：
@@ -112,38 +133,41 @@ npm run start
 
 ```bash
 cd interview-trainer
-npm run start
+npm run dev
 npm run check
 ```
 
-## 使用说明
+## 使用方式
 
 1. 启动服务
-2. 如果你有自己的私有补充资料，把 Markdown 放到 `笔记/`
-3. 点击“手动解析 Topic”
-4. 勾选 Topic，选择题量和模式后生成试卷
-5. 用语音或文本完成整张试卷
+2. 在“创建/更新 Topic”里输入关键词或自然语言描述
+3. 等 Topic 更新任务完成
+4. 勾选 Topic，选择题量和模式，生成试卷
+5. 完整作答
 6. 提交评分
-7. 查看反馈文件和记忆变化
+7. 查看反馈，继续下一轮练习
 
-## 数据与提交规则
+## 版本控制策略
 
-以下内容是本地运行产物，默认不提交：
+仓库会保留一份可直接运行的初始 Memory 状态：
+
+- `interview-trainer/data/memory/agents.md`
+- `interview-trainer/data/memory/topic_memory.json`
+- `interview-trainer/data/memory/concept_memory.json`
+- `interview-trainer/data/memory/weak_memory.json`
+- `interview-trainer/data/memory/memory_summary.json`
+
+以下内容默认不提交：
 
 - `interview-trainer/data/papers/`
 - `interview-trainer/data/feedback/`
 - `interview-trainer/data/tasks/`
-- `interview-trainer/data/topics/`
 - `interview-trainer/data/rag/*.json`
 - `interview-trainer/data/memory/memory.json`
 - `interview-trainer/data/memory/memory_events.jsonl`
-- `interview-trainer/data/memory/concept_memory.json`
 - `interview-trainer/data/memory/skill_memory.json`
 - `interview-trainer/data/memory/profile_memory.json`
-- `interview-trainer/data/memory/memory_summary.json`
 - `interview-trainer/data/knowledge_candidates/`
-- `笔记/` 下的私有资料
-- `简历/`
 
 ## 截图
 
@@ -154,14 +178,6 @@ npm run check
 任务与试卷：
 
 ![任务与试卷](./截图/截屏2026-04-21%2002.04.32.png)
-
-## 说明
-
-- 评分、出卷、Topic 解析、八股文档生成都依赖 `codex exec`
-- `笔记/` 是只读上下文来源
-- 应用只会写入 `八股/` 和 `interview-trainer/data/`
-- 记忆更新只发生在**整张试卷完整作答并提交评分之后**
-- 记忆系统采用“文件化 + 按需召回”的方式，不会把全部历史直接塞进 prompt
 
 ## License
 

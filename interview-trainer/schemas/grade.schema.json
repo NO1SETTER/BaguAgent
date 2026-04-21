@@ -1,21 +1,40 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "additionalProperties": true,
-  "required": ["reviews"],
+  "additionalProperties": false,
+  "required": ["average_score", "summary", "topic_summary", "reviews", "chain_reviews", "knowledge_candidates"],
   "properties": {
     "average_score": { "type": "number" },
     "summary": { "type": "string" },
     "topic_summary": {
-      "type": "object",
-      "additionalProperties": true
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["topic", "summary", "average_score"],
+        "properties": {
+          "topic": { "type": "string" },
+          "summary": { "type": "string" },
+          "average_score": { "type": "number" }
+        }
+      }
     },
     "reviews": {
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": true,
-        "required": ["question_id", "score", "level", "feedback", "better_answer"],
+        "additionalProperties": false,
+        "required": [
+          "question_id",
+          "score",
+          "level",
+          "covered_points",
+          "missed_points",
+          "incorrect_points",
+          "feedback",
+          "better_answer",
+          "follow_up_question"
+        ],
         "properties": {
           "question_id": { "type": "string" },
           "score": { "type": "number", "minimum": 0, "maximum": 100 },
@@ -33,7 +52,8 @@
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": true,
+        "additionalProperties": false,
+        "required": ["chain_id", "chain_score", "breakdown_question_index", "weakest_follow_up_type", "feedback"],
         "properties": {
           "chain_id": { "type": "string" },
           "chain_score": { "type": "number" },
@@ -47,7 +67,8 @@
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": true,
+        "additionalProperties": false,
+        "required": ["candidate_id", "topic", "title", "summary", "content"],
         "properties": {
           "candidate_id": { "type": "string" },
           "topic": { "type": "string" },

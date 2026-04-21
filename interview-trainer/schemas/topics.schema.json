@@ -2,14 +2,24 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["topics"],
+  "required": ["topics", "concepts"],
   "properties": {
     "topics": {
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": true,
-        "required": ["name"],
+        "additionalProperties": false,
+        "required": [
+          "topic_id",
+          "name",
+          "aliases",
+          "category",
+          "confidence",
+          "enabled",
+          "can_write_back_to_bagu",
+          "source_files",
+          "covered_sections"
+        ],
         "properties": {
           "topic_id": { "type": "string" },
           "name": { "type": "string" },
@@ -23,7 +33,8 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": true,
+              "additionalProperties": false,
+              "required": ["section_id", "file", "path", "source_type"],
               "properties": {
                 "section_id": { "type": "string" },
                 "file": { "type": "string" },
@@ -32,6 +43,22 @@
               }
             }
           }
+        }
+      }
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "topic_id", "name", "aliases", "source_files", "linked_chunks"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "topic_id": { "type": "string" },
+          "name": { "type": "string" },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "source_files": { "type": "array", "items": { "type": "string" } },
+          "linked_chunks": { "type": "array", "items": { "type": "string" } }
         }
       }
     }

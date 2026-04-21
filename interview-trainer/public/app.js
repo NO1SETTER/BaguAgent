@@ -13,18 +13,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadTopics();
   await loadIndexSummary();
   await loadTasks();
-  await loadMemory();
   setInterval(loadTasks, 3000);
 });
 
 function bindEvents() {
-  el('rebuildTopicsBtn').addEventListener('click', rebuildTopics);
+  el('updateTopicsBtn').addEventListener('click', updateTopics);
+  el('updateTopicsSubmitBtn').addEventListener('click', updateTopics);
   el('createPaperBtn').addEventListener('click', createPaper);
-  el('generateDocBtn').addEventListener('click', generateBaguDoc);
   el('saveAnswersBtn').addEventListener('click', saveAnswers);
   el('gradePaperBtn').addEventListener('click', gradePaper);
   el('loadFeedbackBtn').addEventListener('click', loadFeedback);
-  el('loadMemoryBtn').addEventListener('click', loadMemory);
 }
 
 async function api(path, options = {}) {
@@ -47,7 +45,7 @@ async function loadTopics() {
 async function loadIndexSummary() {
   const data = await api('/api/index').catch(() => null);
   if (!data) return;
-  el('indexSummary').textContent = `Topic记录：${data.topics_recorded ? '已落盘' : '仅临时推断'} · RAG chunks：${data.chunks_count} · 题库缓存：${data.question_bank_count} · 可写：${data.writable_sources.join('、')} · 只读：${data.readonly_sources.join('、')}`;
+  el('indexSummary').textContent = `Topic记录：${data.topics_recorded ? '已落盘' : '空'} · Concepts：${data.concepts_count || 0} · 题库缓存：${data.question_bank_count} · 知识来源：${data.knowledge_source || 'Memory'}`;
 }
 
 function renderTopics() {
@@ -58,7 +56,7 @@ function renderTopics() {
         <span><input type="checkbox" class="topic-check" value="${escapeHtml(topic.topic_id)}" ${topic.enabled ? 'checked' : ''}> ${escapeHtml(topic.name)}</span>
         <span class="status">${escapeHtml(topic.category || 'general')}</span>
       </span>
-      <span class="topic-meta">${escapeHtml((topic.source_files || []).slice(0, 2).join('、') || '扩展 Topic')}</span>
+      <span class="topic-meta">${escapeHtml(String(topic.concept_count || 0))} 个 Concepts</span>
       <select class="topic-weight" data-topic="${escapeHtml(topic.topic_id)}">
         <option value="normal">普通</option>
         <option value="focus">重点</option>
@@ -68,9 +66,17 @@ function renderTopics() {
   `).join('');
 }
 
-async function rebuildTopics() {
-  const task = await api('/api/topics/rebuild', { method: 'POST', body: {} });
-  notify(`Topic 解析任务已排队：${task.task_id}`);
+async function updateTopics() {
+  const description = el('topicDescription').value.trim();
+  if (!description) return notify('请输入技术栈关键词或自然语言描述');
+  const task = await api('/api/topics/update', {
+    method: 'POST',
+    body: {
+      description,
+      concept_count: Number(el('topicConceptCount').value || 20)
+    }
+  });
+  notify(`Topic 更新任务已排队：${task.task_id}`);
   await loadTasks();
 }
 
@@ -109,21 +115,6 @@ function topicLimitForQuestionCount(questionCount) {
   return Infinity;
 }
 
-async function generateBaguDoc() {
-  const keywords = el('docKeywords').value.split(/[,，\s]+/).map((item) => item.trim()).filter(Boolean);
-  if (!keywords.length) return notify('请输入技术栈关键词');
-  const task = await api('/api/bagu-docs/generate', {
-    method: 'POST',
-    body: {
-      keywords,
-      question_count: Number(el('docQuestionCount').value),
-      target_title: el('docTitle').value.trim()
-    }
-  });
-  notify(`八股文档生成任务已排队：${task.task_id}`);
-  await loadTasks();
-}
-
 async function loadTasks() {
   const tasks = await api('/api/tasks');
   state.tasks = tasks;
@@ -145,7 +136,6 @@ function renderTasks() {
       </div>
       <div>
         ${task.result?.paper_id ? `<button class="secondary" data-paper="${escapeHtml(task.result.paper_id)}">打开试卷</button>` : ''}
-        ${task.result?.file ? `<span class="task-meta">${escapeHtml(task.result.file)}${task.result.rag_rebuilt ? ` · RAG已更新：${escapeHtml(String(task.result.chunks_count || 0))} chunks` : ''}</span>` : ''}
         ${task.result?.topics_file ? `<span class="task-meta">${escapeHtml(task.result.topics_file)}</span>` : ''}
         ${canArchiveTask(task) ? `<button class="secondary" data-archive-task="${escapeHtml(task.task_id)}">归档</button>` : ''}
         <button class="secondary danger-text" data-delete-task="${escapeHtml(task.task_id)}">删除</button>
@@ -165,7 +155,7 @@ function renderTasks() {
 }
 
 function canArchiveTask(task) {
-  return task.status === 'completed' && ['generate_paper', 'grade_paper', 'generate_bagu_doc', 'rebuild_topics', 'rebuild_index', 'extract_memory_insights'].includes(task.type);
+  return task.status === 'completed' && ['generate_paper', 'grade_paper', 'update_topic_concepts', 'rebuild_topics', 'rebuild_index'].includes(task.type);
 }
 
 async function archiveTask(taskId) {
@@ -324,47 +314,6 @@ async function loadFeedback() {
   }
   const data = await api(`/api/feedback/${state.currentPaper.paper_id}`).catch(() => ({ markdown: '' }));
   el('feedback').textContent = data.markdown || '评分完成后会生成反馈文件。';
-}
-
-async function loadMemory() {
-  const memory = await api('/api/memory');
-  const topicCards = (memory.weak_topics || []).slice(0, 6).map((item) => `
-    <div class="memory-card">
-      <h3>${escapeHtml(item.name || item.id || 'Topic')}</h3>
-      <p>掌握度：${escapeHtml(item.mastery_level || 'new')}</p>
-      <p>最近得分：${escapeHtml(String(item.last_score || 0))}</p>
-    </div>
-  `).join('');
-  const conceptCards = (memory.weak_concepts || []).slice(0, 6).map((item) => `
-    <div class="memory-card">
-      <h3>${escapeHtml(item.topic || 'Concept')}</h3>
-      <p>${escapeHtml(item.question || '')}</p>
-      <p>掌握度：${escapeHtml(item.mastery_level || 'new')} · 池：${escapeHtml(item.pool || '-')}</p>
-    </div>
-  `).join('');
-  const skillCards = (memory.weak_skills || []).slice(0, 6).map((item) => `
-    <div class="memory-card">
-      <h3>${escapeHtml(item.label || item.skill_id || 'Skill')}</h3>
-      <p>掌握度：${escapeHtml(item.mastery_level || 'new')}</p>
-      <p>最近得分：${escapeHtml(String(item.last_score || 0))}</p>
-    </div>
-  `).join('');
-  const recoveryCards = (memory.recovery_watchlist || []).slice(0, 4).map((item) => `
-    <div class="memory-card">
-      <h3>${escapeHtml(item.topic || 'Recovery')}</h3>
-      <p>${escapeHtml(item.question || '')}</p>
-      <p>恢复连续：${escapeHtml(String(item.recovery_streak || 0))}</p>
-    </div>
-  `).join('');
-  const profileLines = (memory.profile_summary || []).slice(0, 5).map((item) => `<li>${escapeHtml(item)}</li>`).join('');
-  const html = `
-    ${topicCards ? `<div class="memory-card"><h3>Topic 弱项</h3><div class="muted">近期最弱的技术栈</div></div>${topicCards}` : ''}
-    ${conceptCards ? `<div class="memory-card"><h3>知识点弱项</h3><div class="muted">后续出题重点复现</div></div>${conceptCards}` : ''}
-    ${skillCards ? `<div class="memory-card"><h3>技能弱项</h3><div class="muted">表达与追问能力问题</div></div>${skillCards}` : ''}
-    ${recoveryCards ? `<div class="memory-card"><h3>恢复观察</h3><div class="muted">刚从错误中恢复的点</div></div>${recoveryCards}` : ''}
-    ${profileLines ? `<div class="memory-card"><h3>长期画像</h3><ul>${profileLines}</ul></div>` : ''}
-  `;
-  el('memory').innerHTML = html.trim() || '<div class="muted">暂无记忆，完成评分后会更新。</div>';
 }
 
 function startVoice(questionId) {

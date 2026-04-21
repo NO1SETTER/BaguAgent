@@ -1,11 +1,16 @@
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import {
+  buildGeneratePaperPrompt,
+  buildGradePaperPrompt,
+  buildUpdateTopicConceptsPrompt
+} from './task-prompts.js';
 
 const PORT = Number(process.env.PORT || 5177);
 const APP_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -29,10 +34,11 @@ const DIRS = {
 const FILES = {
   topics: path.join(DIRS.topics, 'topics.json'),
   memory: path.join(DIRS.memory, 'memory.json'),
+  agentsGuide: path.join(DIRS.memory, 'agents.md'),
   memoryEvents: path.join(DIRS.memory, 'memory_events.jsonl'),
+  topicMemory: path.join(DIRS.memory, 'topic_memory.json'),
   conceptMemory: path.join(DIRS.memory, 'concept_memory.json'),
-  skillMemory: path.join(DIRS.memory, 'skill_memory.json'),
-  profileMemory: path.join(DIRS.memory, 'profile_memory.json'),
+  weakMemory: path.join(DIRS.memory, 'weak_memory.json'),
   memorySummary: path.join(DIRS.memory, 'memory_summary.json'),
   tasks: path.join(DIRS.tasks, 'tasks.json'),
   chunks: path.join(DIRS.rag, 'chunks.json'),
@@ -41,6 +47,7 @@ const FILES = {
 };
 const TOPIC_INDEX_VERSION = 3;
 const CODEX_MODEL = 'gpt-5.2';
+const PAPER_CODEX_MODEL = 'gpt-5.4';
 
 const KNOWN_TOPICS = [
   { name: 'Python', aliases: ['python', 'cpython', 'gil', 'asyncio'], category: 'language' },
@@ -70,7 +77,7 @@ const activeTaskProcesses = new Map();
 await ensureDataDirs();
 await loadTasks();
 await ensureMemory();
-await ensureLocalIndexes();
+await ensureQuestionBank();
 startQueueLoop();
 
 createServer(async (req, res) => {
@@ -105,24 +112,25 @@ async function ensureMemory() {
   if (!existsSync(FILES.conceptMemory)) {
     await writeJson(FILES.conceptMemory, {
       version: 2,
+      name: 'Topic-Concept Memory',
       updated_at: new Date().toISOString(),
-      concepts: {},
+      concepts: {}
+    });
+  }
+  if (!existsSync(FILES.weakMemory)) {
+    await writeJson(FILES.weakMemory, {
+      version: 1,
+      name: 'Weak Knowledge Memory',
+      updated_at: new Date().toISOString(),
+      topics: {},
+      concepts: {}
+    });
+  }
+  if (!existsSync(FILES.topicMemory)) {
+    await writeJson(FILES.topicMemory, {
+      version: 1,
+      updated_at: new Date().toISOString(),
       topics: {}
-    });
-  }
-  if (!existsSync(FILES.skillMemory)) {
-    await writeJson(FILES.skillMemory, {
-      version: 1,
-      updated_at: new Date().toISOString(),
-      skills: {}
-    });
-  }
-  if (!existsSync(FILES.profileMemory)) {
-    await writeJson(FILES.profileMemory, {
-      version: 1,
-      updated_at: new Date().toISOString(),
-      profile_summary: [],
-      patterns: {}
     });
   }
   if (!existsSync(FILES.memorySummary)) {
@@ -131,13 +139,18 @@ async function ensureMemory() {
       updated_at: new Date().toISOString(),
       weak_topics: [],
       weak_concepts: [],
-      weak_skills: [],
-      recovery_watchlist: [],
-      profile_summary: []
+      unstable_concepts: [],
+      recently_mastered: []
     });
   }
   if (!existsSync(FILES.memoryEvents)) {
     await fs.writeFile(FILES.memoryEvents, '', 'utf8');
+  }
+}
+
+async function ensureQuestionBank() {
+  if (!existsSync(FILES.questionBank)) {
+    await writeJson(FILES.questionBank, { version: 1, updated_at: new Date().toISOString(), questions: [] });
   }
 }
 
@@ -216,17 +229,17 @@ async function processQueue() {
       task.started_at = new Date().toISOString();
       task.progress = Math.max(task.progress || 0, 5);
       task.stage = '开始执行';
-      task.finished_at = new Date().toISOString();
-      task.updated_at = task.finished_at;
+      task.finished_at = null;
+      task.updated_at = task.started_at;
       await saveTasks();
       try {
         assertTaskNotCancelled(task);
-        if (task.type === 'rebuild_topics') task.result = await taskRebuildTopics(task);
-        if (task.type === 'rebuild_index') task.result = await taskRebuildTopics(task);
-        if (task.type === 'generate_paper') task.result = await taskGeneratePaper(task.payload, task);
-        if (task.type === 'grade_paper') task.result = await taskGradePaper(task.payload, task);
-        if (task.type === 'generate_bagu_doc') task.result = await taskGenerateBaguDoc(task.payload, task);
-        if (task.type === 'extract_memory_insights') task.result = await taskExtractMemoryInsights(task.payload, task);
+        if (task.type === 'update_topic_concepts') task.result = await taskUpdateTopicConcepts(task.payload, task);
+        else if (task.type === 'rebuild_topics') task.result = await taskUpdateTopicConcepts(task.payload || {}, task);
+        else if (task.type === 'rebuild_index') task.result = await taskUpdateTopicConcepts(task.payload || {}, task);
+        else if (task.type === 'generate_paper') task.result = await taskGeneratePaper(task.payload, task);
+        else if (task.type === 'grade_paper') task.result = await taskGradePaper(task.payload, task);
+        else throw new Error(`Unsupported task type: ${task.type}`);
         task.status = 'completed';
         task.progress = 100;
         task.stage = '完成';
@@ -242,6 +255,7 @@ async function processQueue() {
         }
       }
       task.updated_at = new Date().toISOString();
+      task.finished_at = task.updated_at;
       await saveTasks();
     }
   } finally {
@@ -308,7 +322,7 @@ async function assertTaskCanArchive(task) {
   if (task.status !== 'completed') {
     throw new Error('只能归档已完成的任务。排队中或运行中的任务请使用删除。');
   }
-  if (task.type === 'rebuild_topics' || task.type === 'rebuild_index') {
+  if (task.type === 'update_topic_concepts' || task.type === 'rebuild_topics' || task.type === 'rebuild_index') {
     return;
   }
   if (task.type === 'generate_paper') {
@@ -320,13 +334,6 @@ async function assertTaskCanArchive(task) {
   }
   if (task.type === 'grade_paper') {
     if (!task.result?.paper_id && !task.payload?.paper_id) throw new Error('评分任务没有关联试卷。');
-    return;
-  }
-  if (task.type === 'generate_bagu_doc') {
-    if (!task.result?.file) throw new Error('生成八股任务没有可归档的八股文件。');
-    return;
-  }
-  if (task.type === 'extract_memory_insights') {
     return;
   }
   throw new Error(`任务类型 ${task.type} 不支持归档。`);
@@ -348,9 +355,7 @@ function estimateTaskSeconds(type, payload = {}) {
     return Math.round((50 + count * 7 + topicCount * 8) * modeFactor);
   }
   if (type === 'grade_paper') return 90;
-  if (type === 'generate_bagu_doc') return Math.round(60 + Number(payload.question_count || 20) * 4);
-  if (type === 'extract_memory_insights') return 45;
-  if (type === 'rebuild_topics' || type === 'rebuild_index') return 45;
+  if (type === 'update_topic_concepts' || type === 'rebuild_topics' || type === 'rebuild_index') return 70;
   return 60;
 }
 
@@ -363,13 +368,22 @@ async function handleApi(req, res) {
     return;
   }
 
+  if (req.method === 'POST' && route === '/api/topics/update') {
+    const body = await readBody(req);
+    validateTopicUpdateRequest(body);
+    sendJson(res, 202, await enqueueTask('update_topic_concepts', body));
+    return;
+  }
+
   if (req.method === 'POST' && route === '/api/topics/rebuild') {
-    sendJson(res, 202, await enqueueTask('rebuild_topics', {}));
+    const body = await readBody(req);
+    validateTopicUpdateRequest(body);
+    sendJson(res, 202, await enqueueTask('update_topic_concepts', body));
     return;
   }
 
   if (req.method === 'POST' && route === '/api/index/rebuild') {
-    sendJson(res, 202, await enqueueTask('rebuild_index', {}));
+    sendJson(res, 410, { error: '本地知识库索引已停用，请使用 /api/topics/update 手动更新 Topic。' });
     return;
   }
 
@@ -384,7 +398,7 @@ async function handleApi(req, res) {
   }
 
   if (req.method === 'GET' && route === '/api/library') {
-    sendJson(res, 200, await scanKnowledgeBase());
+    sendJson(res, 410, { error: '本地知识库读取已停用。' });
     return;
   }
 
@@ -392,13 +406,6 @@ async function handleApi(req, res) {
     const body = await readBody(req);
     validatePaperRequest(body);
     sendJson(res, 202, await enqueueTask('generate_paper', body));
-    return;
-  }
-
-  if (req.method === 'POST' && route === '/api/bagu-docs/generate') {
-    const body = await readBody(req);
-    validateBaguDocRequest(body);
-    sendJson(res, 202, await enqueueTask('generate_bagu_doc', body));
     return;
   }
 
@@ -494,118 +501,64 @@ function topicLimitForQuestionCount(questionCount) {
   return Infinity;
 }
 
-function validateBaguDocRequest(body) {
-  if (!Array.isArray(body.keywords) || body.keywords.map(String).filter(Boolean).length === 0) {
-    throw new Error('keywords is required');
+function validateTopicUpdateRequest(body) {
+  const description = String(body.description || body.keywords_or_description || '').trim();
+  if (!description || description.length < 2) {
+    throw new Error('description is required');
   }
-  const count = Number(body.question_count);
-  if (!Number.isInteger(count) || count < 5 || count > 200) {
-    throw new Error('question_count must be an integer between 5 and 200');
+  const count = Number(body.concept_count || 20);
+  if (!Number.isInteger(count) || count < 3 || count > 100) {
+    throw new Error('concept_count must be an integer between 3 and 100');
   }
 }
 
-async function taskRebuildTopics(task = null) {
-  await updateTaskProgress(task, 10, '扫描知识库并重建本地索引');
-  const library = await ensureRagIndex();
-  await updateTaskProgress(task, 35, '调用 Codex 解析 Topic');
+async function taskUpdateTopicConcepts(payload, task = null) {
+  await updateTaskProgress(task, 10, '读取现有 Memory');
+  const description = String(payload.description || payload.keywords_or_description || '').trim();
+  const conceptCount = Number(payload.concept_count || 20);
+  const existing = await readTopicConceptMemory();
+  await updateTaskProgress(task, 35, '调用 Codex 理解描述并生成 Topic/Concept');
   const schema = path.join(SCHEMA_DIR, 'topics.schema.json');
-  const prompt = [
-    '你是一个面试知识库 Topic 解析器。请从给定 Markdown 知识库中抽取所有可能涉及的技术栈 Topic。',
-    'Topic 应该是可用于生成面试试卷的技术栈或领域，例如 Python、C++、Docker、Kafka、SQL/MySQL、LLM Agent。',
-    '笔记/ 目录是只读来源；八股/ 目录可用于后续面试知识沉淀。',
-    '请输出 JSON，必须符合 schema。',
-    JSON.stringify({ files: library.files, sections: library.sections.slice(0, 300), chunks: library.chunks.slice(0, 300) })
-  ].join('\n\n');
-  const result = await runCodexJson(prompt, schema, task).catch(() => null);
-  await updateTaskProgress(task, 80, '写入 Topic 和 RAG 索引');
-  const topics = normalizeTopics(result?.topics?.length ? result : await buildFallbackTopics());
-  const rebuilt = await rebuildLocalIndexes(topics, { writeTopics: true });
+  const prompt = buildUpdateTopicConceptsPrompt({
+    description,
+    conceptCount,
+    existingTopics: serializeExistingTopicsForPrompt(existing)
+  });
+  const result = await runCodexJson(prompt, schema, task);
+  await updateTaskProgress(task, 80, '合并 Topic-Concept Memory');
+  const merged = await mergeTopicConcepts(result);
+  await refreshMemorySummary();
   return {
-    topics_count: topics.topics.length,
-    chunks_count: rebuilt.chunks.length,
-    topics_file: path.relative(REPO_DIR, FILES.topics)
+    topics_count: Object.keys(merged.topicMemory.topics || {}).length,
+    concepts_count: Object.keys(merged.conceptMemory.concepts || {}).length,
+    topics_file: path.relative(REPO_DIR, FILES.topicMemory)
   };
 }
 
 async function taskGeneratePaper(payload, task = null) {
-  await updateTaskProgress(task, 8, '准备 RAG 索引');
+  await updateTaskProgress(task, 8, '准备 Memory');
   const paperId = `paper_${timestampId()}`;
-  const library = await ensureRagIndex();
   await updateTaskProgress(task, 16, '读取 Topic 和记忆');
   const topics = await readAvailableTopics();
   const memory = await readMemoryView();
   const selectedTopics = topics.topics.filter((topic) => payload.selected_topics.includes(topic.topic_id));
-  await updateTaskProgress(task, 25, '检索相关知识片段');
-  const context = await retrieveContext(payload, selectedTopics, memory);
-  const schema = path.join(SCHEMA_DIR, 'paper.schema.json');
-  const prompt = [
-    '你是一个严格的技术面试官，请生成一张用于语音背诵练习的中文面试试卷。',
-    '你必须阅读给定的 context_chunks 摘要后，用自然语言重新设计问题，不能把标题或字段直接包装成问题。',
-    '输出前先自检：题量必须正确，问题必须具体，不符合要求就先在内部修正后再输出，不要把半成品交出来。',
-    '要求：',
-    `1. 总问题数必须等于 ${payload.question_count}。`,
-    `2. 试卷模式是 ${payload.mode}。normal=独立题；followup=围绕 Topic 生成 3-5 个连续追问链；mixed=两者混合。`,
-    '3. 每题必须包含 topic、source_type、difficulty、question、expected_points、reference_answer、source_chunks。',
-    '4. source_type 只能是 bagu_local、note_readonly、expanded。expanded 表示知识库没覆盖但面试高频的补充知识。',
-    '5. 笔记/ 目录只读，不要提出写入笔记/ 的动作。',
-    '6. 题目应根据用户选择的 Topic 和记忆中的薄弱点加权。',
-    '7. 追问链每条包含 3-5 个问题，难度逐步深入，并记录 chain_goal。',
-    '8. 问题必须像真实面试官提问，避免“请说明某标题”这种机械模板。',
-    '9. 问题必须是具体八股知识点，不要开放式、场景式、项目方案式问题。',
-    '10. 禁止使用这类问法：你会怎么、你怎么、如何判断、优先考虑哪些、线上遇到、接口服务、项目中、方案、权衡、排查、设计一个。',
-    '11. 优先生成这类明确问题：什么是 X；X 和 Y 的区别；为什么会有 X；X 的底层机制是什么；X 在什么条件下成立；候选人说法哪里不严谨。',
-    '12. 每个问题只考一个核心知识点，不要把多个知识点组合成一个大题。',
-    '13. 参考合格题型：CPython 的 GIL 为什么会限制 CPU 密集型多线程？range() 为什么不能直接说成迭代器？Kafka 的 ISR 机制解决的核心问题是什么？',
-    '14. 禁止不合格题型：请概括 Python 这门语言；请从多个角度分析 Docker；你会如何在项目中设计消息队列方案。',
-    '请输出 JSON，必须符合 schema。',
-    JSON.stringify({
-      request: payload,
-      selected_topics: selectedTopics,
-      memory_summary: summarizeMemory(memory),
-      context_chunks: context
-    })
-  ].join('\n\n');
-  let generationError = null;
-  await updateTaskProgress(task, 35, 'Codex 生成试卷');
-  let generated = await runCodexJson(prompt, schema, task).catch((error) => {
-    generationError = error;
-    return null;
+  await updateTaskProgress(task, 25, '召回 KnowledgeMemory');
+  const knowledgeHints = buildKnowledgeHintsForPaper(payload, selectedTopics, memory);
+  const finalSchema = path.join(SCHEMA_DIR, 'paper.schema.json');
+  const prompt = buildGeneratePaperPrompt({
+    payload,
+    selectedTopics: serializeSelectedTopicsForPrompt(selectedTopics),
+    memorySummary: serializeMemorySummaryForPrompt(summarizeMemory(memory)),
+    knowledgeHints: serializeKnowledgeHintsForPrompt(knowledgeHints)
   });
-  if (!generated) {
-    await updateTaskProgress(task, 55, 'Codex 宽松 JSON 重试');
-    generated = await runCodexJsonLoose(`${prompt}\n\n只输出一个 JSON 对象，不要 Markdown 代码块，不要解释文字。`, task).catch((error) => {
-      generationError = error;
-      return null;
-    });
-  }
-  let paper = null;
-  if (generated) {
-    await updateTaskProgress(task, 72, '校验试卷结构');
-    paper = await normalizePaperWithRepair(generated, payload, paperId, prompt, schema, task).catch((error) => {
-      generationError = error;
-      return null;
-    });
-  }
-  if (!paper) {
-    try {
-      await updateTaskProgress(task, 78, '尝试复用题库缓存');
-      generated = await buildPaperFromQuestionBank(payload, paperId, selectedTopics);
-      paper = normalizePaper(generated, payload, paperId);
-    } catch (cacheError) {
-      const codexMessage = generationError ? ` Codex error: ${generationError.message || String(generationError)}` : '';
-      throw new Error(`${cacheError.message || String(cacheError)}.${codexMessage}`);
-    }
-  }
-  paper.generation_method = generated.generation_method || (generated.from_question_bank ? 'question_bank' : 'codex_rag');
-  if (!generated.from_question_bank) {
-    await updateTaskProgress(task, 84, '检查题目风格');
-    paper = await repairPaperStyleIfNeeded(paper, payload, prompt, schema, task);
-  }
-  if (generationError && paper.generation_method === 'question_bank') {
-    paper.generation_warning = generationError.message || String(generationError);
-  }
+  await updateTaskProgress(task, 35, 'Codex 生成试卷');
+  const generated = await runCodexJson(prompt, finalSchema, task, { model: PAPER_CODEX_MODEL });
+  await updateTaskProgress(task, 84, '整理试卷');
+  const paper = normalizePaper(generated, payload, paperId);
+  paper.generation_method = 'codex_memory';
   await updateTaskProgress(task, 94, '保存试卷和题库缓存');
-  paper.context_chunk_ids = context.map((chunk) => chunk.chunk_id);
+  paper.knowledge_hint_ids = knowledgeHints.concepts.map((concept) => concept.concept_id);
+  paper.context_chunk_ids = [];
   await writePaper(paper);
   await updateQuestionBankFromPaper(paper);
   return { paper_id: paper.paper_id, question_count: countPaperQuestions(paper) };
@@ -616,25 +569,7 @@ async function taskGradePaper(payload, task = null) {
   const paper = await readPaper(payload.paper_id);
   assertPaperFullyAnswered(paper);
   const schema = path.join(SCHEMA_DIR, 'grade.schema.json');
-  const prompt = [
-    '你是一个严格但建设性的中文技术面试评分官。',
-    '请根据每题的参考答案和 expected_points，对用户回答进行评分。',
-    '要求：',
-    '1. 每题 score 为 0-100。',
-    '2. level 为 correct、partial 或 wrong，且与 score 区间一致：wrong=0-39，partial=40-79，correct=80-100。',
-    '3. 如果回答命中至少一个核心点，但不完整或表达有偏差，应给 partial，分数至少 40。',
-    '4. 擦边正确（只命中少量要点、深度不够）建议给 40-55，不要给最低分。',
-    '5. partial 内部分层：40-55=擦边；56-69=部分正确；70-79=接近正确但仍有关键缺漏。',
-    '6. 只有明显答非所问、核心点基本缺失、或存在严重错误时才给 wrong。',
-    '7. 有实质错误时在 incorrect_points 明确写出。',
-    '8. covered_points/missed_points 要与 score 对齐，不能自相矛盾。',
-    '9. 指出 covered_points、missed_points、incorrect_points。',
-    '10. 给出 better_answer 和 feedback。',
-    '11. 对追问链给出 chain_score、breakdown_question_index、weakest_follow_up_type。',
-    '12. 总结可沉淀到八股/ 的 expanded 或 note_readonly 高频薄弱知识点；不要写入笔记/。',
-    '请输出 JSON，必须符合 schema。',
-    JSON.stringify({ paper })
-  ].join('\n\n');
+  const prompt = buildGradePaperPrompt({ paper });
   await updateTaskProgress(task, 35, 'Codex 评分');
   let grade = await runCodexJson(prompt, schema, task).catch(() => null);
   await updateTaskProgress(task, 75, '整理评分结果');
@@ -647,7 +582,6 @@ async function taskGradePaper(payload, task = null) {
   await writePaper(paper);
   await updateMemoryFromPaper(paper);
   await writeKnowledgeCandidates(paper);
-  await enqueueTask('extract_memory_insights', { paper_id: paper.paper_id });
   return { paper_id: paper.paper_id, average_score: paper.grade.average_score, feedback_file: paper.feedback_file };
 }
 
@@ -661,14 +595,15 @@ function assertPaperFullyAnswered(paper) {
   }
 }
 
-async function runCodexJson(prompt, schemaPath, task = null) {
+async function runCodexJson(prompt, schemaPath, task = null, options = {}) {
   return new Promise((resolve, reject) => {
     assertTaskNotCancelled(task);
     const outputFile = path.join('/tmp', `interview-trainer-codex-${randomUUID()}.json`);
+    const model = options.model || CODEX_MODEL;
     const args = [
       'exec',
       '--model',
-      CODEX_MODEL,
+      model,
       '--skip-git-repo-check',
       '--sandbox',
       'read-only',
@@ -707,147 +642,8 @@ async function runCodexJson(prompt, schemaPath, task = null) {
       if (!parsed) return reject(new Error(`Codex did not return JSON: ${stdout.slice(0, 500)}`));
       resolve(parsed);
     });
-    child.stdin.end(prompt);
+    child.stdin.end(attachAgentsGuide(prompt));
   });
-}
-
-async function runCodexJsonLoose(prompt, task = null) {
-  return new Promise((resolve, reject) => {
-    assertTaskNotCancelled(task);
-    const outputFile = path.join('/tmp', `interview-trainer-codex-${randomUUID()}.json`);
-    const args = [
-      'exec',
-      '--model',
-      CODEX_MODEL,
-      '--skip-git-repo-check',
-      '--sandbox',
-      'read-only',
-      '--output-last-message',
-      outputFile,
-      '-'
-    ];
-    const child = spawn('codex', args, { cwd: REPO_DIR, stdio: ['pipe', 'pipe', 'pipe'] });
-    if (task) activeTaskProcesses.set(task.task_id, child);
-    let stdout = '';
-    let stderr = '';
-    const timer = setTimeout(() => {
-      child.kill('SIGTERM');
-      reject(new Error('Codex loose task timed out'));
-    }, 12 * 60 * 1000);
-    child.stdout.on('data', (chunk) => { stdout += chunk.toString(); });
-    child.stderr.on('data', (chunk) => { stderr += chunk.toString(); });
-    child.on('error', (error) => {
-      clearTimeout(timer);
-      if (task) activeTaskProcesses.delete(task.task_id);
-      reject(error);
-    });
-    child.on('close', async (code) => {
-      clearTimeout(timer);
-      if (task) activeTaskProcesses.delete(task.task_id);
-      if (task?.cancel_requested) return reject(new Error('Task cancelled'));
-      if (code !== 0) return reject(new Error(stderr || `codex exited with code ${code}`));
-      let finalText = stdout;
-      try {
-        finalText = await fs.readFile(outputFile, 'utf8');
-        await fs.unlink(outputFile).catch(() => {});
-      } catch {}
-      const parsed = parseJsonFromText(finalText) || parseJsonFromText(stdout);
-      if (!parsed) return reject(new Error(`Codex loose mode did not return JSON: ${stdout.slice(0, 500)}`));
-      resolve(parsed);
-    });
-    child.stdin.end(prompt);
-  });
-}
-
-async function taskGenerateBaguDoc(payload, task = null) {
-  await updateTaskProgress(task, 8, '准备文档生成参数');
-  const keywords = payload.keywords.map((item) => String(item).trim()).filter(Boolean);
-  const questionCount = Number(payload.question_count);
-  const title = sanitizeFileTitle(payload.target_title || `${keywords.join('_')}_高频面试知识`);
-  const target = await uniqueBaguDocPath(`${title}.md`);
-  await updateTaskProgress(task, 18, '检索相关知识片段');
-  const library = await ensureRagIndex();
-  const pseudoTopics = keywords.map((keyword) => ({ topic_id: topicId(keyword), name: keyword, aliases: [keyword] }));
-  const context = await retrieveContext({
-    selected_topics: pseudoTopics.map((topic) => topic.topic_id),
-    topic_weights: {},
-    question_count: Math.min(50, questionCount),
-    mode: 'normal',
-    keywords
-  }, pseudoTopics, await readMemoryView());
-  const schema = path.join(SCHEMA_DIR, 'bagu-doc.schema.json');
-  const prompt = [
-    '你是一个资深技术面试资料整理者，请生成一份可直接写入 八股/ 的 Markdown 面试知识文档。',
-    '要求：',
-    `1. 技术栈关键词：${keywords.join('、')}。`,
-    `2. 高频问题数量必须是 ${questionCount} 条。`,
-    '3. 输出内容要是完整 Markdown 文档，不要 JSON 以外的解释。',
-    '4. 结构包含：技术栈总览、高频问题、参考答案、追问方向、易错点、面试表达建议。',
-    '5. 可以参考 context_chunks，也可以补充通用高频面试知识。',
-    '6. 笔记/ 是只读来源，不能要求修改笔记/。',
-    '请输出 JSON，必须符合 schema，其中 markdown 字段是完整文档。',
-    JSON.stringify({ keywords, question_count: questionCount, context_chunks: context, known_files: library.files })
-  ].join('\n\n');
-  await updateTaskProgress(task, 40, 'Codex 生成八股文档');
-  const generated = await runCodexJson(prompt, schema, task);
-  await updateTaskProgress(task, 78, '写入八股文档');
-  const markdown = normalizeMarkdownDoc(generated.markdown, keywords, questionCount);
-  await fs.writeFile(target, markdown, 'utf8');
-  await updateTaskProgress(task, 88, '自动更新 RAG 索引');
-  const rebuilt = await rebuildLocalIndexes(await readAvailableTopics());
-  return {
-    file: path.relative(REPO_DIR, target),
-    question_count: questionCount,
-    rag_rebuilt: true,
-    chunks_count: rebuilt.chunks.length
-  };
-}
-
-async function taskExtractMemoryInsights(payload, task = null) {
-  await updateTaskProgress(task, 15, '读取评分结果与记忆状态');
-  const paper = await readPaper(payload.paper_id);
-  if (!paper.grade) throw new Error('Paper grade not found for memory extraction');
-  const profileState = await readJson(FILES.profileMemory, { version: 1, updated_at: null, profile_summary: [], patterns: {} });
-  const summary = await readJson(FILES.memorySummary, { weak_concepts: [], weak_skills: [], recovery_watchlist: [], profile_summary: [] });
-  const prompt = [
-    '你是一个面试训练系统的记忆抽取器。',
-    '请根据评分结果，提炼少量高价值的长期训练信号。',
-    '只关注稳定、可复用、可指导下次训练的模式，不要复述整张试卷。',
-    '输出 JSON，字段包括：profile_summary(string[])、patterns(object)。',
-    'patterns 的 key 使用短标识，value 包含 label、evidence、severity。',
-    '不要输出超过 6 条 profile_summary，也不要输出超过 8 个 patterns。',
-    JSON.stringify({
-      paper_id: paper.paper_id,
-      weak_concepts: summary.weak_concepts || [],
-      weak_skills: summary.weak_skills || [],
-      reviews: (paper.grade.reviews || []).map((review) => ({
-        question_id: review.question_id,
-        score: review.score,
-        level: review.level,
-        missed_points: review.missed_points,
-        incorrect_points: review.incorrect_points,
-        feedback: review.feedback
-      })),
-      chain_reviews: paper.grade.chain_reviews || [],
-      current_profile: profileState
-    })
-  ].join('\n\n');
-  await updateTaskProgress(task, 55, 'Codex 抽取长期模式');
-  const extracted = await runCodexJsonLoose(`${prompt}\n\n只输出一个 JSON 对象。`, task).catch(() => null);
-  await updateTaskProgress(task, 82, '写入画像记忆摘要');
-  if (extracted) {
-    profileState.version = 1;
-    profileState.updated_at = new Date().toISOString();
-    profileState.profile_summary = uniqueStrings([...(extracted.profile_summary || []).slice(0, 6)]);
-    profileState.patterns = normalizeProfilePatterns(extracted.patterns || {}, profileState.patterns || {});
-    await writeJson(FILES.profileMemory, profileState);
-    await refreshMemorySummary();
-  }
-  return {
-    paper_id: paper.paper_id,
-    extracted: Boolean(extracted),
-    profile_items: extracted?.profile_summary?.length || 0
-  };
 }
 
 function parseJsonFromText(text) {
@@ -870,12 +666,16 @@ async function rebuildLocalIndexes(topicsInput = null, options = {}) {
   if (options.writeTopics) {
     await writeJson(FILES.topics, normalizeTopics(topics));
   }
+  await writeJson(FILES.topicMemory, buildTopicMemory(topics, chunks));
+  const conceptMemory = await buildKnowledgeMemory(topics, chunks, options.generatedConcepts || []);
+  await writeJson(FILES.conceptMemory, conceptMemory);
+  await writeJson(FILES.memorySummary, buildMemorySummary(buildTopicMemory(topics, chunks), conceptMemory));
   await writeJson(FILES.chunks, { version: 1, source_signature: sourceSignature, updated_at: new Date().toISOString(), chunks });
   await writeJson(FILES.topicIndex, { version: 1, updated_at: new Date().toISOString(), topics: topicIndex });
   if (!existsSync(FILES.questionBank)) {
     await writeJson(FILES.questionBank, { version: 1, updated_at: new Date().toISOString(), questions: [] });
   }
-  return { ...library, chunks };
+  return { ...library, chunks, concepts_count: Object.keys(conceptMemory.concepts || {}).length };
 }
 
 async function ensureRagIndex() {
@@ -958,15 +758,16 @@ function buildTopicIndex(chunks) {
 
 async function readIndexSummary() {
   const topics = await readAvailableTopics();
-  const chunks = await readJson(FILES.chunks, { chunks: [] });
   const questionBank = await readJson(FILES.questionBank, { questions: [] });
+  const memory = await readTopicConceptMemory();
   return {
     topics_count: topics.topics.length,
-    chunks_count: chunks.chunks.length,
+    concepts_count: Object.keys(memory.conceptMemory.concepts || {}).length,
+    chunks_count: 0,
     question_bank_count: questionBank.questions.length,
-    topics_recorded: existsSync(FILES.topics),
-    writable_sources: ['八股'],
-    readonly_sources: ['笔记']
+    topics_recorded: Object.keys(memory.topicMemory.topics || {}).length > 0,
+    knowledge_source: 'Codex + Memory',
+    local_knowledge_reading: false
   };
 }
 
@@ -978,11 +779,8 @@ async function retrieveContext(payload, selectedTopics, memory) {
     ...selectedTopics.flatMap((topic) => [topic.name, ...(topic.aliases || [])]),
     ...(payload.keywords || [])
   ].map((item) => String(item).toLowerCase()).filter(Boolean);
-  const weakTopicIds = new Set(Object.entries(memory.topics || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
-    .map(([id]) => id));
-  const weakKnowledgeSignals = buildWeakKnowledgeSignals(memory, selectedIds);
-  const weakChainSignals = buildWeakChainSignals(memory, selectedIds);
+  const weakTopicIds = new Set((memory.weak_topics || []).map((item) => item.topic_id || item.id).filter(Boolean));
+  const conceptSignals = buildConceptSignals(memory, selectedIds);
   const limit = clamp(Number(payload.rag_context_limit || 14), 8, 40);
   const randomness = clamp(Number(payload.randomness ?? 0.25), 0, 1);
   return chunks
@@ -995,8 +793,7 @@ async function retrieveContext(payload, selectedTopics, memory) {
         weakTopicIds,
         payload.topic_weights || {},
         randomness,
-        weakKnowledgeSignals,
-        weakChainSignals
+        conceptSignals
       )
     }))
     .filter((item) => item.score > 0)
@@ -1010,11 +807,11 @@ async function retrieveContext(payload, selectedTopics, memory) {
       topic_ids: chunk.topic_ids,
       keywords: chunk.keywords,
       summary: chunk.summary,
-      excerpt: buildChunkExcerpt(chunk, keywords, weakKnowledgeSignals, weakChainSignals)
+      excerpt: buildChunkExcerpt(chunk, keywords, conceptSignals)
     }));
 }
 
-function scoreChunk(chunk, selectedIds, keywords, weakTopicIds, topicWeights, randomness, weakKnowledgeSignals = [], weakChainSignals = []) {
+function scoreChunk(chunk, selectedIds, keywords, weakTopicIds, topicWeights, randomness, conceptSignals = []) {
   let score = 0;
   const topicIds = chunk.topic_ids || [];
   if (topicIds.some((id) => selectedIds.has(id))) score += 40;
@@ -1029,16 +826,11 @@ function scoreChunk(chunk, selectedIds, keywords, weakTopicIds, topicWeights, ra
   if (chunk.source_type === 'bagu_local') score += 6;
   if (chunk.source_type === 'note_readonly') score += 3;
   const chunkKeywords = new Set([...(chunk.keywords || []), ...extractKeywords(`${chunk.title || ''} ${chunk.content || ''}`).slice(0, 20)]);
-  for (const signal of weakKnowledgeSignals) {
+  for (const signal of conceptSignals) {
     if (signal.topic_id && topicIds.includes(signal.topic_id)) score += 6;
     if (signal.source_chunks.has(chunk.chunk_id)) score += 28 + Math.round(signal.priority / 8);
     const overlap = overlapCount(chunkKeywords, signal.keywords);
     if (overlap > 0) score += Math.min(18, overlap * 4 + Math.round(signal.priority / 20));
-  }
-  for (const signal of weakChainSignals) {
-    if (signal.topic_id && topicIds.includes(signal.topic_id)) score += 5;
-    const overlap = overlapCount(chunkKeywords, signal.keywords);
-    if (overlap > 0) score += Math.min(12, overlap * 3 + Math.round(signal.priority / 25));
   }
   score += Math.random() * 20 * randomness;
   return score;
@@ -1100,15 +892,29 @@ function splitMarkdownSections(content, relPath, kind) {
 }
 
 async function buildFallbackTopics() {
-  const library = await scanKnowledgeBase().catch(() => ({ sections: [], files: [] }));
-  return buildFallbackTopicsFromLibrary(library);
+  return { version: 1, parser_version: TOPIC_INDEX_VERSION, updated_at: new Date().toISOString(), topics: [] };
 }
 
 async function readAvailableTopics(library = null) {
-  const recorded = await readJson(FILES.topics, null);
-  if (recorded?.topics?.length) return normalizeTopics(recorded);
-  const baseLibrary = library || await scanKnowledgeBase().catch(() => ({ sections: [], files: [] }));
-  return buildFallbackTopicsFromLibrary(baseLibrary);
+  const memory = await readTopicConceptMemory();
+  const conceptCounts = {};
+  for (const concept of Object.values(memory.conceptMemory.concepts || {})) {
+    const key = concept.topic_id || topicId(concept.topic || 'General');
+    conceptCounts[key] = (conceptCounts[key] || 0) + 1;
+  }
+  const topics = Object.values(memory.topicMemory.topics || {}).map((topic) => ({
+    topic_id: topic.topic_id,
+    name: topic.name,
+    aliases: arrayOfStrings(topic.aliases),
+    category: topic.category || 'general',
+    confidence: Number(topic.confidence || 1),
+    enabled: topic.enabled !== false,
+    can_write_back_to_bagu: false,
+    source_files: [],
+    covered_sections: [],
+    concept_count: conceptCounts[topic.topic_id] || 0
+  }));
+  return { version: 1, parser_version: TOPIC_INDEX_VERSION, updated_at: memory.topicMemory.updated_at || new Date().toISOString(), topics };
 }
 
 function buildFallbackTopicsFromLibrary(library) {
@@ -1166,6 +972,77 @@ function normalizeTopics(input) {
     return true;
   });
   return { version: 1, parser_version: TOPIC_INDEX_VERSION, updated_at: new Date().toISOString(), topics };
+}
+
+function serializeExistingTopicsForPrompt(memory) {
+  const topics = Object.values(memory.topicMemory.topics || {}).map((topic) => ({
+    topic_id: topic.topic_id,
+    name: topic.name,
+    aliases: arrayOfStrings(topic.aliases).slice(0, 6),
+    category: topic.category || 'general',
+    concept_count: topic.concept_count || 0
+  }));
+  const concepts = Object.values(memory.conceptMemory.concepts || {}).slice(0, 200).map((concept) => ({
+    concept_id: concept.concept_id,
+    topic_id: concept.topic_id,
+    name: concept.name
+  }));
+  return { topics, concepts };
+}
+
+async function mergeTopicConcepts(result) {
+  const [topicMemory, conceptMemory] = await Promise.all([
+    readJson(FILES.topicMemory, { version: 1, updated_at: null, topics: {} }),
+    readJson(FILES.conceptMemory, { version: 2, name: 'Topic-Concept Memory', updated_at: null, concepts: {} })
+  ]);
+  const normalized = normalizeTopics({ topics: result?.topics || [] });
+  for (const topic of normalized.topics) {
+    const existing = topicMemory.topics[topic.topic_id] || {};
+    topicMemory.topics[topic.topic_id] = {
+      topic_id: topic.topic_id,
+      name: topic.name,
+      aliases: uniqueStrings([...(existing.aliases || []), ...(topic.aliases || []), topic.name]).slice(0, 12),
+      category: topic.category || existing.category || 'general',
+      description: existing.description || `${topic.name} 面试 Topic`,
+      source: 'manual_description',
+      enabled: topic.enabled !== false,
+      concept_count: existing.concept_count || 0,
+      created_at: existing.created_at || new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+  }
+  for (const raw of result?.concepts || []) {
+    const topicIdValue = raw.topic_id || topicId(raw.topic || raw.name || 'General');
+    const topic = topicMemory.topics[topicIdValue] || {
+      topic_id: topicIdValue,
+      name: raw.topic || topicIdValue,
+      aliases: [],
+      category: 'general',
+      description: `${raw.topic || topicIdValue} 面试 Topic`,
+      source: 'manual_description',
+      enabled: true,
+      created_at: new Date().toISOString()
+    };
+    topicMemory.topics[topicIdValue] = topic;
+    ensureTopicConcept(conceptMemory.concepts, {
+      ...raw,
+      topic_id: topicIdValue,
+      topic: topic.name,
+      source_type: 'generated'
+    });
+  }
+  for (const topic of Object.values(topicMemory.topics)) {
+    topic.concept_count = Object.values(conceptMemory.concepts || {}).filter((concept) => concept.topic_id === topic.topic_id).length;
+    topic.updated_at ||= new Date().toISOString();
+  }
+  topicMemory.version = 1;
+  topicMemory.updated_at = new Date().toISOString();
+  conceptMemory.version = 2;
+  conceptMemory.name = 'Topic-Concept Memory';
+  conceptMemory.updated_at = new Date().toISOString();
+  await writeJson(FILES.topicMemory, topicMemory);
+  await writeJson(FILES.conceptMemory, conceptMemory);
+  return { topicMemory, conceptMemory };
 }
 
 function questionsToChains(questions) {
@@ -1272,6 +1149,7 @@ function normalizePaper(input, payload, paperId) {
     seenQuestionIds.add(question.question_id);
     if (question.source_type === 'tech_readonly') question.source_type = 'note_readonly';
     question.source_type = ['bagu_local', 'note_readonly', 'expanded'].includes(question.source_type) ? question.source_type : 'expanded';
+    question.concept = normalizeConceptName(question.concept || question.root_knowledge_point || question.question || question.topic || 'General');
     question.expected_points = Array.isArray(question.expected_points) ? question.expected_points : [];
     question.source_chunks = Array.isArray(question.source_chunks) ? question.source_chunks : [];
     question.quality_flags = Array.isArray(question.quality_flags) ? question.quality_flags : [];
@@ -1279,57 +1157,26 @@ function normalizePaper(input, payload, paperId) {
   return paper;
 }
 
-async function normalizePaperWithRepair(generated, payload, paperId, originalPrompt, schema, task = null) {
-  try {
-    return normalizePaper(generated, payload, paperId);
-  } catch (error) {
-    const locallyRepaired = tryNormalizePaperLocally(generated, payload, paperId);
-    if (locallyRepaired) return locallyRepaired;
-    const repairPrompt = [
-      '下面是一份试卷 JSON，但它不符合系统要求。请修复为合法 JSON。',
-      `要求总问题数必须等于 ${payload.question_count}，模式必须是 ${payload.mode}。`,
-      'normal 使用 questions；followup 使用 chains，每条 chain 3-5 个 questions；mixed 同时使用 questions 和 chains。',
-      '每题必须包含 topic、source_type、difficulty、question、expected_points、reference_answer、source_chunks。',
-      'source_type 只能是 bagu_local、note_readonly、expanded。',
-      '只输出 JSON 对象，不要解释。',
-      `原始错误：${error.message}`,
-      '原始生成结果：',
-      JSON.stringify(generated),
-      '原始任务要求：',
-      originalPrompt.slice(0, 12000)
-    ].join('\n\n');
-    const repaired = await runCodexJson(repairPrompt, schema, task).catch(() => runCodexJsonLoose(repairPrompt, task));
-    return normalizePaper(repaired, payload, paperId);
+function completeDraftPaperLocally(input, payload, paperId, context = []) {
+  const hydrated = structuredClone({
+    ...input,
+    questions: Array.isArray(input.questions) ? input.questions : [],
+    chains: Array.isArray(input.chains) ? input.chains : []
+  });
+  for (const question of flattenPaperQuestions(hydrated)) {
+    const matchedChunks = matchContextForQuestion(question, context);
+    question.source_chunks = Array.isArray(question.source_chunks) && question.source_chunks.length
+      ? uniqueStrings(question.source_chunks).slice(0, 3)
+      : matchedChunks.map((chunk) => chunk.chunk_id).slice(0, 3);
+    question.quality_flags = Array.isArray(question.quality_flags) ? question.quality_flags : [];
+    const expectedPoints = buildFallbackExpectedPoints(question);
+    question.expected_points = Array.isArray(question.expected_points) && question.expected_points.length
+      ? arrayOfStrings(question.expected_points).slice(0, 5)
+      : expectedPoints;
+    question.reference_answer = String(question.reference_answer || '').trim();
+    question.follow_up_direction = String(question.follow_up_direction || '').trim();
   }
-}
-
-async function repairPaperStyleIfNeeded(paper, payload, originalPrompt, schema, task = null) {
-  const issues = paperStyleIssues(paper);
-  if (!issues.length) return paper;
-  const repairPrompt = [
-    '下面这份试卷的问题太开放或组合性太强，请改写为更具体的八股面试题。',
-    '硬性要求：',
-    '1. 保持总问题数不变。',
-    '2. 保持 paper 的 mode 结构不变：normal 仍用 questions；followup/mixed 保持 chains 结构。',
-    '3. 每个问题只考一个核心知识点。',
-    '4. 禁止开放式问法：你会怎么、你怎么、如何判断、优先考虑哪些、线上遇到、接口服务、项目中、方案、权衡、排查、设计一个。',
-    '5. 避免“概括 Python 这门语言”这种过大问题。',
-    '6. 改成明确可背诵的问题，例如：GIL 为什么会影响 CPU 密集型多线程？list 和 tuple 的可变性区别是什么？range 返回的是迭代器吗？',
-    '7. 同步修正 expected_points 和 reference_answer。',
-    '8. 只输出 JSON 对象。',
-    `风格问题：${issues.join('；')}`,
-    '原试卷：',
-    JSON.stringify(paper),
-    '原始生成任务：',
-    originalPrompt.slice(0, 8000)
-  ].join('\n\n');
-  const repaired = await runCodexJson(repairPrompt, schema, task).catch(() => runCodexJsonLoose(repairPrompt, task));
-  const normalized = normalizePaper(repaired, payload, paper.paper_id);
-  const remaining = paperStyleIssues(normalized);
-  if (remaining.length) {
-    throw new Error(`Generated paper still has open-ended questions: ${remaining.slice(0, 5).join('; ')}`);
-  }
-  return normalized;
+  return normalizePaper(hydrated, payload, paperId);
 }
 
 function paperStyleIssues(paper) {
@@ -1368,9 +1215,8 @@ function buildFallbackGrade(paper) {
     const covered = expected.filter((point) => isPointCovered(answer, point));
     const missing = expected.filter((point) => !covered.includes(point));
     const coverageRatio = covered.length / Math.max(expected.length, 1);
-    const referenceOverlap = tokenOverlapRatio(answer, question.reference_answer || '');
     const answerQuality = Math.min(1, Math.log2(String(answer).trim().length + 1) / 7);
-    const baseScore = coverageRatio * 65 + referenceOverlap * 20 + answerQuality * 15;
+    const baseScore = coverageRatio * 80 + answerQuality * 20;
     let score = Math.round(baseScore);
     if (coverageRatio > 0 && score < 40) score = 40;
     if (coverageRatio >= 0.25 && score < 50) score = 50;
@@ -1389,7 +1235,7 @@ function buildFallbackGrade(paper) {
         : level === 'partial'
           ? '回答有部分正确点，但仍需补充关键机制和边界条件。'
           : '回答与关键要点匹配较低，请聚焦定义、机制和典型追问点。',
-      better_answer: question.reference_answer || '',
+      better_answer: buildFallbackBetterAnswer(question),
       follow_up_question: question.follow_up_direction || ''
     };
   });
@@ -1445,9 +1291,8 @@ async function updateMemoryFromPaper(paper) {
   legacy.knowledge ||= {};
   legacy.questions ||= {};
   legacy.chains ||= {};
-  const conceptState = await readJson(FILES.conceptMemory, { version: 2, updated_at: null, concepts: {}, topics: {} });
-  const skillState = await readJson(FILES.skillMemory, { version: 1, updated_at: null, skills: {} });
-  const profileState = await readJson(FILES.profileMemory, { version: 1, updated_at: null, profile_summary: [], patterns: {} });
+  const topicConceptMemory = await readJson(FILES.conceptMemory, { version: 2, name: 'Topic-Concept Memory', updated_at: null, concepts: {} });
+  const weakMemory = await readJson(FILES.weakMemory, { version: 1, name: 'Weak Knowledge Memory', updated_at: null, topics: {}, concepts: {} });
   const reviewById = new Map(paper.grade.reviews.map((review) => [review.question_id, review]));
   const chainReviewById = new Map((paper.grade.chain_reviews || []).map((review) => [review.chain_id, review]));
   const events = [];
@@ -1456,15 +1301,15 @@ async function updateMemoryFromPaper(paper) {
     if (!review) continue;
     const topicIdValue = question.topic_id || topicId(question.topic || 'General');
     const questionKey = question.question_key || buildStableQuestionKey(question, topicIdValue);
-    const knowledgeId = hash(`${topicIdValue}:${questionKey}`);
-    const conceptId = knowledgeId;
-    const skillTags = inferSkillTags(question, review);
-    events.push(buildConceptEvent(paper, question, review, conceptId, questionKey, skillTags));
+    const conceptName = normalizeConceptName(question.concept || question.question || question.topic || topicIdValue);
+    const conceptId = hash(`${topicIdValue}:${conceptName.toLowerCase()}`);
+    events.push(buildConceptEvent(paper, question, review, conceptId, questionKey));
     updateStats(legacy.topics, topicIdValue, review.score, { name: question.topic || topicIdValue });
     updateStats(legacy.knowledge, knowledgeId, review.score, {
       topic_id: topicIdValue,
       topic: question.topic,
       source_type: question.source_type,
+      concept: conceptName,
       question_key: questionKey,
       question: question.question,
       expected_points: question.expected_points || [],
@@ -1484,11 +1329,17 @@ async function updateMemoryFromPaper(paper) {
       source_chunks: question.source_chunks || [],
       last_feedback: review.feedback
     });
-    updateConceptState(conceptState.concepts, conceptId, review, question, questionKey, topicIdValue, skillTags);
-    updateStats(conceptState.topics, topicIdValue, review.score, { name: question.topic || topicIdValue });
-    for (const skillId of skillTags) {
-      updateSkillState(skillState.skills, skillId, review, question, topicIdValue);
-    }
+    ensureTopicConcept(topicConceptMemory.concepts, {
+      concept_id: conceptId,
+      topic_id: topicIdValue,
+      topic: question.topic || topicIdValue,
+      name: conceptName,
+      aliases: [conceptName],
+      source_type: 'generated',
+      source_files: [],
+      linked_chunks: []
+    });
+    updateWeakConceptState(weakMemory.concepts, conceptId, review, { ...question, concept: conceptName }, questionKey, topicIdValue);
   }
   for (const chain of paper.chains || []) {
     const chainReviews = chain.questions.map((question) => reviewById.get(question.question_id)).filter(Boolean);
@@ -1515,19 +1366,14 @@ async function updateMemoryFromPaper(paper) {
       weakest_follow_up_type: chainReview?.weakest_follow_up_type || '',
       feedback: chainReview?.feedback || ''
     });
-    const weakestSkill = mapFollowupTypeToSkill(chainReview?.weakest_follow_up_type || '');
-    if (weakestSkill) {
-      updateSkillState(skillState.skills, weakestSkill, { score, feedback: chainReview?.feedback || '', level: scoreLevel(score) }, { topic: chain.topic, question: chain.root_knowledge_point }, topicId(chain.topic || 'General'));
-    }
   }
-  conceptState.updated_at = new Date().toISOString();
-  skillState.updated_at = new Date().toISOString();
-  profileState.updated_at = new Date().toISOString();
+  topicConceptMemory.updated_at = new Date().toISOString();
+  weakMemory.updated_at = new Date().toISOString();
+  weakMemory.topics = buildWeakTopicIndex(weakMemory.concepts);
   await appendJsonl(FILES.memoryEvents, events);
   await writeJson(FILES.memory, legacy);
-  await writeJson(FILES.conceptMemory, conceptState);
-  await writeJson(FILES.skillMemory, skillState);
-  await writeJson(FILES.profileMemory, profileState);
+  await writeJson(FILES.conceptMemory, topicConceptMemory);
+  await writeJson(FILES.weakMemory, weakMemory);
   await refreshMemorySummary();
 }
 
@@ -1577,42 +1423,89 @@ function advanceReviewStats(existing, score) {
   return current;
 }
 
-function updateConceptState(bucket, id, review, question, questionKey, topicIdValue, skillTags = []) {
+function updateWeakConceptState(bucket, id, review, question, questionKey, topicIdValue) {
   const updated = advanceReviewStats(bucket[id], review.score);
   Object.assign(updated, {
     concept_id: id,
     topic_id: topicIdValue,
     topic: question.topic || topicIdValue,
-    canonical_name: question.question,
+    name: normalizeConceptName(question.concept || question.question || question.topic || topicIdValue),
     question_key: questionKey,
-    linked_questions: uniqueStrings([...(updated.linked_questions || []), questionKey]).slice(-12),
+    aliases: uniqueStrings([...(updated.aliases || []), normalizeConceptName(question.concept || question.question || '')]).slice(-6),
+    detail: buildWeakConceptDetail(question, review),
     linked_chunks: uniqueStrings([...(updated.linked_chunks || []), ...(question.source_chunks || [])]).slice(-20),
-    last_error_types: uniqueStrings(inferErrorTypes(question, review)),
+    source_files: uniqueStrings([...(updated.source_files || []), ...(question.source_files || [])]).slice(-8),
     last_feedback: review.feedback || '',
     source_type: question.source_type,
     expected_points: question.expected_points || [],
-    skill_tags: uniqueStrings([...(updated.skill_tags || []), ...skillTags])
+    last_reviewed_at: new Date().toISOString()
   });
   updated.mastery_score = computeMasteryScore(updated);
-  updated.stability_score = computeStabilityScore(updated);
-  updated.difficulty_score = computeDifficultyScore(updated);
-  updated.forget_risk = computeForgetRisk(updated);
+  updated.stability = computeStabilityScore(updated);
   updated.pool = classifyConceptPool(updated);
   updated.updated_at = new Date().toISOString();
   bucket[id] = updated;
 }
 
-function updateSkillState(bucket, id, review, question, topicIdValue) {
-  const updated = advanceReviewStats(bucket[id], review.score);
-  updated.skill_id = id;
-  updated.label = id;
-  updated.last_feedback = review.feedback || '';
-  updated.last_question = question.question || '';
-  updated.topic_id = topicIdValue;
-  updated.mastery_score = computeMasteryScore(updated);
-  updated.stability_score = computeStabilityScore(updated);
-  updated.updated_at = new Date().toISOString();
-  bucket[id] = updated;
+function ensureTopicConcept(bucket, concept) {
+  const name = normalizeConceptName(concept.name);
+  if (!isUsableConceptName(name)) return null;
+  const topicIdValue = concept.topic_id || topicId(concept.topic || 'General');
+  const id = concept.concept_id || hash(`${topicIdValue}:${name.toLowerCase()}`);
+  const existing = bucket[id] || {};
+  bucket[id] = {
+    concept_id: id,
+    topic_id: topicIdValue,
+    topic: concept.topic || existing.topic || topicIdValue,
+    name,
+    aliases: uniqueStrings([...(existing.aliases || []), ...(concept.aliases || []), name]).slice(0, 8),
+    source_type: concept.source_type || existing.source_type || 'generated',
+    source_files: uniqueStrings([...(existing.source_files || []), ...(concept.source_files || [])]).slice(0, 8),
+    linked_chunks: uniqueStrings([...(existing.linked_chunks || []), ...(concept.linked_chunks || [])]).slice(0, 8),
+    created_at: existing.created_at || new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+  return bucket[id];
+}
+
+function buildWeakConceptDetail(question, review) {
+  return {
+    question: question.question || '',
+    missed_points: review.missed_points || [],
+    incorrect_points: review.incorrect_points || [],
+    feedback: review.feedback || '',
+    better_answer: review.better_answer || ''
+  };
+}
+
+function buildWeakTopicIndex(concepts) {
+  const topics = {};
+  for (const concept of Object.values(concepts || {})) {
+    const topicIdValue = concept.topic_id || topicId(concept.topic || 'General');
+    topics[topicIdValue] ||= {
+      topic_id: topicIdValue,
+      name: concept.topic || topicIdValue,
+      weak_count: 0,
+      unstable_count: 0,
+      average_score: 0,
+      last_reviewed_at: null,
+      priority: 0
+    };
+    const item = topics[topicIdValue];
+    if (concept.pool === 'wrong_pool') item.weak_count += 1;
+    if (concept.pool === 'unstable_pool') item.unstable_count += 1;
+    item.average_score += Number(concept.last_score || 0);
+    item.priority = Math.max(item.priority, Number(concept.next_review_priority || 0));
+    if (!item.last_reviewed_at || Date.parse(concept.last_reviewed_at || 0) > Date.parse(item.last_reviewed_at || 0)) {
+      item.last_reviewed_at = concept.last_reviewed_at || concept.updated_at || null;
+    }
+    item._count = (item._count || 0) + 1;
+  }
+  for (const item of Object.values(topics)) {
+    item.average_score = Math.round(item.average_score / Math.max(item._count || 1, 1));
+    delete item._count;
+  }
+  return topics;
 }
 
 function masteryLevel(stats) {
@@ -1643,21 +1536,10 @@ function computeStabilityScore(stats) {
   return clamp(Math.round(100 - Math.sqrt(variance) * 4 - (stats.wrong_count || 0) * 6), 0, 100);
 }
 
-function computeDifficultyScore(stats) {
-  return clamp(Math.round(60 + (stats.wrong_count || 0) * 8 - (stats.correct_count || 0) * 4), 0, 100);
-}
-
-function computeForgetRisk(stats) {
-  const recent = stats.recent_scores || [];
-  const last = recent.at(-1) || stats.last_score || 0;
-  return clamp(Math.round(100 - (stats.stability_score || computeStabilityScore(stats)) * 0.45 - (stats.mastery_score || computeMasteryScore(stats)) * 0.35 + (last < 60 ? 18 : 0)), 0, 100);
-}
-
 function classifyConceptPool(stats) {
-  if ((stats.failure_streak || stats.streak_wrong || 0) >= 2 || (stats.last_score || 0) < 60) return 'urgent_remediation';
-  if ((stats.recovery_streak || 0) >= 1 && (stats.last_score || 0) >= 60 && (stats.last_score || 0) < 85) return 'recovery_watchlist';
-  if ((stats.last_score || 0) < 85 || (stats.wrong_count || 0) > 0) return 'unstable_concepts';
-  return 'exploration_pool';
+  if ((stats.failure_streak || stats.streak_wrong || 0) >= 1 || (stats.last_score || 0) < 60) return 'wrong_pool';
+  if ((stats.last_score || 0) < 85 || (stats.wrong_count || 0) > 0) return 'unstable_pool';
+  return 'mastered_pool';
 }
 
 async function writeFeedback(paper) {
@@ -1783,6 +1665,34 @@ async function readJson(file, fallback) {
   }
 }
 
+function readAgentsGuideText() {
+  try {
+    if (!existsSync(FILES.agentsGuide)) return '';
+    return processAgentsGuide(readFileSync(FILES.agentsGuide, 'utf8'));
+  } catch {
+    return '';
+  }
+}
+
+function processAgentsGuide(text) {
+  return String(text || '').trim();
+}
+
+function attachAgentsGuide(prompt) {
+  const guide = readAgentsGuideText();
+  if (!guide) return prompt;
+  return [
+    '以下内容是本项目的全局 Agent 规则与全局记忆摘要。它统领当前任务的行为约束、知识来源权限、记忆层级和出题/评分原则。你必须在整个任务中遵守它。',
+    '',
+    '=== BEGIN AGENTS.MD ===',
+    guide,
+    '=== END AGENTS.MD ===',
+    '',
+    '=== CURRENT TASK ===',
+    prompt
+  ].join('\n');
+}
+
 async function writeJson(file, value) {
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, JSON.stringify(value, null, 2), 'utf8');
@@ -1796,147 +1706,149 @@ async function appendJsonl(file, entries) {
   await fs.appendFile(file, payload, 'utf8');
 }
 
+async function readTopicConceptMemory() {
+  const [topicMemory, conceptMemory] = await Promise.all([
+    readJson(FILES.topicMemory, { version: 1, topics: {} }),
+    readJson(FILES.conceptMemory, { version: 2, name: 'Topic-Concept Memory', concepts: {} })
+  ]);
+  return { topicMemory, conceptMemory };
+}
+
 async function readMemoryView() {
-  const [legacy, conceptState, skillState, profileState, summary] = await Promise.all([
+  const [legacy, topicMemory, conceptState, weakMemory, summary] = await Promise.all([
     readJson(FILES.memory, { topics: {}, knowledge: {}, questions: {}, chains: {} }),
-    readJson(FILES.conceptMemory, { concepts: {}, topics: {} }),
-    readJson(FILES.skillMemory, { skills: {} }),
-    readJson(FILES.profileMemory, { profile_summary: [], patterns: {} }),
+    readJson(FILES.topicMemory, { topics: {} }),
+    readJson(FILES.conceptMemory, { concepts: {} }),
+    readJson(FILES.weakMemory, { topics: {}, concepts: {} }),
     readJson(FILES.memorySummary, null)
   ]);
-  const effectiveConceptState = Object.keys(conceptState.concepts || {}).length
-    ? conceptState
-    : deriveConceptStateFromLegacy(legacy);
-  const effectiveSkillState = Object.keys(skillState.skills || {}).length
-    ? skillState
-    : deriveSkillStateFromLegacy(legacy);
+  const effectiveWeakState = Object.keys(weakMemory.concepts || {}).length
+    ? weakMemory
+    : buildWeakMemoryFromLegacy(legacy);
   const hasSummaryData = summary && (
     (summary.weak_topics || []).length ||
     (summary.weak_concepts || []).length ||
-    (summary.weak_skills || []).length ||
-    (summary.recovery_watchlist || []).length ||
-    (summary.profile_summary || []).length
+    (summary.unstable_concepts || []).length ||
+    (summary.recently_mastered || []).length
   );
-  const generatedSummary = hasSummaryData ? summary : buildMemorySummary(effectiveConceptState, effectiveSkillState, profileState);
+  const generatedSummary = hasSummaryData ? summary : buildMemorySummary(topicMemory, effectiveWeakState);
   return {
     version: 2,
     updated_at: generatedSummary.updated_at || new Date().toISOString(),
+    agents_guide: { path: path.relative(REPO_DIR, FILES.agentsGuide) },
     topics: legacy.topics || {},
     knowledge: legacy.knowledge || {},
     questions: legacy.questions || {},
     chains: legacy.chains || {},
-    concepts: effectiveConceptState.concepts || {},
-    topic_state: effectiveConceptState.topics || {},
-    skills: effectiveSkillState.skills || {},
-    profile: profileState,
+    topic_index: topicMemory.topics || {},
+    concepts: conceptState.concepts || {},
+    weak_knowledge: effectiveWeakState,
     weak_topics: generatedSummary.weak_topics || [],
     weak_concepts: generatedSummary.weak_concepts || [],
-    weak_skills: generatedSummary.weak_skills || [],
-    recovery_watchlist: generatedSummary.recovery_watchlist || [],
-    profile_summary: generatedSummary.profile_summary || []
+    unstable_concepts: generatedSummary.unstable_concepts || [],
+    recently_mastered: generatedSummary.recently_mastered || []
   };
 }
 
-function buildMemorySummary(conceptState, skillState, profileState) {
-  const weakConcepts = Object.values(conceptState.concepts || {})
-    .filter((item) => ['weak', 'unstable'].includes(item.mastery_level))
+function buildMemorySummary(topicMemory, conceptState) {
+  const allConcepts = Object.values(conceptState.concepts || {});
+  const weakConcepts = allConcepts
+    .filter((item) => item.pool === 'wrong_pool')
     .sort((a, b) => (b.next_review_priority || 0) - (a.next_review_priority || 0))
     .slice(0, 12)
     .map((item) => ({
       concept_id: item.concept_id,
       topic_id: item.topic_id,
       topic: item.topic,
-      question: item.canonical_name,
+      question: item.name,
       last_score: item.last_score,
       mastery_level: item.mastery_level,
       pool: item.pool
     }));
-  const weakTopics = Object.entries(conceptState.topics || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
-    .sort((a, b) => (b[1].next_review_priority || 0) - (a[1].next_review_priority || 0))
-    .slice(0, 12)
-    .map(([id, item]) => ({ id, name: item.name || id, last_score: item.last_score, mastery_level: item.mastery_level }));
-  const weakSkills = Object.values(skillState.skills || {})
-    .filter((item) => ['weak', 'unstable'].includes(item.mastery_level))
+  const unstableConcepts = allConcepts
+    .filter((item) => item.pool === 'unstable_pool')
     .sort((a, b) => (b.next_review_priority || 0) - (a.next_review_priority || 0))
-    .slice(0, 8)
+    .slice(0, 12)
     .map((item) => ({
-      skill_id: item.skill_id,
-      label: item.label,
+      concept_id: item.concept_id,
+      topic_id: item.topic_id,
+      topic: item.topic,
+      question: item.name,
       last_score: item.last_score,
-      mastery_level: item.mastery_level
+      mastery_level: item.mastery_level,
+      pool: item.pool
     }));
-  const recovery = Object.values(conceptState.concepts || {})
-    .filter((item) => item.pool === 'recovery_watchlist')
-    .sort((a, b) => (b.recovery_streak || 0) - (a.recovery_streak || 0))
+  const recentlyMastered = allConcepts
+    .filter((item) => item.pool === 'mastered_pool')
+    .sort((a, b) => Date.parse(b.last_reviewed_at || 0) - Date.parse(a.last_reviewed_at || 0))
     .slice(0, 8)
     .map((item) => ({
       concept_id: item.concept_id,
+      topic_id: item.topic_id,
       topic: item.topic,
-      question: item.canonical_name,
-      recovery_streak: item.recovery_streak || 0,
+      question: item.name,
       last_score: item.last_score
+    }));
+  const topicAgg = {};
+  for (const item of allConcepts) {
+    const key = item.topic_id || topicId(item.topic || 'General');
+    topicAgg[key] ||= { topic_id: key, weak: 0, unstable: 0, total: 0, score: 0 };
+    topicAgg[key].total += 1;
+    topicAgg[key].score += Number(item.last_score || 0);
+    if (item.pool === 'wrong_pool') topicAgg[key].weak += 1;
+    if (item.pool === 'unstable_pool') topicAgg[key].unstable += 1;
+  }
+  const topicIndex = topicMemory.topics || {};
+  const weakTopics = Object.values(topicAgg)
+    .filter((item) => item.weak > 0 || item.unstable > 0)
+    .sort((a, b) => (b.weak * 3 + b.unstable * 2) - (a.weak * 3 + a.unstable * 2))
+    .slice(0, 12)
+    .map((item) => ({
+      topic_id: item.topic_id,
+      name: topicIndex[item.topic_id]?.name || item.topic_id,
+      weak_count: item.weak,
+      unstable_count: item.unstable,
+      average_score: Math.round(item.score / Math.max(item.total, 1))
     }));
   return {
     version: 1,
     updated_at: new Date().toISOString(),
     weak_topics: weakTopics,
     weak_concepts: weakConcepts,
-    weak_skills: weakSkills,
-    recovery_watchlist: recovery,
-    profile_summary: profileState.profile_summary || []
+    unstable_concepts: unstableConcepts,
+    recently_mastered: recentlyMastered
   };
 }
 
-function deriveConceptStateFromLegacy(legacy) {
+function buildWeakMemoryFromLegacy(legacy) {
   const concepts = {};
   for (const [id, item] of Object.entries(legacy.knowledge || {})) {
     concepts[id] = {
       concept_id: id,
       topic_id: item.topic_id || topicId(item.topic || 'General'),
       topic: item.topic || 'General',
-      canonical_name: item.question || id,
+      name: normalizeConceptName(item.concept || item.question || id),
       mastery_level: item.mastery_level || 'weak',
       next_review_priority: item.next_review_priority || 80,
       last_score: item.last_score || 0,
       attempt_count: item.attempt_count || 0,
       wrong_count: item.wrong_count || 0,
-      recovery_streak: item.recovery_streak || 0,
-      pool: (item.last_score || 0) < 60 ? 'urgent_remediation' : 'unstable_concepts',
+      pool: (item.last_score || 0) < 60 ? 'wrong_pool' : (item.last_score || 0) < 85 ? 'unstable_pool' : 'mastered_pool',
       linked_chunks: item.source_chunks || [],
       last_feedback: item.last_feedback || '',
-      expected_points: item.expected_points || []
+      expected_points: item.expected_points || [],
+      last_reviewed_at: item.updated_at || new Date().toISOString()
     };
   }
-  return { version: 2, updated_at: new Date().toISOString(), concepts, topics: legacy.topics || {} };
-}
-
-function deriveSkillStateFromLegacy(legacy) {
-  const skills = {};
-  for (const item of Object.values(legacy.knowledge || {})) {
-    const text = `${item.question || ''} ${item.last_feedback || ''}`;
-    for (const skillId of inferSkillTags({ question: text, expected_points: item.expected_points || [] }, { feedback: item.last_feedback || '', missed_points: [], incorrect_points: [], level: item.mastery_level === 'weak' ? 'wrong' : 'partial' })) {
-      const current = advanceReviewStats(skills[skillId], item.last_score || 0);
-      current.skill_id = skillId;
-      current.label = skillId;
-      current.last_feedback = item.last_feedback || '';
-      current.last_question = item.question || '';
-      current.mastery_score = computeMasteryScore(current);
-      current.stability_score = computeStabilityScore(current);
-      current.updated_at = new Date().toISOString();
-      skills[skillId] = current;
-    }
-  }
-  return { version: 1, updated_at: new Date().toISOString(), skills };
+  return { version: 1, name: 'Weak Knowledge Memory', updated_at: new Date().toISOString(), topics: {}, concepts };
 }
 
 async function refreshMemorySummary() {
-  const [conceptState, skillState, profileState] = await Promise.all([
-    readJson(FILES.conceptMemory, { concepts: {}, topics: {} }),
-    readJson(FILES.skillMemory, { skills: {} }),
-    readJson(FILES.profileMemory, { profile_summary: [] })
+  const [topicMemory, weakMemory] = await Promise.all([
+    readJson(FILES.topicMemory, { topics: {} }),
+    readJson(FILES.weakMemory, { topics: {}, concepts: {} })
   ]);
-  const summary = buildMemorySummary(conceptState, skillState, profileState);
+  const summary = buildMemorySummary(topicMemory, weakMemory);
   await writeJson(FILES.memorySummary, summary);
   return summary;
 }
@@ -1966,50 +1878,148 @@ function summarizeMemory(memory) {
   return {
     weak_topics: memory.weak_topics || [],
     weak_knowledge_points: memory.weak_concepts || [],
-    weak_skills: memory.weak_skills || [],
-    recovery_watchlist: memory.recovery_watchlist || [],
-    profile_summary: memory.profile_summary || []
+    unstable_concepts: memory.unstable_concepts || [],
+    recently_mastered: memory.recently_mastered || []
   };
 }
 
-function tryNormalizePaperLocally(input, payload, paperId) {
-  const expectedCount = Number(payload.question_count);
-  const flat = flattenInputQuestions(input).filter((question) => String(question?.question || '').trim());
-  if (flat.length < expectedCount) return null;
-  const trimmed = flat.slice(0, expectedCount).map((question) => ({ ...question }));
-  if (payload.mode === 'followup') {
-    return normalizePaper({
-      ...input,
-      paper_id: input.paper_id || paperId,
-      questions: [],
-      chains: questionsToChains(trimmed),
-      generation_method: input.generation_method || 'codex_rag_local_shape_repair'
-    }, payload, paperId);
-  }
-  if (payload.mode === 'mixed') {
-    const split = Math.max(1, Math.floor(trimmed.length / 2));
-    return normalizePaper({
-      ...input,
-      paper_id: input.paper_id || paperId,
-      questions: trimmed.slice(0, split),
-      chains: questionsToChains(trimmed.slice(split)),
-      generation_method: input.generation_method || 'codex_rag_local_shape_repair'
-    }, payload, paperId);
-  }
-  return normalizePaper({
-    ...input,
-    paper_id: input.paper_id || paperId,
-    questions: trimmed,
-    chains: [],
-    generation_method: input.generation_method || 'codex_rag_local_shape_repair'
-  }, payload, paperId);
+function serializeSelectedTopicsForPrompt(selectedTopics) {
+  return (selectedTopics || []).map((topic) => ({
+    topic_id: topic.topic_id,
+    name: topic.name,
+    aliases: arrayOfStrings(topic.aliases).slice(0, 5),
+    category: topic.category || 'general'
+  }));
 }
 
-function flattenInputQuestions(input) {
+function serializeMemorySummaryForPrompt(summary) {
+  return {
+    weak_topics: (summary.weak_topics || []).slice(0, 6).map((item) => ({
+      topic_id: item.topic_id || item.id,
+      name: item.name,
+      weak_count: item.weak_count || 0,
+      unstable_count: item.unstable_count || 0
+    })),
+    weak_knowledge_points: (summary.weak_knowledge_points || []).slice(0, 8).map((item) => ({
+      concept_id: item.concept_id,
+      topic_id: item.topic_id,
+      topic: item.topic,
+      question: String(item.question || '').slice(0, 90),
+      pool: item.pool || 'wrong_pool'
+    })),
+    unstable_concepts: (summary.unstable_concepts || []).slice(0, 6).map((item) => ({
+      concept_id: item.concept_id,
+      topic_id: item.topic_id,
+      topic: item.topic,
+      question: String(item.question || '').slice(0, 90),
+      pool: item.pool || 'unstable_pool'
+    })),
+    recently_mastered: (summary.recently_mastered || []).slice(0, 4).map((item) => ({
+      topic_id: item.topic_id,
+      topic: item.topic,
+      question: String(item.question || '').slice(0, 72)
+    }))
+  };
+}
+
+function serializeContextForPrompt(context) {
+  return (context || []).map((chunk) => ({
+    chunk_id: chunk.chunk_id,
+    source_type: chunk.source_type,
+    file: path.basename(chunk.file || ''),
+    summary: String(chunk.summary || '').slice(0, 180),
+    excerpt: String(chunk.excerpt || '').slice(0, 180)
+  }));
+}
+
+function buildKnowledgeHintsForPaper(payload, selectedTopics, memory) {
+  const selectedIds = new Set(selectedTopics.map((topic) => topic.topic_id).concat(payload.selected_topics || []));
+  const baseConcepts = Object.values(memory.concepts || {})
+    .filter((concept) => !selectedIds.size || selectedIds.has(concept.topic_id || topicId(concept.topic || 'General')))
+    .map((concept) => ({ ...concept, pool: 'exploration_pool', mastery_level: 'new', next_review_priority: 20 }));
+  const weakConcepts = Object.values(memory.weak_knowledge?.concepts || {})
+    .filter((concept) => !selectedIds.size || selectedIds.has(concept.topic_id || topicId(concept.topic || 'General')))
+    .map((concept) => ({ ...concept, weak_detail: concept.detail || null }));
+  const byId = new Map(baseConcepts.map((concept) => [concept.concept_id, concept]));
+  for (const concept of weakConcepts) {
+    byId.set(concept.concept_id, { ...(byId.get(concept.concept_id) || {}), ...concept });
+  }
+  const concepts = [...byId.values()]
+    .sort((a, b) => {
+      const priorityDelta = (b.next_review_priority || 0) - (a.next_review_priority || 0);
+      if (priorityDelta) return priorityDelta;
+      return Date.parse(b.last_reviewed_at || b.updated_at || 0) - Date.parse(a.last_reviewed_at || a.updated_at || 0);
+    })
+    .slice(0, 48);
+  return {
+    topics: selectedTopics.map((topic) => {
+      const entry = memory.topic_index?.[topic.topic_id] || {};
+      return {
+        topic_id: topic.topic_id,
+        name: topic.name,
+        description: entry.description || `${topic.name} 面试知识入口`,
+        concept_count: entry.concept_count || concepts.filter((concept) => concept.topic_id === topic.topic_id).length
+      };
+    }),
+    concepts
+  };
+}
+
+function serializeKnowledgeHintsForPrompt(hints) {
+  return {
+    topics: (hints.topics || []).map((topic) => ({
+      topic_id: topic.topic_id,
+      name: topic.name,
+      description: topic.description,
+      concept_count: topic.concept_count || 0
+    })),
+    concepts: (hints.concepts || []).slice(0, 36).map((concept) => ({
+      concept_id: concept.concept_id,
+      topic_id: concept.topic_id,
+      name: concept.name,
+      pool: concept.pool || 'exploration_pool',
+      mastery_level: concept.mastery_level || 'new',
+      priority: concept.next_review_priority || 0,
+      source_type: concept.source_type || 'generated',
+      weak_detail: concept.weak_detail ? {
+        last_score: concept.last_score || 0,
+        missed_points: arrayOfStrings(concept.weak_detail.missed_points).slice(0, 3),
+        feedback: String(concept.weak_detail.feedback || '').slice(0, 120)
+      } : null
+    }))
+  };
+}
+
+function matchContextForQuestion(question, context) {
+  const queryKeywords = new Set(extractKeywords(`${question.topic || ''} ${question.question || ''}`));
+  return (context || [])
+    .map((chunk) => {
+      const hayKeywords = new Set(extractKeywords(`${chunk.summary || ''} ${chunk.excerpt || ''}`));
+      const overlap = overlapCount(queryKeywords, hayKeywords);
+      const topicBonus = String(chunk.summary || '').toLowerCase().includes(String(question.topic || '').toLowerCase()) ? 2 : 0;
+      return { chunk, score: overlap * 4 + topicBonus };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((item) => item.chunk);
+}
+
+function buildFallbackExpectedPoints(question) {
   return [
-    ...(Array.isArray(input?.questions) ? input.questions : []),
-    ...(Array.isArray(input?.chains) ? input.chains.flatMap((chain) => Array.isArray(chain?.questions) ? chain.questions : []) : [])
+    '能直接回答题干中的核心概念或机制',
+    '能说明关键原因，而不是只背结论',
+    '能指出常见边界、误区或适用场景'
   ];
+}
+
+function buildFallbackBetterAnswer(question) {
+  const expectedPoints = Array.isArray(question.expected_points) ? question.expected_points : [];
+  return [
+    `这道题需要围绕「${question.question || question.topic || '该知识点'}」作答。`,
+    `建议至少覆盖：${expectedPoints.slice(0, 3).join('；')}。`,
+    '可以按“定义/机制/边界或易错点”的顺序组织答案。'
+  ].join('');
 }
 
 function topicId(name) {
@@ -2043,11 +2053,10 @@ function buildStableQuestionKey(question, topicIdValue = null) {
   return hash(`${stableTopicId}:${normalizeQuestionText(question.question || '')}`);
 }
 
-function buildChunkExcerpt(chunk, baseKeywords = [], weakKnowledgeSignals = [], weakChainSignals = []) {
+function buildChunkExcerpt(chunk, baseKeywords = [], conceptSignals = []) {
   const signalKeywords = [
     ...baseKeywords,
-    ...weakKnowledgeSignals.flatMap((item) => [...item.keywords].slice(0, 6)),
-    ...weakChainSignals.flatMap((item) => [...item.keywords].slice(0, 4))
+    ...conceptSignals.flatMap((item) => [...item.keywords].slice(0, 6))
   ].map((item) => String(item).toLowerCase()).filter(Boolean);
   const sentences = String(chunk.content || '')
     .split(/(?<=[。！？!?])\s+|\n+/)
@@ -2098,10 +2107,14 @@ function overlapCount(left, right) {
   return count;
 }
 
-function buildWeakKnowledgeSignals(memory, selectedIds) {
+function buildConceptSignals(memory, selectedIds) {
   const selected = selectedIds instanceof Set ? selectedIds : new Set(selectedIds || []);
+  const prioritized = new Set([
+    ...(memory.weak_concepts || []).map((item) => item.concept_id),
+    ...(memory.unstable_concepts || []).map((item) => item.concept_id)
+  ].filter(Boolean));
   return Object.entries(memory.concepts || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
+    .filter(([id, item]) => prioritized.has(id) || ['weak', 'unstable'].includes(item.mastery_level))
     .filter(([, item]) => {
       const signalTopicId = item.topic_id || topicId(item.topic || 'General');
       return !selected.size || selected.has(signalTopicId);
@@ -2113,25 +2126,7 @@ function buildWeakKnowledgeSignals(memory, selectedIds) {
       topic_id: item.topic_id || topicId(item.topic || 'General'),
       priority: item.next_review_priority || 0,
       source_chunks: new Set(Array.isArray(item.linked_chunks) ? item.linked_chunks : []),
-      keywords: new Set(extractKeywords(`${item.canonical_name || item.question || ''} ${(item.expected_points || []).join(' ')} ${item.last_feedback || ''}`))
-    }));
-}
-
-function buildWeakChainSignals(memory, selectedIds) {
-  const selected = selectedIds instanceof Set ? selectedIds : new Set(selectedIds || []);
-  return Object.entries(memory.chains || {})
-    .filter(([, item]) => ['weak', 'unstable'].includes(item.mastery_level))
-    .filter(([, item]) => {
-      const signalTopicId = item.topic_id || topicId(item.topic || 'General');
-      return !selected.size || selected.has(signalTopicId);
-    })
-    .sort((a, b) => (b[1].next_review_priority || 0) - (a[1].next_review_priority || 0))
-    .slice(0, 10)
-    .map(([id, item]) => ({
-      id,
-      topic_id: item.topic_id || topicId(item.topic || 'General'),
-      priority: item.next_review_priority || 0,
-      keywords: new Set(extractKeywords(`${item.root_knowledge_point || ''} ${item.weakest_follow_up_type || ''} ${item.last_chain_feedback || ''}`))
+      keywords: new Set(extractKeywords(`${item.name || item.question || ''} ${item.summary || ''} ${(item.expected_points || []).join(' ')} ${item.last_feedback || ''}`))
     }));
 }
 
@@ -2139,41 +2134,7 @@ function uniqueStrings(items) {
   return [...new Set((items || []).map((item) => String(item)).filter(Boolean))];
 }
 
-function inferErrorTypes(question, review) {
-  const tags = [];
-  if ((review.incorrect_points || []).length) tags.push('incorrect_claim');
-  if ((review.missed_points || []).length >= 2) tags.push('missing_core_points');
-  const skillTags = inferSkillTags(question, review);
-  if (skillTags.includes('definition')) tags.push('definition_weak');
-  if (skillTags.includes('mechanism')) tags.push('mechanism_weak');
-  if (skillTags.includes('comparison')) tags.push('comparison_weak');
-  if (skillTags.includes('boundary_conditions')) tags.push('boundary_weak');
-  if (review.level === 'wrong') tags.push('concept_unstable');
-  return tags;
-}
-
-function inferSkillTags(question, review) {
-  const text = `${question.question || ''} ${(question.expected_points || []).join(' ')} ${review.feedback || ''} ${(review.missed_points || []).join(' ')}`.toLowerCase();
-  const tags = [];
-  if (/(什么是|定义|强类型|语义)/.test(text)) tags.push('definition');
-  if (/(为什么|机制|底层|原理|如何影响)/.test(text)) tags.push('mechanism');
-  if (/(区别|对比|不同|比较)/.test(text)) tags.push('comparison');
-  if (/(边界|条件|哪里不严谨|不能直接说|返回 true|返回 false)/.test(text)) tags.push('boundary_conditions');
-  if (/(追问|breakdown|承压)/.test(text)) tags.push('followup_resilience');
-  return uniqueStrings(tags.length ? tags : ['mechanism']);
-}
-
-function mapFollowupTypeToSkill(type) {
-  const text = String(type || '').toLowerCase();
-  if (!text) return '';
-  if (text.includes('define')) return 'definition';
-  if (text.includes('mechan')) return 'mechanism';
-  if (text.includes('compar')) return 'comparison';
-  if (text.includes('bound')) return 'boundary_conditions';
-  return 'followup_resilience';
-}
-
-function buildConceptEvent(paper, question, review, conceptId, questionKey, skillTags) {
+function buildConceptEvent(paper, question, review, conceptId, questionKey) {
   const eventType = review.level === 'correct' ? 'concept_correct' : review.level === 'partial' ? 'concept_partial' : 'concept_wrong';
   return {
     type: eventType,
@@ -2186,27 +2147,149 @@ function buildConceptEvent(paper, question, review, conceptId, questionKey, skil
     topic: question.topic || 'General',
     score: review.score,
     level: review.level,
-    skill_tags: skillTags,
     missed_points: review.missed_points || [],
     incorrect_points: review.incorrect_points || [],
     source_chunks: question.source_chunks || []
   };
 }
 
-function normalizeProfilePatterns(nextPatterns, previousPatterns = {}) {
-  const normalized = {};
-  for (const [key, value] of Object.entries(nextPatterns || {})) {
-    const patternId = String(key || '').trim();
-    if (!patternId) continue;
-    const prev = previousPatterns[patternId] || {};
-    normalized[patternId] = {
-      label: String(value?.label || prev.label || patternId),
-      evidence: String(value?.evidence || prev.evidence || ''),
-      severity: clamp(Number(value?.severity ?? prev.severity ?? 50), 0, 100),
-      updated_at: new Date().toISOString()
+function buildTopicMemory(topics, chunks) {
+  const chunkMap = {};
+  for (const chunk of chunks || []) {
+    for (const id of chunk.topic_ids || []) {
+      chunkMap[id] ||= [];
+      chunkMap[id].push(chunk);
+    }
+  }
+  const data = {};
+  for (const topic of topics.topics || []) {
+    const related = chunkMap[topic.topic_id] || [];
+    data[topic.topic_id] = {
+      topic_id: topic.topic_id,
+      name: topic.name,
+      description: `${topic.name} 面试知识入口`,
+      source_files: uniqueStrings(topic.source_files || related.map((item) => item.file)).slice(0, 20),
+      entry_chunks: uniqueStrings(related.slice(0, 20).map((item) => item.chunk_id)),
+      concept_count: related.length,
+      last_updated_at: new Date().toISOString()
     };
   }
-  return normalized;
+  return {
+    version: 1,
+    updated_at: new Date().toISOString(),
+    topics: data
+  };
+}
+
+async function buildKnowledgeMemory(topics, chunks, generatedConcepts = []) {
+  const existing = await readJson(FILES.conceptMemory, { concepts: {} });
+  const byId = new Map(Object.entries(existing.concepts || {}));
+  const topicNames = new Map((topics.topics || []).map((topic) => [topic.topic_id, topic.name]));
+  const upsertConcept = (item) => {
+    const topicIdValue = item.topic_id || topicId(item.topic || 'General');
+    const name = normalizeConceptName(item.name || item.concept || item.title || '');
+    if (!isUsableConceptName(name)) return;
+    const conceptId = item.concept_id && !String(item.concept_id).includes('?')
+      ? String(item.concept_id)
+      : hash(`${topicIdValue}:${name.toLowerCase()}`);
+    const previous = byId.get(conceptId) || {};
+    byId.set(conceptId, {
+      concept_id: conceptId,
+      topic_id: topicIdValue,
+      topic: topicNames.get(topicIdValue) || item.topic || topicIdValue,
+      name,
+      aliases: uniqueStrings([...(previous.aliases || []), ...(item.aliases || []), name]).slice(0, 8),
+      summary: '',
+      source_type: item.source_type || previous.source_type || 'bagu_local',
+      source_files: uniqueStrings([...(previous.source_files || []), ...(item.source_files || [])]).slice(0, 12),
+      linked_chunks: uniqueStrings([...(previous.linked_chunks || []), ...(item.linked_chunks || [])]).slice(0, 20),
+      expected_points: previous.expected_points || [],
+      question_key: previous.question_key || null,
+      attempt_count: previous.attempt_count || 0,
+      correct_count: previous.correct_count || 0,
+      wrong_count: previous.wrong_count || 0,
+      streak_correct: previous.streak_correct || 0,
+      streak_wrong: previous.streak_wrong || 0,
+      failure_streak: previous.failure_streak || 0,
+      recovery_streak: previous.recovery_streak || 0,
+      best_score: previous.best_score || 0,
+      last_score: previous.last_score || 0,
+      recent_scores: previous.recent_scores || [],
+      mastery_level: previous.mastery_level || 'new',
+      next_review_priority: previous.next_review_priority || 30,
+      mastery_score: previous.mastery_score || 0,
+      stability: previous.stability || 0,
+      pool: previous.pool || 'exploration_pool',
+      last_feedback: previous.last_feedback || '',
+      last_reviewed_at: previous.last_reviewed_at || null,
+      updated_at: new Date().toISOString()
+    });
+  };
+
+  for (const chunk of chunks || []) {
+    const topicIds = chunk.topic_ids?.length ? chunk.topic_ids : [];
+    for (const topicIdValue of topicIds) {
+      for (const name of conceptNamesFromChunk(chunk, topicNames.get(topicIdValue) || topicIdValue)) {
+        upsertConcept({
+          topic_id: topicIdValue,
+          topic: topicNames.get(topicIdValue) || topicIdValue,
+          name,
+          source_type: chunk.source_type,
+          source_files: [chunk.file],
+          linked_chunks: [chunk.chunk_id]
+        });
+      }
+    }
+  }
+  for (const concept of generatedConcepts || []) {
+    upsertConcept(concept);
+  }
+  return {
+    version: 2,
+    name: 'KnowledgeMemory',
+    updated_at: new Date().toISOString(),
+    concepts: Object.fromEntries([...byId.entries()].sort((a, b) => a[1].topic_id.localeCompare(b[1].topic_id) || a[1].name.localeCompare(b[1].name)))
+  };
+}
+
+function conceptNamesFromChunk(chunk, topicName) {
+  const names = [];
+  const pathParts = arrayOfStrings(chunk.path).filter(Boolean);
+  const candidates = [
+    chunk.title,
+    pathParts.slice(-2).join(' - '),
+    pathParts.slice(-1)[0]
+  ];
+  for (const candidate of candidates) {
+    const name = normalizeConceptName(candidate || '');
+    if (isUsableConceptName(name)) names.push(name);
+  }
+  if (!names.length && topicName) names.push(`${topicName} 核心机制`);
+  return uniqueStrings(names).slice(0, 2);
+}
+
+function normalizeConceptName(value) {
+  let text = String(value || '')
+    .replace(/^追问\s*\d+\s*[：:]\s*/u, '')
+    .replace(/^第\s*\d+\s*问\s*[：:]\s*/u, '')
+    .replace(/[?？].*$/u, '')
+    .replace(/^(请|说明|解释|为什么|如何|怎么|什么是|谈谈|分析)\s*/u, '')
+    .replace(/(是什么|为什么|如何|怎么).*/u, '')
+    .replace(/[“”"`]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  text = text.replace(/[，,。；;：:]+$/u, '').trim();
+  if (text.length > 42) text = text.slice(0, 42).replace(/[，,。；;：:].*$/u, '').trim();
+  return text || '通用知识点';
+}
+
+function isUsableConceptName(name) {
+  const text = String(name || '').trim();
+  if (text.length < 2 || text.length > 48) return false;
+  if (/[?？]/.test(text)) return false;
+  if (/因为|所以|例如|比如|答案|返回|报错|实现函数/.test(text)) return false;
+  if (/^#+$/.test(text)) return false;
+  return true;
 }
 
 function sanitizeFileTitle(title) {

@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "updated_at": "2026-04-21T14:14:26.208Z",
+  "topics": {
+    "python": {
+      "topic_id": "python",
+      "name": "Python",
+      "aliases": [
+        "Python"
+      ],
+      "category": "general",
+      "description": "Python 面试知识入口",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 14,
+      "created_at": "2026-04-21T14:10:39.749Z",
+      "updated_at": "2026-04-21T14:10:39.749Z"
+    },
+    "cplusplus": {
+      "topic_id": "cplusplus",
+      "name": "C++",
+      "aliases": [
+        "C++",
+        "CPP",
+        "Modern C++"
+      ],
+      "category": "general",
+      "description": "C++ 面试知识入口",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 13,
+      "created_at": "2026-04-21T14:10:39.749Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "sql_mysql": {
+      "topic_id": "sql_mysql",
+      "name": "SQL/MySQL",
+      "aliases": [
+        "SQL/MySQL",
+        "SQL",
+        "MySQL",
+        "InnoDB"
+      ],
+      "category": "general",
+      "description": "SQL/MySQL 面试知识入口",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 14,
+      "created_at": "2026-04-21T14:10:39.749Z",
+      "updated_at": "2026-04-21T14:14:26.207Z"
+    },
+    "docker": {
+      "topic_id": "docker",
+      "name": "Docker",
+      "aliases": [
+        "Docker"
+      ],
+      "category": "general",
+      "description": "Docker 面试知识入口",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 7,
+      "created_at": "2026-04-21T14:10:39.749Z",
+      "updated_at": "2026-04-21T14:10:39.749Z"
+    },
+    "kafka": {
+      "topic_id": "kafka",
+      "name": "Kafka",
+      "aliases": [
+        "Kafka"
+      ],
+      "category": "general",
+      "description": "Kafka 面试知识入口",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 11,
+      "created_at": "2026-04-21T14:10:39.749Z",
+      "updated_at": "2026-04-21T14:10:39.749Z"
+    }
+  }
+}

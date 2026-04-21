@@ -1,11 +1,9 @@
 .DS_Store
 TECH_STACK.md
 
-# Local-only knowledge sources
-笔记/*
-!笔记/.gitkeep
-
-# Personal assets should never enter the public demo repo
+# Local knowledge and personal files are not part of the repo
+八股/
+笔记/
 简历/
 
 # Runtime data
@@ -23,9 +21,7 @@ interview-trainer/data/rag/topic_index.json
 interview-trainer/data/rag/question_bank.json
 interview-trainer/data/memory/memory.json
 interview-trainer/data/memory/memory_events.jsonl
-interview-trainer/data/memory/concept_memory.json
 interview-trainer/data/memory/skill_memory.json
 interview-trainer/data/memory/profile_memory.json
-interview-trainer/data/memory/memory_summary.json
 interview-trainer/data/knowledge_candidates/**
 !interview-trainer/data/knowledge_candidates/.gitkeep
