@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-04-21T14:14:26.208Z",
+  "updated_at": "2026-04-24T02:55:30.674Z",
   "topics": {
     "python": {
       "topic_id": "python",
@@ -76,6 +76,52 @@
       "concept_count": 11,
       "created_at": "2026-04-21T14:10:39.749Z",
       "updated_at": "2026-04-21T14:10:39.749Z"
+    },
+    "redis": {
+      "topic_id": "redis",
+      "name": "Redis",
+      "aliases": [
+        "Redis"
+      ],
+      "category": "general",
+      "description": "Redis 面试 Topic",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 15,
+      "created_at": "2026-04-24T02:50:53.872Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "concurrency_programming": {
+      "topic_id": "concurrency_programming",
+      "name": "并发编程",
+      "aliases": [
+        "并发编程",
+        "Concurrent Programming",
+        "Concurrency"
+      ],
+      "category": "general",
+      "description": "并发编程 面试 Topic",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 13,
+      "created_at": "2026-04-24T02:50:53.872Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "computer_networking": {
+      "topic_id": "computer_networking",
+      "name": "计算机网络",
+      "aliases": [
+        "计算机网络",
+        "Computer Networking",
+        "Networking"
+      ],
+      "category": "general",
+      "description": "计算机网络 面试 Topic",
+      "source": "manual_description",
+      "enabled": true,
+      "concept_count": 12,
+      "created_at": "2026-04-24T02:50:53.872Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
     }
   }
 }

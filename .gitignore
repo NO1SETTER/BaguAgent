@@ -14,6 +14,7 @@ interview-trainer/data/papers/**
 !interview-trainer/data/papers/.gitkeep
 interview-trainer/data/tasks/**
 !interview-trainer/data/tasks/.gitkeep
+!interview-trainer/data/tasks/task_metrics.json
 interview-trainer/data/topics/**
 !interview-trainer/data/topics/.gitkeep
 interview-trainer/data/rag/chunks.json

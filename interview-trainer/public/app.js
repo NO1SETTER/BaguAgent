@@ -2,6 +2,7 @@ const state = {
   topics: [],
   tasks: [],
   currentPaper: null,
+  currentPaperSource: 'auto',
   recognition: null,
   recordingQuestionId: null
 };
@@ -67,46 +68,54 @@ function renderTopics() {
 }
 
 async function updateTopics() {
-  const description = el('topicDescription').value.trim();
-  if (!description) return notify('请输入技术栈关键词或自然语言描述');
-  const task = await api('/api/topics/update', {
-    method: 'POST',
-    body: {
-      description,
-      concept_count: Number(el('topicConceptCount').value || 20)
-    }
-  });
-  notify(`Topic 更新任务已排队：${task.task_id}`);
-  await loadTasks();
+  try {
+    const description = el('topicDescription').value.trim();
+    if (!description) return notify('请输入技术栈关键词或自然语言描述', 'error');
+    const task = await api('/api/topics/update', {
+      method: 'POST',
+      body: {
+        description,
+        concept_count: Number(el('topicConceptCount').value || 20)
+      }
+    });
+    notify(`Topic 更新任务已排队：${task.task_id}`);
+    await loadTasks();
+  } catch (error) {
+    notify(error.message || 'Topic 更新失败', 'error');
+  }
 }
 
 async function createPaper() {
-  const selected = [...document.querySelectorAll('.topic-check:checked')].map((node) => node.value);
-  if (!selected.length) return notify('至少选择一个 Topic');
-  const questionCount = Number(el('questionCount').value);
-  const limit = topicLimitForQuestionCount(questionCount);
-  if (Number.isFinite(limit) && selected.length > limit) {
-    return notify(`${questionCount}题试卷最多选择${limit}个Topic，当前选择了${selected.length}个。请减少Topic数量或选择更大题量。`);
-  }
-  const topicWeights = {};
-  for (const node of document.querySelectorAll('.topic-weight')) {
-    if (selected.includes(node.dataset.topic)) topicWeights[node.dataset.topic] = node.value;
-  }
-  const task = await api('/api/papers', {
-    method: 'POST',
-    body: {
-      question_count: Number(el('questionCount').value),
-      mode: el('paperMode').value,
-      selected_topics: selected,
-      topic_weights: topicWeights,
-      include_expanded_knowledge: el('includeExpanded').checked,
-      randomness: 0.3,
-      reuse_cached_questions: true,
-      rag_context_limit: 14
+  try {
+    const selected = [...document.querySelectorAll('.topic-check:checked')].map((node) => node.value);
+    if (!selected.length) return notify('至少选择一个 Topic', 'error');
+    const questionCount = Number(el('questionCount').value);
+    const limit = topicLimitForQuestionCount(questionCount);
+    if (Number.isFinite(limit) && selected.length > limit) {
+      return notify(`${questionCount}题试卷最多选择${limit}个Topic，当前选择了${selected.length}个。请减少Topic数量或选择更大题量。`, 'error');
     }
-  });
-  notify(`试卷生成任务已排队：${task.task_id}`);
-  await loadTasks();
+    const topicWeights = {};
+    for (const node of document.querySelectorAll('.topic-weight')) {
+      if (selected.includes(node.dataset.topic)) topicWeights[node.dataset.topic] = node.value;
+    }
+    const task = await api('/api/papers', {
+      method: 'POST',
+      body: {
+        question_count: Number(el('questionCount').value),
+        mode: el('paperMode').value,
+        selected_topics: selected,
+        topic_weights: topicWeights,
+        include_expanded_knowledge: el('includeExpanded').checked,
+        randomness: 0.3,
+        reuse_cached_questions: true,
+        rag_context_limit: 14
+      }
+    });
+    notify(`试卷生成任务已排队：${task.task_id}`);
+    await loadTasks();
+  } catch (error) {
+    notify(error.message || '生成试卷失败', 'error');
+  }
 }
 
 function topicLimitForQuestionCount(questionCount) {
@@ -120,8 +129,12 @@ async function loadTasks() {
   state.tasks = tasks;
   renderTasks();
   const latestPaperTask = tasks.find((task) => task.type === 'generate_paper' && task.status === 'completed' && task.result?.paper_id);
-  if (latestPaperTask && (!state.currentPaper || state.currentPaper.paper_id !== latestPaperTask.result.paper_id)) {
-    await loadPaper(latestPaperTask.result.paper_id);
+  if (
+    latestPaperTask
+    && state.currentPaperSource !== 'manual'
+    && (!state.currentPaper || state.currentPaper.paper_id !== latestPaperTask.result.paper_id)
+  ) {
+    await loadPaper(latestPaperTask.result.paper_id, 'auto');
   }
 }
 
@@ -169,9 +182,13 @@ async function archiveTask(taskId) {
 }
 
 async function deleteTask(taskId) {
-  await api(`/api/tasks/${encodeURIComponent(taskId)}`, { method: 'DELETE' });
-  notify('任务已删除');
-  await loadTasks();
+  try {
+    await api(`/api/tasks/${encodeURIComponent(taskId)}`, { method: 'DELETE' });
+    notify('任务已删除');
+    await loadTasks();
+  } catch (error) {
+    notify(error.message || '删除任务失败', 'error');
+  }
 }
 
 function renderTaskProgress(task) {
@@ -179,13 +196,19 @@ function renderTaskProgress(task) {
   const estimate = task.estimated_seconds ? formatDuration(task.estimated_seconds) : '未知';
   const terminal = ['completed', 'failed', 'cancelled'].includes(task.status);
   const endTime = terminal ? Date.parse(task.finished_at || task.updated_at || task.started_at || Date.now()) : Date.now();
-  const elapsed = task.started_at ? formatDuration(Math.max(0, (endTime - Date.parse(task.started_at)) / 1000)) : '0秒';
+  const elapsedSeconds = task.started_at ? Math.max(0, (endTime - Date.parse(task.started_at)) / 1000) : 0;
+  const elapsed = formatDuration(elapsedSeconds);
   const stage = task.stage || (task.status === 'queued' ? '排队中' : task.status);
+  const estimateSource = task.estimate_source === 'history' ? '历史估时' : '规则估时';
+  const overtime = !terminal && task.estimated_seconds && elapsedSeconds > task.estimated_seconds * 1.2;
+  const timingText = overtime
+    ? `已用 ${escapeHtml(elapsed)} · 超过${escapeHtml(estimateSource)}`
+    : `预计 ${escapeHtml(estimate)} · 已用 ${escapeHtml(elapsed)} · ${escapeHtml(estimateSource)}`;
   return `
     <div class="progress-wrap">
       <div class="progress-meta">
         <span>${escapeHtml(stage)}</span>
-        <span>${Math.round(progress)}% · 预计 ${escapeHtml(estimate)} · 已用 ${escapeHtml(elapsed)}</span>
+        <span>${Math.round(progress)}% · ${timingText}</span>
       </div>
       <div class="progress-bar" aria-label="任务进度">
         <span style="width: ${progress}%"></span>
@@ -202,8 +225,9 @@ function formatDuration(seconds) {
   return rest ? `${minutes}分${rest}秒` : `${minutes}分钟`;
 }
 
-async function loadPaper(paperId) {
+async function loadPaper(paperId, source = 'manual') {
   state.currentPaper = await api(`/api/papers/${paperId}`);
+  state.currentPaperSource = source;
   renderPaper();
   await loadFeedback();
 }
@@ -274,29 +298,37 @@ function collectAnswers() {
 }
 
 async function saveAnswers() {
-  if (!state.currentPaper) return notify('还没有试卷');
-  await api(`/api/papers/${state.currentPaper.paper_id}/answers`, {
-    method: 'POST',
-    body: { answers: collectAnswers() }
-  });
-  notify('答案已保存');
-  await loadPaper(state.currentPaper.paper_id);
+  try {
+    if (!state.currentPaper) return notify('还没有试卷', 'error');
+    await api(`/api/papers/${state.currentPaper.paper_id}/answers`, {
+      method: 'POST',
+      body: { answers: collectAnswers() }
+    });
+    notify('答案已保存');
+    await loadPaper(state.currentPaper.paper_id);
+  } catch (error) {
+    notify(error.message || '保存答案失败', 'error');
+  }
 }
 
 async function gradePaper() {
-  if (!state.currentPaper) return notify('还没有试卷');
-  const answers = collectAnswers();
-  const missing = flattenCurrentPaperQuestions().filter((question) => !answers[question.question_id]);
-  if (missing.length) {
-    return notify(`试卷尚未完整作答，还有 ${missing.length} 题未回答，不能提交评分。`);
+  try {
+    if (!state.currentPaper) return notify('还没有试卷', 'error');
+    const answers = collectAnswers();
+    const missing = flattenCurrentPaperQuestions().filter((question) => !String(answers[question.question_id] || '').trim());
+    if (missing.length) {
+      return notify(`试卷尚未完整作答，还有 ${missing.length} 题未回答，不能提交评分。`, 'error');
+    }
+    await api(`/api/papers/${state.currentPaper.paper_id}/answers`, {
+      method: 'POST',
+      body: { answers }
+    });
+    const task = await api(`/api/papers/${state.currentPaper.paper_id}/grade`, { method: 'POST', body: {} });
+    notify(`评分任务已排队：${task.task_id}`);
+    await loadTasks();
+  } catch (error) {
+    notify(error.message || '提交评分失败', 'error');
   }
-  await api(`/api/papers/${state.currentPaper.paper_id}/answers`, {
-    method: 'POST',
-    body: { answers }
-  });
-  const task = await api(`/api/papers/${state.currentPaper.paper_id}/grade`, { method: 'POST', body: {} });
-  notify(`评分任务已排队：${task.task_id}`);
-  await loadTasks();
 }
 
 function flattenCurrentPaperQuestions() {
@@ -317,47 +349,163 @@ async function loadFeedback() {
 }
 
 function startVoice(questionId) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) return notify('当前浏览器不支持 Web Speech API，请使用 Chrome 或直接输入文本。');
-  stopVoice();
   const box = document.querySelector(`[data-answer="${CSS.escape(questionId)}"]`);
   if (!box) return;
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'zh-CN';
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.onresult = (event) => {
-    let finalText = '';
-    let interimText = '';
-    for (let i = event.resultIndex; i < event.results.length; i += 1) {
-      const text = event.results[i][0].transcript;
-      if (event.results[i].isFinal) finalText += text;
-      else interimText += text;
-    }
-    if (finalText) box.value = `${box.value}${finalText}`;
-    box.placeholder = interimText || '正在听...';
-  };
-  recognition.onerror = (event) => notify(`语音识别错误：${event.error}`);
-  recognition.onend = () => {
-    if (state.recordingQuestionId === questionId) state.recordingQuestionId = null;
-  };
-  state.recognition = recognition;
-  state.recordingQuestionId = questionId;
-  recognition.start();
-  notify('开始语音输入');
+  stopVoice();
+  startTencentVoice(questionId, box).catch((error) => {
+    stopVoice();
+    notify(error.message || '语音录制失败', 'error');
+  });
 }
 
 function stopVoice() {
   if (state.recognition) {
-    state.recognition.stop();
+    const session = state.recognition;
     state.recognition = null;
     state.recordingQuestionId = null;
+    session.stop?.();
     notify('已停止语音输入');
   }
 }
 
-function notify(message) {
+async function startTencentVoice(questionId, box) {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    throw new Error('当前浏览器不支持麦克风录音');
+  }
+  const question = flattenCurrentPaperQuestions().find((item) => item.question_id === questionId);
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const audioContext = new AudioContext();
+  const source = audioContext.createMediaStreamSource(stream);
+  const processor = audioContext.createScriptProcessor(4096, 1, 1);
+  const buffers = [];
+  processor.onaudioprocess = (event) => {
+    if (state.recordingQuestionId !== questionId) return;
+    const channel = event.inputBuffer.getChannelData(0);
+    buffers.push(new Float32Array(channel));
+  };
+  source.connect(processor);
+  processor.connect(audioContext.destination);
+  state.recognition = {
+    stop: async () => {
+      const pcm = mergeFloat32(buffers);
+      const wavBytes = encodeWavFromFloat32(pcm, audioContext.sampleRate, 16000);
+      processor.disconnect();
+      source.disconnect();
+      stream.getTracks().forEach((track) => track.stop());
+      await audioContext.close();
+      const audioBase64 = bytesToBase64(wavBytes);
+      const result = await api('/api/speech/transcribe', {
+        method: 'POST',
+        body: {
+          audio_base64: audioBase64,
+          voice_format: 'wav',
+          data_len: wavBytes.byteLength,
+          topic: question?.topic || '',
+          concept: question?.concept || '',
+          expected_points: question?.expected_points || []
+        }
+      });
+      const text = String(result.result || '').trim();
+      if (text) {
+        box.value = `${box.value}${box.value ? '\n' : ''}${text}`.trim();
+        notify('语音转写完成');
+      } else {
+        notify('语音转写完成，但没有识别出文本', 'error');
+      }
+    },
+    disconnect: () => processor.disconnect(),
+    stream,
+    audioContext
+  };
+  state.recordingQuestionId = questionId;
+  box.placeholder = '正在录音...';
+  notify('开始录音');
+}
+
+function mergeFloat32(chunks) {
+  const total = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const merged = new Float32Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    merged.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return merged;
+}
+
+function encodeWavFromFloat32(float32, inputSampleRate, targetSampleRate) {
+  const mono = downsampleBuffer(float32, inputSampleRate, targetSampleRate);
+  const buffer = new ArrayBuffer(44 + mono.length * 2);
+  const view = new DataView(buffer);
+  writeAscii(view, 0, 'RIFF');
+  view.setUint32(4, 36 + mono.length * 2, true);
+  writeAscii(view, 8, 'WAVE');
+  writeAscii(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, targetSampleRate, true);
+  view.setUint32(28, targetSampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeAscii(view, 36, 'data');
+  view.setUint32(40, mono.length * 2, true);
+  let offset = 44;
+  for (let i = 0; i < mono.length; i += 1) {
+    const sample = Math.max(-1, Math.min(1, mono[i]));
+    view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+    offset += 2;
+  }
+  return new Uint8Array(buffer);
+}
+
+function downsampleBuffer(buffer, inputSampleRate, targetSampleRate) {
+  if (targetSampleRate >= inputSampleRate) return buffer;
+  const ratio = inputSampleRate / targetSampleRate;
+  const newLength = Math.round(buffer.length / ratio);
+  const result = new Float32Array(newLength);
+  let offsetResult = 0;
+  let offsetBuffer = 0;
+  while (offsetResult < result.length) {
+    const nextOffsetBuffer = Math.round((offsetResult + 1) * ratio);
+    let accum = 0;
+    let count = 0;
+    for (let i = offsetBuffer; i < nextOffsetBuffer && i < buffer.length; i += 1) {
+      accum += buffer[i];
+      count += 1;
+    }
+    result[offsetResult] = count ? accum / count : 0;
+    offsetResult += 1;
+    offsetBuffer = nextOffsetBuffer;
+  }
+  return result;
+}
+
+function writeAscii(view, offset, text) {
+  for (let i = 0; i < text.length; i += 1) {
+    view.setUint8(offset + i, text.charCodeAt(i));
+  }
+}
+
+function bytesToBase64(bytes) {
+  let binary = '';
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
+}
+
+function notify(message, level = 'info') {
   el('topicStatus').textContent = message;
+  if (state.currentPaper && el('paperInfo')) {
+    const prefix = level === 'error' ? '错误' : '提示';
+    el('paperInfo').textContent = `${prefix}：${message}`;
+  }
+  if (level === 'error') {
+    console.error(message);
+  }
 }
 
 function escapeHtml(value) {

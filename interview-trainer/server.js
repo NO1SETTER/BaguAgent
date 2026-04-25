@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
+import crypto from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -41,6 +42,7 @@ const FILES = {
   weakMemory: path.join(DIRS.memory, 'weak_memory.json'),
   memorySummary: path.join(DIRS.memory, 'memory_summary.json'),
   tasks: path.join(DIRS.tasks, 'tasks.json'),
+  taskMetrics: path.join(DIRS.tasks, 'task_metrics.json'),
   chunks: path.join(DIRS.rag, 'chunks.json'),
   topicIndex: path.join(DIRS.rag, 'topic_index.json'),
   questionBank: path.join(DIRS.rag, 'question_bank.json')
@@ -48,6 +50,13 @@ const FILES = {
 const TOPIC_INDEX_VERSION = 3;
 const CODEX_MODEL = 'gpt-5.2';
 const PAPER_CODEX_MODEL = 'gpt-5.4';
+const TENCENT_ASR_SECRET_ID = process.env.TENCENT_ASR_SECRET_ID || process.env.TENCENT_SECRET_ID || '';
+const TENCENT_ASR_SECRET_KEY = process.env.TENCENT_ASR_SECRET_KEY || process.env.TENCENT_SECRET_KEY || '';
+const TENCENT_ASR_REGION = process.env.TENCENT_ASR_REGION || 'ap-shanghai';
+const TENCENT_ASR_ENG_SERVICE_TYPE = process.env.TENCENT_ASR_ENG_SERVICE_TYPE || '16k_zh-PY';
+const TENCENT_ASR_HOST = 'asr.tencentcloudapi.com';
+const TENCENT_ASR_ACTION = 'SentenceRecognition';
+const TENCENT_ASR_VERSION = '2019-06-14';
 
 const KNOWN_TOPICS = [
   { name: 'Python', aliases: ['python', 'cpython', 'gil', 'asyncio'], category: 'language' },
@@ -146,6 +155,13 @@ async function ensureMemory() {
   if (!existsSync(FILES.memoryEvents)) {
     await fs.writeFile(FILES.memoryEvents, '', 'utf8');
   }
+  if (!existsSync(FILES.taskMetrics)) {
+    await writeJson(FILES.taskMetrics, {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      metrics: {}
+    });
+  }
 }
 
 async function ensureQuestionBank() {
@@ -173,10 +189,12 @@ async function loadTasks() {
     return;
   }
   tasks = await readJson(FILES.tasks, []);
+  const metrics = await readTaskMetrics();
   for (const task of tasks) {
     task.progress ??= task.status === 'completed' ? 100 : 0;
     task.stage ||= task.status === 'queued' ? '排队中' : task.status;
-    task.estimated_seconds ||= estimateTaskSeconds(task.type, task.payload || {});
+    task.estimated_seconds = estimateTaskSeconds(task.type, task.payload || {}, metrics);
+    task.estimate_source = estimateSource(task.type, task.payload || {}, metrics);
     if (['completed', 'failed', 'cancelled'].includes(task.status) && !task.finished_at) {
       task.finished_at = task.updated_at || task.started_at || task.created_at || new Date().toISOString();
     }
@@ -199,6 +217,7 @@ function startQueueLoop() {
 }
 
 async function enqueueTask(type, payload) {
+  const metrics = await readTaskMetrics();
   const task = {
     task_id: randomUUID(),
     type,
@@ -210,7 +229,8 @@ async function enqueueTask(type, payload) {
     finished_at: null,
     progress: 0,
     stage: '排队中',
-    estimated_seconds: estimateTaskSeconds(type, payload),
+    estimated_seconds: estimateTaskSeconds(type, payload, metrics),
+    estimate_source: estimateSource(type, payload, metrics),
     result: null,
     error: null
   };
@@ -256,6 +276,10 @@ async function processQueue() {
       }
       task.updated_at = new Date().toISOString();
       task.finished_at = task.updated_at;
+      await recordTaskMetric(task);
+      const metrics = await readTaskMetrics();
+      task.estimated_seconds = estimateTaskSeconds(task.type, task.payload || {}, metrics);
+      task.estimate_source = estimateSource(task.type, task.payload || {}, metrics);
       await saveTasks();
     }
   } finally {
@@ -347,7 +371,9 @@ function archiveKeptArtifact(task) {
   return null;
 }
 
-function estimateTaskSeconds(type, payload = {}) {
+function estimateTaskSeconds(type, payload = {}, metrics = null) {
+  const historical = pickTaskMetric(type, payload, metrics);
+  if (historical?.median_seconds) return Math.max(10, Math.round(historical.median_seconds));
   if (type === 'generate_paper') {
     const count = Number(payload.question_count || 10);
     const topicCount = Array.isArray(payload.selected_topics) ? payload.selected_topics.length : 1;
@@ -359,12 +385,68 @@ function estimateTaskSeconds(type, payload = {}) {
   return 60;
 }
 
+function estimateSource(type, payload = {}, metrics = null) {
+  return pickTaskMetric(type, payload, metrics)?.median_seconds ? 'history' : 'rule';
+}
+
+async function readTaskMetrics() {
+  return readJson(FILES.taskMetrics, { version: 1, updated_at: null, metrics: {} });
+}
+
+function metricKey(type, payload = {}) {
+  if (type === 'generate_paper') {
+    return [type, PAPER_CODEX_MODEL, Number(payload.question_count || 10), payload.mode || 'normal'].join(':');
+  }
+  if (type === 'grade_paper') return [type, CODEX_MODEL].join(':');
+  if (type === 'update_topic_concepts' || type === 'rebuild_topics' || type === 'rebuild_index') {
+    return ['update_topic_concepts', CODEX_MODEL].join(':');
+  }
+  return [type, CODEX_MODEL].join(':');
+}
+
+function pickTaskMetric(type, payload = {}, metrics) {
+  return metrics?.metrics?.[metricKey(type, payload)] || null;
+}
+
+async function recordTaskMetric(task) {
+  if (!['completed', 'failed', 'cancelled'].includes(task.status)) return;
+  if (!task.started_at || !task.finished_at) return;
+  const durationSeconds = Math.max(1, Math.round((Date.parse(task.finished_at) - Date.parse(task.started_at)) / 1000));
+  if (!Number.isFinite(durationSeconds)) return;
+  const data = await readTaskMetrics();
+  const key = metricKey(task.type, task.payload || {});
+  const entry = data.metrics[key] || { key, type: task.type, samples: [] };
+  entry.samples = [...(entry.samples || []), durationSeconds].slice(-12);
+  entry.sample_count = entry.samples.length;
+  entry.median_seconds = median(entry.samples);
+  entry.average_seconds = Math.round(entry.samples.reduce((sum, item) => sum + item, 0) / Math.max(entry.samples.length, 1));
+  entry.updated_at = new Date().toISOString();
+  data.metrics[key] = entry;
+  data.updated_at = entry.updated_at;
+  await writeJson(FILES.taskMetrics, data);
+}
+
+function median(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  if (!sorted.length) return 0;
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+}
+
 async function handleApi(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const route = url.pathname;
 
   if (req.method === 'GET' && route === '/api/health') {
-    sendJson(res, 200, { ok: true, port: PORT });
+    sendJson(res, 200, {
+      ok: true,
+      port: PORT,
+      speech_to_text: {
+        provider: 'tencent-asr',
+        configured: Boolean(TENCENT_ASR_SECRET_ID && TENCENT_ASR_SECRET_KEY),
+        engine: TENCENT_ASR_ENG_SERVICE_TYPE
+      }
+    });
     return;
   }
 
@@ -429,6 +511,12 @@ async function handleApi(req, res) {
   const gradeMatch = route.match(/^\/api\/papers\/([^/]+)\/grade$/);
   if (req.method === 'POST' && gradeMatch) {
     sendJson(res, 202, await enqueueTask('grade_paper', { paper_id: gradeMatch[1] }));
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/speech/transcribe') {
+    const body = await readBody(req);
+    sendJson(res, 200, await transcribeSpeech(body));
     return;
   }
 
@@ -1305,7 +1393,7 @@ async function updateMemoryFromPaper(paper) {
     const conceptId = hash(`${topicIdValue}:${conceptName.toLowerCase()}`);
     events.push(buildConceptEvent(paper, question, review, conceptId, questionKey));
     updateStats(legacy.topics, topicIdValue, review.score, { name: question.topic || topicIdValue });
-    updateStats(legacy.knowledge, knowledgeId, review.score, {
+    updateStats(legacy.knowledge, conceptId, review.score, {
       topic_id: topicIdValue,
       topic: question.topic,
       source_type: question.source_type,
@@ -1676,6 +1764,134 @@ function readAgentsGuideText() {
 
 function processAgentsGuide(text) {
   return String(text || '').trim();
+}
+
+async function transcribeSpeech(body) {
+  if (!(TENCENT_ASR_SECRET_ID && TENCENT_ASR_SECRET_KEY)) {
+    throw new Error('语音转写未配置。请设置 TENCENT_ASR_SECRET_ID 和 TENCENT_ASR_SECRET_KEY。');
+  }
+  const audioBase64 = String(body.audio_base64 || '').trim();
+  const voiceFormat = String(body.voice_format || 'wav').trim().toLowerCase();
+  const dataLen = Number(body.data_len || 0);
+  if (!audioBase64) {
+    throw new Error('audio_base64 is required');
+  }
+  if (!Number.isFinite(dataLen) || dataLen <= 0) {
+    throw new Error('data_len is required');
+  }
+  const hotwordList = buildTencentHotwordList(body);
+  const payload = {
+    ProjectId: 0,
+    SubServiceType: 2,
+    EngSerViceType: TENCENT_ASR_ENG_SERVICE_TYPE,
+    SourceType: 1,
+    VoiceFormat: voiceFormat,
+    Data: audioBase64,
+    DataLen: dataLen,
+    WordInfo: 0,
+    FilterDirty: 0,
+    FilterModal: 0,
+    FilterPunc: 0,
+    ConvertNumMode: 1
+  };
+  if (hotwordList) payload.HotwordList = hotwordList;
+  const response = await callTencentAsr(payload);
+  return {
+    provider: 'tencent-asr',
+    engine: TENCENT_ASR_ENG_SERVICE_TYPE,
+    result: response.Result || '',
+    audio_duration: response.AudioDuration || 0,
+    request_id: response.RequestId || null,
+    hotword_list: hotwordList || ''
+  };
+}
+
+function buildTencentHotwordList(body) {
+  const seeds = [
+    String(body.topic || ''),
+    String(body.concept || ''),
+    ...(Array.isArray(body.expected_points) ? body.expected_points.map((item) => String(item || '')) : [])
+  ];
+  const normalized = new Map();
+  for (const seed of seeds) {
+    const parts = seed
+      .split(/[\s,，。；;：:（）()、/]+/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+    for (const part of parts) {
+      if (part.length < 2 || part.length > 30) continue;
+      const key = part.toLowerCase();
+      if (!normalized.has(key)) normalized.set(key, part);
+    }
+  }
+  return [...normalized.values()].slice(0, 24).map((term) => `${term}|10`).join(',');
+}
+
+async function callTencentAsr(payload) {
+  const timestamp = Math.floor(Date.now() / 1000);
+  const date = new Date(timestamp * 1000).toISOString().slice(0, 10);
+  const service = 'asr';
+  const algorithm = 'TC3-HMAC-SHA256';
+  const canonicalUri = '/';
+  const canonicalQueryString = '';
+  const canonicalHeaders = `content-type:application/json; charset=utf-8\nhost:${TENCENT_ASR_HOST}\n`;
+  const signedHeaders = 'content-type;host';
+  const body = JSON.stringify(payload);
+  const hashedRequestPayload = sha256Hex(body);
+  const canonicalRequest = [
+    'POST',
+    canonicalUri,
+    canonicalQueryString,
+    canonicalHeaders,
+    signedHeaders,
+    hashedRequestPayload
+  ].join('\n');
+  const credentialScope = `${date}/${service}/tc3_request`;
+  const stringToSign = [
+    algorithm,
+    String(timestamp),
+    credentialScope,
+    sha256Hex(canonicalRequest)
+  ].join('\n');
+  const secretDate = hmac(`TC3${TENCENT_ASR_SECRET_KEY}`, date);
+  const secretService = hmac(secretDate, service);
+  const secretSigning = hmac(secretService, 'tc3_request');
+  const signature = hmac(secretSigning, stringToSign, 'hex');
+  const authorization = `${algorithm} Credential=${TENCENT_ASR_SECRET_ID}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
+  const response = await fetch(`https://${TENCENT_ASR_HOST}/`, {
+    method: 'POST',
+    headers: {
+      Authorization: authorization,
+      'Content-Type': 'application/json; charset=utf-8',
+      Host: TENCENT_ASR_HOST,
+      'X-TC-Action': TENCENT_ASR_ACTION,
+      'X-TC-Version': TENCENT_ASR_VERSION,
+      'X-TC-Region': TENCENT_ASR_REGION,
+      'X-TC-Timestamp': String(timestamp)
+    },
+    body
+  });
+  const text = await response.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error(`腾讯云语音识别返回了不可解析响应：${text.slice(0, 200)}`);
+  }
+  if (!response.ok || data.Response?.Error) {
+    const error = data.Response?.Error;
+    throw new Error(error ? `腾讯云语音识别失败：${error.Code} ${error.Message}` : `腾讯云语音识别 HTTP ${response.status}`);
+  }
+  return data.Response || {};
+}
+
+function sha256Hex(content) {
+  return crypto.createHash('sha256').update(content, 'utf8').digest('hex');
+}
+
+function hmac(key, content, encoding) {
+  const digest = crypto.createHmac('sha256', key).update(content, 'utf8').digest();
+  return encoding ? digest.toString(encoding) : digest;
 }
 
 function attachAgentsGuide(prompt) {

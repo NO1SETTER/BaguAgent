@@ -1,8 +1,298 @@
 {
   "version": 1,
-  "updated_at": "2026-04-21T14:14:26.211Z",
-  "weak_topics": [],
-  "weak_concepts": [],
-  "unstable_concepts": [],
-  "recently_mastered": []
+  "updated_at": "2026-04-24T09:02:43.954Z",
+  "weak_topics": [
+    {
+      "topic_id": "python",
+      "name": "Python",
+      "weak_count": 14,
+      "unstable_count": 6,
+      "average_score": 46
+    },
+    {
+      "topic_id": "cplusplus",
+      "name": "C++",
+      "weak_count": 9,
+      "unstable_count": 1,
+      "average_score": 25
+    },
+    {
+      "topic_id": "kafka",
+      "name": "Kafka",
+      "weak_count": 6,
+      "unstable_count": 4,
+      "average_score": 44
+    },
+    {
+      "topic_id": "sql_mysql",
+      "name": "SQL/MySQL",
+      "weak_count": 6,
+      "unstable_count": 3,
+      "average_score": 36
+    },
+    {
+      "topic_id": "concurrency_programming",
+      "name": "并发编程",
+      "weak_count": 7,
+      "unstable_count": 0,
+      "average_score": 11
+    },
+    {
+      "topic_id": "computer_networking",
+      "name": "计算机网络",
+      "weak_count": 5,
+      "unstable_count": 3,
+      "average_score": 33
+    },
+    {
+      "topic_id": "redis",
+      "name": "Redis",
+      "weak_count": 6,
+      "unstable_count": 1,
+      "average_score": 27
+    },
+    {
+      "topic_id": "docker",
+      "name": "Docker",
+      "weak_count": 4,
+      "unstable_count": 3,
+      "average_score": 44
+    }
+  ],
+  "weak_concepts": [
+    {
+      "concept_id": "d9c8384ad4537f59c02b165dbec1b67c4c3aaeea",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 的强类型机制",
+      "last_score": 10,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "4a9bacf084c71e520a0d5415708bb811b0ca7033",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "range 对象的语义",
+      "last_score": 55,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "af03ee71e9e6193f8bbdaeff05972cbdef31203f",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "生成器与普通可迭代对象的区别",
+      "last_score": 45,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "804a3199dab9044030ea7048ed7ecfd8f3bd6f47",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 字典的底层组织与有序性",
+      "last_score": 50,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "d8f3a3cdfe1dbf2f74acf96f7ff28cd61ba64a03",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "with 语句中的异常处理语义",
+      "last_score": 20,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "35ac5e0b70aec5b5759e2f9409e72ed5b82620a3",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "元组的可哈希性边界",
+      "last_score": 50,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "ac1971263168113fe16a9c973f58b06bf8b7d35f",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "asyncio 事件循环的单线程协作模型",
+      "last_score": 5,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "9b035b47fe979f585ec6f9d1fb42d61e957cc231",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "asyncio.Queue 的线程安全边界",
+      "last_score": 5,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "1c458a6b15d50776a9ea641b71d376075fb2693f",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 字符串格式化方案对比",
+      "last_score": 10,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "b179b0e50a8de1ae978027603139a5ce48b8f135",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "map 与 filter 的惰性求值特性",
+      "last_score": 55,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "dab369d5c7057a1c5a3302a61232e3203fb064e7",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "迭代协议与可迭代对象判定",
+      "last_score": 45,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    },
+    {
+      "concept_id": "b1d052e910027f7c22f9b7bf75a6a2f1476a8143",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 上下文管理器的资源释放语义",
+      "last_score": 55,
+      "mastery_level": "weak",
+      "pool": "wrong_pool"
+    }
+  ],
+  "unstable_concepts": [
+    {
+      "concept_id": "8efffdd19a47ea5006566d86f2b9571697d6f698",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "CPython 的 GIL 锁机制",
+      "last_score": 60,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "ba35d4f43bb474edf8c67fa9e0d0ea778722d259",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 多进程绕开 GIL 的方式",
+      "last_score": 65,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "f815d5eec7a1ff33298711320cb79bcf6414d5fb",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 可变性语义",
+      "last_score": 82,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "34cf038b95f4a1d582a2738a51e74775fc7539f7",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 容器扩容机制",
+      "last_score": 70,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "d675f7f262303ec84d09ac4187e93857f64436a1",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 引用计数与循环垃圾回收",
+      "last_score": 75,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "f1d705422a63f833af6297123bb890340bcc6298",
+      "topic_id": "python",
+      "topic": "Python",
+      "question": "Python 描述符协议",
+      "last_score": 65,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "1f5f603a722f4c4fd362d9d380ae1baddb2881c2",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "question": "模板实例化与编译期多态",
+      "last_score": 70,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "94bce94879cc052d7621793bdfb3ade80cf627d3",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "question": "min.insync.replicas",
+      "last_score": 60,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "1bbca6917dab96577bf9d784d4be5ccd6d10b24b",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "question": "Kafka 里 Topic、Partition、Broker 三者的关系",
+      "last_score": 70,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "a6bfcb12181f2f7ef0a6d17337c9cfe7761b6df5",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "question": "Kafka 的顺序性默认成立的边界",
+      "last_score": 75,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "ecb2cd8f2bcd5e0e23e65058fc9f387f83e9ed51",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "question": "Kafka 分区副本选主语义",
+      "last_score": 60,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    },
+    {
+      "concept_id": "7ded528b4fb1682d351fe574e73a3fe68811c05b",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "question": "Docker 里的 Image 和 Container",
+      "last_score": 75,
+      "mastery_level": "unstable",
+      "pool": "unstable_pool"
+    }
+  ],
+  "recently_mastered": [
+    {
+      "concept_id": "3bf94edbbe33e17aa471799266999fcb40acb78a",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "question": "死锁形成条件",
+      "last_score": 90
+    },
+    {
+      "concept_id": "7183c92127c6f1a963f46d7ed82238ebabcbc12c",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "question": "Redis 键过期机制与淘汰策略",
+      "last_score": 85
+    }
+  ]
 }

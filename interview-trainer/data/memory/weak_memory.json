@@ -1,7 +1,4304 @@
 {
   "version": 1,
   "name": "Weak Knowledge Memory",
-  "updated_at": "2026-04-21T13:24:21.019Z",
-  "topics": {},
-  "concepts": {}
+  "updated_at": "2026-04-24T09:02:43.944Z",
+  "topics": {
+    "python": {
+      "topic_id": "python",
+      "name": "Python",
+      "weak_count": 14,
+      "unstable_count": 6,
+      "average_score": 46,
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "priority": 100
+    },
+    "cplusplus": {
+      "topic_id": "cplusplus",
+      "name": "C++",
+      "weak_count": 9,
+      "unstable_count": 1,
+      "average_score": 25,
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "priority": 100
+    },
+    "kafka": {
+      "topic_id": "kafka",
+      "name": "Kafka",
+      "weak_count": 6,
+      "unstable_count": 4,
+      "average_score": 44,
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "priority": 100
+    },
+    "docker": {
+      "topic_id": "docker",
+      "name": "Docker",
+      "weak_count": 4,
+      "unstable_count": 3,
+      "average_score": 44,
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "priority": 100
+    },
+    "sql_mysql": {
+      "topic_id": "sql_mysql",
+      "name": "SQL/MySQL",
+      "weak_count": 6,
+      "unstable_count": 3,
+      "average_score": 36,
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "priority": 100
+    },
+    "redis": {
+      "topic_id": "redis",
+      "name": "Redis",
+      "weak_count": 6,
+      "unstable_count": 1,
+      "average_score": 27,
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "priority": 100
+    },
+    "concurrency_programming": {
+      "topic_id": "concurrency_programming",
+      "name": "并发编程",
+      "weak_count": 7,
+      "unstable_count": 0,
+      "average_score": 11,
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "priority": 100
+    },
+    "computer_networking": {
+      "topic_id": "computer_networking",
+      "name": "计算机网络",
+      "weak_count": 5,
+      "unstable_count": 3,
+      "average_score": 33,
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "priority": 100
+    }
+  },
+  "concepts": {
+    "d9c8384ad4537f59c02b165dbec1b67c4c3aaeea": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d9c8384ad4537f59c02b165dbec1b67c4c3aaeea",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 的强类型机制",
+      "question_key": "bcbf46cc958413e0265c2533adcbfed8b1f048e3",
+      "aliases": [
+        "Python 的强类型机制"
+      ],
+      "detail": {
+        "question": "为什么说 Python 是强类型语言，而不是弱类型语言？请结合运算行为说明“不会隐式按另一种不兼容类型解释值”这一点。",
+        "missed_points": [
+          "强类型关注类型约束是否严格，而非变量是否可重新绑定",
+          "不兼容类型运算通常直接 TypeError，而非危险隐式转换",
+          "用 str + int 等例子说明不随意隐式转换",
+          "区分强类型与动态类型：Python 是动态强类型"
+        ],
+        "incorrect_points": [],
+        "feedback": "基本未作答。建议用一个最典型例子（'1'+2 报错）来锚定“强类型=不做不兼容的隐式解释”，并明确 Python 是“动态 + 强类型”。",
+        "better_answer": "Python 常被称为“动态强类型”。强类型强调类型约束严格：不兼容类型不会为了“凑结果”做危险隐式转换；例如 `'1' + 2` 会直接抛 `TypeError`，而不是把 2 变成字符串或把 '1' 变成数字。动态类型强调的是变量名可重新绑定到不同类型的对象，但这不等于弱类型。"
+      },
+      "linked_chunks": [
+        "c3a675d6e7f406089e60f10e346f0b10bde0b002",
+        "3e6bb5ec04a62852bd7d56a83549926101fb87cd"
+      ],
+      "source_files": [],
+      "last_feedback": "基本未作答。建议用一个最典型例子（'1'+2 报错）来锚定“强类型=不做不兼容的隐式解释”，并明确 Python 是“动态 + 强类型”。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明强类型关注的是类型约束是否严格，而不是变量是否可重新绑定",
+        "举出 Python 遇到不兼容类型时通常直接报 TypeError，而不是自动做危险转换",
+        "能用字符串与整数相加这类例子说明 Python 不会随意隐式转换",
+        "区分强类型与动态类型，指出 Python 是动态强类型"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.355Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "8efffdd19a47ea5006566d86f2b9571697d6f698": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 60,
+      "last_score": 60,
+      "recent_scores": [
+        60
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "8efffdd19a47ea5006566d86f2b9571697d6f698",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "CPython 的 GIL 锁机制",
+      "question_key": "000f075ec064cccc1c53d57c4d0dfd90a4a568af",
+      "aliases": [
+        "CPython 的 GIL 锁机制"
+      ],
+      "detail": {
+        "question": "CPython 的 GIL 为什么会限制 CPU 密集型多线程？",
+        "missed_points": [
+          "线程切换额外开销且不能真正并行利用多核",
+          "I/O 密集型场景线程仍可能有效：阻塞时会释放 GIL"
+        ],
+        "incorrect_points": [
+          "把 GIL 表述成“全局 CPU 只有一个人使用”不准确：限制的是解释器执行字节码的并行性，不是机器只有一个 CPU 可用"
+        ],
+        "feedback": "抓到“同一时刻只能一个线程跑字节码”这个核心，但表述需要更精确，并补上 I/O 场景为何不同。",
+        "better_answer": "在 CPython 中，GIL 使得同一时刻通常只有一个线程能执行 Python 字节码。CPU 密集型任务几乎一直在运行字节码并持续争用 GIL，因此多个线程会频繁切换但无法在多核上真正并行，反而带来上下文切换开销。I/O 密集型任务在阻塞等待 I/O 时会释放 GIL，所以多线程仍可能提升吞吐。"
+      },
+      "linked_chunks": [
+        "3826a8c3aea63314ed79a807afef899579a58e90",
+        "49faa172cdc49b65edcf175d82930ea06c5ee9eb"
+      ],
+      "source_files": [],
+      "last_feedback": "抓到“同一时刻只能一个线程跑字节码”这个核心，但表述需要更精确，并补上 I/O 场景为何不同。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明同一时刻通常只有一个线程执行 Python 字节码",
+        "指出 CPU 密集型任务几乎一直在争用 GIL",
+        "说明线程切换带来额外开销且不能真正并行利用多核",
+        "补充 I/O 密集型场景下线程仍可能有效，因为阻塞时会释放 GIL"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.355Z",
+      "mastery_score": 48,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "ba35d4f43bb474edf8c67fa9e0d0ea778722d259": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 65,
+      "last_score": 65,
+      "recent_scores": [
+        65
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "ba35d4f43bb474edf8c67fa9e0d0ea778722d259",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 多进程绕开 GIL 的方式",
+      "question_key": "cf92df4811f1703c0ce971c09bfd05c69098c171",
+      "aliases": [
+        "Python 多进程绕开 GIL 的方式"
+      ],
+      "detail": {
+        "question": "在 Python 里如果要让 CPU 密集型任务跑满多核，为什么通常推荐多进程而不是多线程？",
+        "missed_points": [
+          "每个进程有各自解释器与各自的 GIL（关键机制点）",
+          "进程创建与 IPC/序列化成本更高",
+          "需按 CPU 密集 vs I/O 密集选择模型"
+        ],
+        "incorrect_points": [],
+        "feedback": "结论正确但缺少“为什么多进程能绕开 GIL”的机制解释，以及成本权衡。",
+        "better_answer": "多进程通常更适合 CPU 密集型，因为每个进程都有独立的 Python 解释器和各自的 GIL，可以在不同 CPU 核上真正并行执行；而多线程在 CPython 下会持续争用同一个 GIL，难以并行。代价是进程创建更重、进程间通信/数据传递通常要序列化，开销更高；I/O 密集型则常用线程或 asyncio。"
+      },
+      "linked_chunks": [
+        "58cb20c39247c975ff6f0ab39a23264a074b74f8"
+      ],
+      "source_files": [],
+      "last_feedback": "结论正确但缺少“为什么多进程能绕开 GIL”的机制解释，以及成本权衡。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "指出每个进程有各自独立的 Python 解释器和 GIL",
+        "说明多进程能在多个 CPU 核上真正并行执行",
+        "提到代价是进程创建和进程间通信成本更高",
+        "说明是否选择多进程取决于任务是 CPU 密集还是 I/O 密集"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.355Z",
+      "mastery_score": 52,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "4a9bacf084c71e520a0d5415708bb811b0ca7033": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "4a9bacf084c71e520a0d5415708bb811b0ca7033",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "range 对象的语义",
+      "question_key": "06ff9ec045ef169a76f11c98f26f18c2b09b1305",
+      "aliases": [
+        "range 对象的语义"
+      ],
+      "detail": {
+        "question": "为什么不能直接把 `range()` 说成迭代器？",
+        "missed_points": [
+          "迭代器需要实现 `__next__`",
+          "`iter(range_obj)` 才会得到迭代器",
+          "range 是惰性表示区间序列而非生成完整列表",
+          "range 对象本身不直接承担逐项状态推进（由迭代器承担）"
+        ],
+        "incorrect_points": [],
+        "feedback": "方向对，但需要用“协议”说清楚：iterable vs iterator 的最小差异（`__iter__` / `__next__`）。",
+        "better_answer": "`range()` 返回的是一个可迭代对象（iterable），它能被 `iter()` 获取迭代器，但它本身不一定实现 `__next__` 来逐个推进。迭代时实际是 `it = iter(r)` 得到一个迭代器，随后不断调用 `next(it)`。另外 `range` 惰性表示整数区间，不会预先生成完整列表。"
+      },
+      "linked_chunks": [
+        "12512d17c94cd00f8b6f8faec715a0efb66d38d1",
+        "17b80b26ecd5fa626c2fb421ed9527b3be80aa04"
+      ],
+      "source_files": [],
+      "last_feedback": "方向对，但需要用“协议”说清楚：iterable vs iterator 的最小差异（`__iter__` / `__next__`）。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明 range 返回的是可迭代对象而不是迭代器本身",
+        "指出迭代器需要实现 __next__，而 range 对象本身不直接承担逐项状态推进",
+        "说明对 range 调用 iter(range_obj) 才会得到迭代器",
+        "可补充 range 是惰性表示一个整数序列区间而非预先生成完整列表"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.355Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "af03ee71e9e6193f8bbdaeff05972cbdef31203f": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "af03ee71e9e6193f8bbdaeff05972cbdef31203f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "生成器与普通可迭代对象的区别",
+      "question_key": "68bf04304765613c4e28fc219586470b80ec27f6",
+      "aliases": [
+        "生成器与普通可迭代对象的区别"
+      ],
+      "detail": {
+        "question": "Python 中生成器和普通可迭代对象的核心区别是什么？",
+        "missed_points": [
+          "生成器通常既是 iterable 也是 iterator",
+          "生成器按需产出值并保存执行现场（暂停/恢复）",
+          "普通可迭代对象未必自带单次推进状态",
+          "能对比 list/range 与 generator expression"
+        ],
+        "incorrect_points": [
+          "把生成器描述成“用来生成一个可迭代对象”过于泛化，忽略其“自身就是迭代器、可保存现场按需产出”的核心特征"
+        ],
+        "feedback": "需要抓住生成器最核心的两点：`next()` 可推进、yield 保存现场；以及它通常是一次性消费的 iterator。",
+        "better_answer": "生成器的核心在于：它通常既是可迭代对象也是迭代器（支持 `__next__`），会按需（lazy）产出值，并在 `yield/await` 处保存执行现场以便下次继续。普通可迭代对象（如 `list`、`range`）通常只是能“生成迭代器”，自身不一定维护单次推进状态。"
+      },
+      "linked_chunks": [
+        "9959f063fccccc7a821b5567e2b2b17b5e28afa0"
+      ],
+      "source_files": [],
+      "last_feedback": "需要抓住生成器最核心的两点：`next()` 可推进、yield 保存现场；以及它通常是一次性消费的 iterator。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明生成器本身通常既是可迭代对象也是迭代器",
+        "指出生成器按需产出值并保存执行现场",
+        "说明普通可迭代对象未必自带单次推进状态",
+        "能举出 list、range 与 generator expression 的差异"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "f815d5eec7a1ff33298711320cb79bcf6414d5fb": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 82,
+      "last_score": 82,
+      "recent_scores": [
+        82
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "f815d5eec7a1ff33298711320cb79bcf6414d5fb",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 可变性语义",
+      "question_key": "f9cb3209cbcb8eef6df834b4ef4953cb42bb59e0",
+      "aliases": [
+        "Python 可变性语义"
+      ],
+      "detail": {
+        "question": "Python 里的“对象可变”和“变量可重新绑定”为什么不是一回事？",
+        "missed_points": [
+          "若能明确举例：`lst.append()` 是原地修改、`x=1; x=2` 是重新绑定，会更标准"
+        ],
+        "incorrect_points": [],
+        "feedback": "整体正确。建议补一个最标准的对比例子来让表述更“面试答案化”。",
+        "better_answer": "变量名在 Python 里是“绑定到对象的引用”。“对象可变”说的是对象内容能否原地修改（如 `lst.append(1)` 修改同一个 list 对象）；“变量可重新绑定”说的是名字可以指向另一个对象（如 `x=1; x=2` 让 x 绑定到新 int 对象），与原对象是否可变无关。"
+      },
+      "linked_chunks": [
+        "e4466237faf5c4c2ee03871baf342482a21704fb"
+      ],
+      "source_files": [],
+      "last_feedback": "整体正确。建议补一个最标准的对比例子来让表述更“面试答案化”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明变量名绑定的是对象引用",
+        "指出可变性描述的是对象内容能否原地修改",
+        "说明重新绑定是名字指向另一个对象，与原对象是否可变无关",
+        "能用 list 原地 append 与整数重新赋值对比说明"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 66,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "804a3199dab9044030ea7048ed7ecfd8f3bd6f47": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 50,
+      "last_score": 50,
+      "recent_scores": [
+        50
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "804a3199dab9044030ea7048ed7ecfd8f3bd6f47",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 字典的底层组织与有序性",
+      "question_key": "c97df57e50021477f4e06be04780a9547e315ea3",
+      "aliases": [
+        "Python 字典的底层组织与有序性"
+      ],
+      "detail": {
+        "question": "现代 CPython 的 `dict` 为什么既能保持插入顺序，又仍然保持平均 O(1) 查找？",
+        "missed_points": [
+          "现代 CPython 通过紧凑布局等方式记录插入顺序（机制点）",
+          "保持插入顺序不等于按键排序",
+          "极端哈希冲突下复杂度可能退化"
+        ],
+        "incorrect_points": [],
+        "feedback": "只答到了 O(1) 的来源，但“为什么还能保序”是题目核心，需要补实现思路（记录插入顺序/索引）。",
+        "better_answer": "现代 CPython 的 `dict` 仍是哈希表结构，因此平均 O(1) 查找来自哈希定位。之所以能保持插入顺序，是实现上在表结构中额外保留了插入顺序相关的信息（例如通过更紧凑的数据布局/顺序索引来按插入顺序遍历）。这只是“插入顺序”，不是按 key 排序；在极端哈希冲突下复杂度仍可能退化。"
+      },
+      "linked_chunks": [
+        "ca71c3526ec2fa466f80a4efed752c22954bbff4"
+      ],
+      "source_files": [],
+      "last_feedback": "只答到了 O(1) 的来源，但“为什么还能保序”是题目核心，需要补实现思路（记录插入顺序/索引）。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明底层仍是哈希表，查找平均复杂度来自哈希定位",
+        "指出现代实现通过更紧凑的数据布局记录插入顺序",
+        "说明保持顺序不等于按键排序",
+        "提到极端哈希冲突下复杂度仍可能退化"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 40,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "34cf038b95f4a1d582a2738a51e74775fc7539f7": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 70,
+      "last_score": 70,
+      "recent_scores": [
+        70
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "34cf038b95f4a1d582a2738a51e74775fc7539f7",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 容器扩容机制",
+      "question_key": "f2bef5c90d40571741430b8af93e0a50f5e839bd",
+      "aliases": [
+        "Python 容器扩容机制"
+      ],
+      "detail": {
+        "question": "Python 的 list 为什么要预留容量并按策略扩容，而不是每次插入一个元素就精确增长一次？",
+        "missed_points": [
+          "按策略扩容使 append 具有均摊 O(1) 的时间复杂度表述",
+          "扩容会导致底层内存位置变化（但对象语义不变）的补充点"
+        ],
+        "incorrect_points": [],
+        "feedback": "核心思路正确，补上“均摊 O(1)”这句和“扩容会搬家”的细节，会更完整。",
+        "better_answer": "如果每次插入都精确扩容，list 会频繁触发重新分配与拷贝搬移，代价很高。按策略预留容量可以把多次 append 的成本摊薄，使 append 呈均摊 O(1)。这是用少量额外空间换取更稳定时间复杂度；扩容时底层缓冲区可能搬家，但 list 作为对象的引用语义不变。"
+      },
+      "linked_chunks": [
+        "f49ed2f834e6c6aaab612da29a742bf55763e2c2"
+      ],
+      "source_files": [],
+      "last_feedback": "核心思路正确，补上“均摊 O(1)”这句和“扩容会搬家”的细节，会更完整。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明频繁精确扩容会导致大量内存重分配和数据搬移",
+        "指出按策略预留容量可以摊薄 append 成本",
+        "说明这是一种用少量额外空间换取更稳定时间复杂度的做法",
+        "提到扩容后已有元素引用语义不变但底层内存位置可能变化"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 56,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "d675f7f262303ec84d09ac4187e93857f64436a1": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "d675f7f262303ec84d09ac4187e93857f64436a1",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 引用计数与循环垃圾回收",
+      "question_key": "f2e33f78d48e7121f101c46e0d37f079a0951747",
+      "aliases": [
+        "Python 引用计数与循环垃圾回收"
+      ],
+      "detail": {
+        "question": "CPython 的引用计数和循环垃圾回收各自解决什么问题？为什么两者都需要存在？",
+        "missed_points": [
+          "引用计数的优势是多数对象能及时回收（实时性）",
+          "引用计数维护计数有额外开销（补充点）"
+        ],
+        "incorrect_points": [
+          "“引用技术解决的是变量的垃圾回收”表述不严谨：回收的是对象，变量名只是引用绑定"
+        ],
+        "feedback": "关键点（循环引用需要 GC）答到了。把“对象/变量名”概念说准，并补一句引用计数的优缺点即可。",
+        "better_answer": "CPython 的引用计数负责大多数对象的及时回收：当对象引用数降为 0 时可立刻释放。但在循环引用场景下，对象彼此持有引用导致计数无法降到 0，于是需要额外的循环垃圾回收（gc）去检测引用环并回收其中的不可达对象。两者都需要：引用计数快且及时，但维护计数有开销且处理不了环。"
+      },
+      "linked_chunks": [
+        "dae06ca86769252f7c43930bc77b86feb84c5a70"
+      ],
+      "source_files": [],
+      "last_feedback": "关键点（循环引用需要 GC）答到了。把“对象/变量名”概念说准，并补一句引用计数的优缺点即可。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明引用计数负责大多数对象的及时回收",
+        "指出循环引用场景下单靠引用计数无法把计数降到 0",
+        "说明 gc 主要补充检测并回收循环引用垃圾",
+        "可补充引用计数带来实时性较好但也有维护计数开销"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "f1d705422a63f833af6297123bb890340bcc6298": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 65,
+      "last_score": 65,
+      "recent_scores": [
+        65
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "f1d705422a63f833af6297123bb890340bcc6298",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 描述符协议",
+      "question_key": "f0ba6ca590eb8bd8dfd9c7e601b15427b5ae4d2f",
+      "aliases": [
+        "Python 描述符协议"
+      ],
+      "detail": {
+        "question": "Python 的描述符协议 `__get__`、`__set__`、`__delete__` 解决的核心问题是什么？",
+        "missed_points": [
+          "描述符把属性访问逻辑对象化并可复用（核心价值表达不足）",
+          "函数变绑定方法、property 的工作依赖描述符机制",
+          "数据描述符 vs 非数据描述符的查找优先级差异"
+        ],
+        "incorrect_points": [
+          "“对一个类想获得元素”表述不清，概念应是“属性访问”而非“元素”"
+        ],
+        "feedback": "命中了“拦截属性访问”，但需要补：为何叫协议、用在哪（property/方法绑定）以及优先级（数据/非数据描述符）。",
+        "better_answer": "描述符协议用来把“属性访问行为”封装成可复用对象：实现 `__get__ / __set__ / __delete__` 后，可以拦截属性的读取、写入、删除。`property` 的实现依赖描述符；类中定义的函数通过描述符 `__get__` 在实例访问时绑定成方法。数据描述符与非数据描述符在属性查找优先级上也不同。"
+      },
+      "linked_chunks": [
+        "126fd0a2a1e203bb21aef9be8ad850450b535ccd"
+      ],
+      "source_files": [],
+      "last_feedback": "命中了“拦截属性访问”，但需要补：为何叫协议、用在哪（property/方法绑定）以及优先级（数据/非数据描述符）。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明描述符把属性访问逻辑对象化和可复用化",
+        "指出它可拦截属性的读取、写入、删除行为",
+        "说明函数变成绑定方法、property 工作都依赖描述符机制",
+        "可补充数据描述符与非数据描述符在查找优先级上不同"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 52,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "d8f3a3cdfe1dbf2f74acf96f7ff28cd61ba64a03": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 20,
+      "last_score": 20,
+      "recent_scores": [
+        20
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d8f3a3cdfe1dbf2f74acf96f7ff28cd61ba64a03",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "with 语句中的异常处理语义",
+      "question_key": "57958fb71e8c95a07926d9cc9f30c29253baf895",
+      "aliases": [
+        "with 语句中的异常处理语义"
+      ],
+      "detail": {
+        "question": "`with` 语句里 `__exit__` 返回 `True` 和返回 `False` 有什么区别？",
+        "missed_points": [
+          "`__exit__` 退出时接收异常信息（若有）",
+          "返回 True 表示抑制异常，不向外传播",
+          "返回 False/假值表示异常继续传播",
+          "无异常时返回值通常不影响正常流程"
+        ],
+        "incorrect_points": [
+          "把 `__exit__` 的返回值理解为“资源是否释放”是错误的：资源释放应由 `__exit__` 内部执行，返回值语义是“是否吞掉异常”"
+        ],
+        "feedback": "这题的核心是“异常是否被抑制”，不是“资源是否释放”。`__exit__` 总会被调用来做清理；返回值决定异常传播。",
+        "better_answer": "`with` 块退出时会调用 `__exit__(exc_type, exc, tb)`：若块内发生异常，`__exit__` 会接收到异常信息。`__exit__` 返回 `True` 表示异常已处理并被抑制，不再向外传播；返回 `False` 或假值表示异常继续向外抛出。若没有异常，返回值通常不影响流程。"
+      },
+      "linked_chunks": [
+        "4f9fcf4d87ed3bd3e579911a5b7e0aba4a5d3993"
+      ],
+      "source_files": [],
+      "last_feedback": "这题的核心是“异常是否被抑制”，不是“资源是否释放”。`__exit__` 总会被调用来做清理；返回值决定异常传播。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 `__exit__` 会在退出上下文时接收异常信息",
+        "指出返回 True 表示异常被抑制，不再继续向外传播",
+        "指出返回 False 或假值表示异常继续传播",
+        "说明若没有异常，返回值通常不影响正常流程"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 16,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "35ac5e0b70aec5b5759e2f9409e72ed5b82620a3": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 50,
+      "last_score": 50,
+      "recent_scores": [
+        50
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "35ac5e0b70aec5b5759e2f9409e72ed5b82620a3",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "元组的可哈希性边界",
+      "question_key": "c759581d91084bfae837806246473c43011a572c",
+      "aliases": [
+        "元组的可哈希性边界"
+      ],
+      "detail": {
+        "question": "“元组不可变，所以元组一定可哈希”这句话哪里不严谨？",
+        "missed_points": [
+          "元组是否可哈希取决于其元素也必须都可哈希",
+          "举出包含 list 的 tuple 不可哈希的反例",
+          "可哈希通常要求哈希值生命周期内稳定"
+        ],
+        "incorrect_points": [
+          "“没有什么关系”过于绝对：不可变通常是可哈希的必要条件之一（常见设计），但不足以保证可哈希"
+        ],
+        "feedback": "抓到了“不严谨”，但需要精确落点：tuple 只有在所有元素都可哈希时才可哈希。",
+        "better_answer": "“元组不可变，所以一定可哈希”不严谨：元组本身不可变，但如果它包含不可哈希元素（如 `([1,2], 3)` 里的 list），整个元组就不可哈希。元组的可哈希性取决于其所有元素也都可哈希；可哈希通常还要求对象在生命周期内哈希值稳定。"
+      },
+      "linked_chunks": [
+        "63d7401bdfe3392983ac12e4e89b9186acd3b4fe"
+      ],
+      "source_files": [],
+      "last_feedback": "抓到了“不严谨”，但需要精确落点：tuple 只有在所有元素都可哈希时才可哈希。",
+      "source_type": "expanded",
+      "expected_points": [
+        "指出元组自身不可变不代表其所有元素都可哈希",
+        "说明元组的哈希能力取决于内部元素也必须可哈希",
+        "举出包含 list 的 tuple 不可哈希的反例",
+        "可补充可哈希通常要求对象在生命周期内哈希值稳定"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 40,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "ac1971263168113fe16a9c973f58b06bf8b7d35f": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 5,
+      "last_score": 5,
+      "recent_scores": [
+        5
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "ac1971263168113fe16a9c973f58b06bf8b7d35f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "asyncio 事件循环的单线程协作模型",
+      "question_key": "54b538ecd556cb039baff0ce4e313877ed5be64c",
+      "aliases": [
+        "asyncio 事件循环的单线程协作模型"
+      ],
+      "detail": {
+        "question": "为什么说 `asyncio` 的事件循环本质上是单线程里的协作式调度，而不是抢占式多线程？",
+        "missed_points": [
+          "多个协程通常在同一线程事件循环中运行",
+          "只有在 `await` 等挂起点才主动让出执行权（协作式）",
+          "不是 OS 抢占式随时打断任意 Python 代码段",
+          "阻塞代码会卡住整个事件循环（补充点）"
+        ],
+        "incorrect_points": [
+          "回答为占位文本，未涉及题目"
+        ],
+        "feedback": "未作答。需要直接对比“协作式 vs 抢占式”：谁决定切换时机、切换点在哪里。",
+        "better_answer": "`asyncio` 的事件循环通常在单线程中运行多个协程。协程不会被操作系统随时强制打断，而是在执行到 `await`（或其它挂起点）时主动让出控制权，由事件循环调度下一个可运行协程，因此是单线程内的协作式调度。若在协程里执行阻塞函数，会把整个事件循环卡住。"
+      },
+      "linked_chunks": [
+        "e3473c9f262ab6b649bf2aaaaa417eadd069b4e9"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。需要直接对比“协作式 vs 抢占式”：谁决定切换时机、切换点在哪里。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明多个协程通常在同一线程事件循环中运行",
+        "指出协程只有在 await 等挂起点才会主动让出执行权",
+        "说明不是操作系统随时强制抢占任意 Python 代码段",
+        "可补充这使共享状态问题减少但阻塞代码会卡住整个循环"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 4,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "9b035b47fe979f585ec6f9d1fb42d61e957cc231": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 5,
+      "last_score": 5,
+      "recent_scores": [
+        5
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "9b035b47fe979f585ec6f9d1fb42d61e957cc231",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "asyncio.Queue 的线程安全边界",
+      "question_key": "47502ef8409a1b23ae0756182deab0f792ede734",
+      "aliases": [
+        "asyncio.Queue 的线程安全边界"
+      ],
+      "detail": {
+        "question": "为什么说 `asyncio.Queue` 不是线程安全队列？",
+        "missed_points": [
+          "`asyncio.Queue` 为同一事件循环内协程协作设计",
+          "同步语义依赖事件循环而非线程锁",
+          "跨线程直接操作可能破坏调度与一致性",
+          "跨线程通信应使用线程安全队列或线程安全调度接口（补充）"
+        ],
+        "incorrect_points": [
+          "回答为占位文本，未涉及题目"
+        ],
+        "feedback": "未作答。记住一句话：`asyncio.Queue` 面向“同 loop 协程”，不是“跨线程”。",
+        "better_answer": "`asyncio.Queue` 设计目标是同一个事件循环中的协程之间协作，它的等待/唤醒语义依赖事件循环调度，而不是用线程级锁来保证并发安全。因此跨线程直接 put/get 可能导致状态与调度不一致。跨线程通信通常用 `queue.Queue`，或用线程安全方式把任务投递回事件循环（如 `loop.call_soon_threadsafe`）。"
+      },
+      "linked_chunks": [
+        "12e6c91bb74c932647fa3f9f0d60af9ac923c181"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。记住一句话：`asyncio.Queue` 面向“同 loop 协程”，不是“跨线程”。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明它是为同一事件循环内协程之间协作设计的",
+        "指出其同步语义依赖事件循环而不是线程级锁保护",
+        "说明跨线程直接操作可能破坏预期调度和状态一致性",
+        "可补充跨线程通信通常应借助线程安全队列或线程安全调度接口"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 4,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "1c458a6b15d50776a9ea641b71d376075fb2693f": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "1c458a6b15d50776a9ea641b71d376075fb2693f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 字符串格式化方案对比",
+      "question_key": "d1993867fdd7be5be0a027e7484356618ef1c716",
+      "aliases": [
+        "Python 字符串格式化方案对比"
+      ],
+      "detail": {
+        "question": "`%` 格式化、`str.format()` 和 f-string 的主要区别是什么？面试里至少应答出哪几个关键点？",
+        "missed_points": [
+          "三者都能做字符串插值但语法/能力不同",
+          "f-string 直观且支持表达式嵌入",
+          "`str.format()` 模板化与字段控制更系统",
+          "`%` 更老旧、复杂场景可读性差（补充点）"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。面试至少记住：f-string（表达式最强最直观）、format（模板/字段控制）、%（旧式）。",
+        "better_answer": "`%`、`str.format()`、f-string 都能做字符串插值，但风格与能力不同：f-string 最直观，能直接在 `{}` 写表达式；`str.format()` 更偏模板化，字段名/位置/格式控制比较系统；`%` 是旧式方案，在复杂拼接时可读性较差。面试至少说明三者定位与差异，并点出 f-string 的表达式能力。"
+      },
+      "linked_chunks": [
+        "f4bd1c95822bcb39b0dd51b95b0d4f62e1dd261b",
+        "c49e85dfaac6c831d9ae3cc1e67beba73aaa8735",
+        "8b330682f5af20349aeb2b1886102abdd2f8ef5d"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。面试至少记住：f-string（表达式最强最直观）、format（模板/字段控制）、%（旧式）。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明三者都能完成字符串插值，但语法风格和表达能力不同",
+        "指出 f-string 通常最直观，表达式嵌入能力强",
+        "说明 `str.format()` 在模板化和字段控制上更系统",
+        "可补充 `%` 格式化更老旧且在复杂场景下可读性较差"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.356Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "b179b0e50a8de1ae978027603139a5ce48b8f135": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b179b0e50a8de1ae978027603139a5ce48b8f135",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "map 与 filter 的惰性求值特性",
+      "question_key": "1046278e5514416f1de4f4b45af4a548878eb920",
+      "aliases": [
+        "map 与 filter 的惰性求值特性"
+      ],
+      "detail": {
+        "question": "Python 3 里的 `map` 和 `filter` 为什么常被说成是惰性求值的？这会带来什么直接影响？",
+        "missed_points": [
+          "明确 Python3 的 map/filter 返回的是迭代器风格结果",
+          "惰性带来更低内存占用",
+          "结果通常顺序消费、常需显式 `list()` 才能多次使用"
+        ],
+        "incorrect_points": [
+          "“没有真正运行”表述不严谨：创建迭代器已发生，但元素计算是按需发生"
+        ],
+        "feedback": "核心点答到。把“返回迭代器、按需计算、内存更省、一次性消费”四句话串起来即可。",
+        "better_answer": "Python 3 的 `map`/`filter` 返回的是迭代器（lazy iterable），不会立刻生成完整列表；只有在被迭代消费时才逐个计算元素。这直接带来更低的内存占用，但结果往往只能顺序消费一次；如果要复用或随机访问，通常需要显式 `list(map(...))`。"
+      },
+      "linked_chunks": [
+        "381f326e027e7ac7e7e2844b44798ecd926f579e",
+        "19614869314a79d49b026c424e9056ba57c44687"
+      ],
+      "source_files": [],
+      "last_feedback": "核心点答到。把“返回迭代器、按需计算、内存更省、一次性消费”四句话串起来即可。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明它们返回迭代器风格结果而不是立刻生成完整列表",
+        "指出只有被消费时才逐步计算元素",
+        "说明这能减少不必要的内存占用",
+        "可补充结果通常只能顺序消费，若要多次使用常需显式转 list"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "dab369d5c7057a1c5a3302a61232e3203fb064e7": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "dab369d5c7057a1c5a3302a61232e3203fb064e7",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "迭代协议与可迭代对象判定",
+      "question_key": "a927b7f06cd88c0accebe5001464d25354ed05fa",
+      "aliases": [
+        "迭代协议与可迭代对象判定"
+      ],
+      "detail": {
+        "question": "一个对象满足什么条件，才能说它是“可迭代对象”？它和“迭代器”在协议层面有什么最小区别？",
+        "missed_points": [
+          "可迭代对象需能被 `iter()` 获取迭代器",
+          "迭代器除可迭代外还必须支持 `__next__`",
+          "迭代器维护遍历状态，而普通 iterable 不一定",
+          "用 list/range/generator 举例区分"
+        ],
+        "incorrect_points": [
+          "把“可迭代对象”的条件直接说成“能不断 next”会混淆 iterable 与 iterator"
+        ],
+        "feedback": "这题要答“协议最小差异”：iterable 只要求 `__iter__`，iterator 还要 `__next__`。",
+        "better_answer": "可迭代对象（iterable）的最小条件是：能被 `iter(obj)` 调用并返回一个迭代器（实现 `__iter__`）。迭代器（iterator）在此基础上还必须支持 `__next__` 来逐步产生下一个元素并维护遍历状态。比如 `list`/`range` 是 iterable（`iter()` 后得到迭代器），生成器对象通常既是 iterable 也是 iterator。"
+      },
+      "linked_chunks": [
+        "17b80b26ecd5fa626c2fb421ed9527b3be80aa04",
+        "9959f063fccccc7a821b5567e2b2b17b5e28afa0"
+      ],
+      "source_files": [],
+      "last_feedback": "这题要答“协议最小差异”：iterable 只要求 `__iter__`，iterator 还要 `__next__`。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明可迭代对象应能被 iter() 获取迭代器",
+        "指出迭代器除可迭代外还必须支持 __next__",
+        "说明迭代器通常维护遍历状态，而普通 iterable 不一定",
+        "可用 list、range、generator 各举一个例子区分"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b1d052e910027f7c22f9b7bf75a6a2f1476a8143": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b1d052e910027f7c22f9b7bf75a6a2f1476a8143",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 上下文管理器的资源释放语义",
+      "question_key": "3b4ce042fde78441023a6ea2cfce1165c33f895c",
+      "aliases": [
+        "Python 上下文管理器的资源释放语义"
+      ],
+      "detail": {
+        "question": "为什么 `with` 语句比单纯依赖对象析构更适合做资源管理？",
+        "missed_points": [
+          "with 通过上下文协议保证退出时执行清理逻辑",
+          "异常路径下也能稳定触发释放",
+          "析构触发时机不可靠（依赖实现/生命周期）",
+          "举例：文件句柄/锁/事务等"
+        ],
+        "incorrect_points": [
+          "“需要我们显示去做获取和释放”表述反了：with 的价值恰是把释放动作放进 `__exit__` 自动执行"
+        ],
+        "feedback": "核心对比是：with 保证“离开代码块就清理（含异常）”，析构则不保证何时发生。",
+        "better_answer": "`with` 依赖上下文管理器协议，保证在代码块退出时（无论正常还是异常）都执行清理逻辑（`__exit__`），因此资源释放更可靠。对象析构/`__del__` 的触发时机可能依赖实现与对象生命周期，遇到循环引用、解释器退出等情况并不稳定。文件句柄、锁、事务等都适合用 `with` 管理。"
+      },
+      "linked_chunks": [
+        "4f9fcf4d87ed3bd3e579911a5b7e0aba4a5d3993"
+      ],
+      "source_files": [],
+      "last_feedback": "核心对比是：with 保证“离开代码块就清理（含异常）”，析构则不保证何时发生。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 with 通过上下文协议保证在代码块退出时执行清理逻辑",
+        "指出异常路径下也能稳定触发释放动作",
+        "说明析构触发时机可能依赖实现与对象生命周期，不如显式上下文可靠",
+        "可补充文件句柄、锁、事务等都适合用 with 管理"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "14ecc8a38fe1de6c109c14bbb246847f7b2ee810": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "14ecc8a38fe1de6c109c14bbb246847f7b2ee810",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "循环引用对象的回收边界",
+      "question_key": "5bc796426beac7a00bc46f92e9367c15f29c4454",
+      "aliases": [
+        "循环引用对象的回收边界"
+      ],
+      "detail": {
+        "question": "为什么“引用计数归零即回收”这条规则在 Python 里不是完整的垃圾回收描述？",
+        "missed_points": [
+          "“计数归零即回收”只覆盖无环引用关系的大多数场景",
+          "循环引用会让计数不归零",
+          "需要额外的循环垃圾回收机制来检测并回收",
+          "终结器等会让回收更复杂（补充点）"
+        ],
+        "incorrect_points": [
+          "答案过于简略，未解释为什么引用计数规则不完整"
+        ],
+        "feedback": "需要把因果链说完整：循环引用 => 计数不归零 => 仅靠引用计数不够 => 需要 gc。",
+        "better_answer": "“引用计数归零即回收”只描述了无环引用关系下的大多数情况。若出现循环引用，对象彼此持有引用会让计数始终不为 0，即使它们已经不可达也不会被回收。因此 CPython 还需要循环垃圾回收机制来检测引用环并回收其中的垃圾；有终结器等情况回收细节还会更复杂。"
+      },
+      "linked_chunks": [
+        "dae06ca86769252f7c43930bc77b86feb84c5a70"
+      ],
+      "source_files": [],
+      "last_feedback": "需要把因果链说完整：循环引用 => 计数不归零 => 仅靠引用计数不够 => 需要 gc。",
+      "source_type": "expanded",
+      "expected_points": [
+        "指出这条规则只覆盖无环引用关系中的大多数场景",
+        "说明循环引用会让对象彼此持有引用导致计数不归零",
+        "说明 CPython 还需要额外的循环垃圾回收机制",
+        "可补充带终结器等情况会让回收细节更复杂"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "e2863526ee6f04386a7179a219c1fd39a5cffd50": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "e2863526ee6f04386a7179a219c1fd39a5cffd50",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "描述符与方法绑定机制",
+      "question_key": "ccda4ede5b683e7815831205a0faeb4e3c90f231",
+      "aliases": [
+        "描述符与方法绑定机制"
+      ],
+      "detail": {
+        "question": "为什么类中定义的普通函数，通过实例访问时会自动表现成“绑定方法”？这个现象和描述符有什么关系？",
+        "missed_points": [
+          "函数对象作为类属性时实现描述符行为",
+          "通过实例取值触发 `__get__` 进行绑定",
+          "得到携带接收者实例的可调用对象（bound method）",
+          "通过类访问不会绑定具体实例（补充点）"
+        ],
+        "incorrect_points": [
+          "把绑定原因归结为“高度绑定”过于泛化，缺少关键机制：描述符 `__get__`"
+        ],
+        "feedback": "需要明确机制：函数对象是非数据描述符，实例访问触发 `__get__` 返回 bound method。",
+        "better_answer": "类中定义的普通函数作为类属性时具备描述符行为：当通过实例访问该函数属性时，会触发函数对象的 `__get__(instance, owner)`，从而返回一个“绑定方法”（把 instance 绑定为第一个参数）。而通过类访问时 `instance` 为 `None`，因此不会绑定具体实例。"
+      },
+      "linked_chunks": [
+        "126fd0a2a1e203bb21aef9be8ad850450b535ccd"
+      ],
+      "source_files": [],
+      "last_feedback": "需要明确机制：函数对象是非数据描述符，实例访问触发 `__get__` 返回 bound method。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明函数对象作为类属性时实现了描述符行为",
+        "指出通过实例取值时会触发 __get__ 绑定实例",
+        "说明最终得到的是携带接收者实例的可调用对象",
+        "可补充通过类访问时不会绑定具体实例"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "359c87f0218b10b89ee9b7302c5a4534b6cf6304": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 50,
+      "last_score": 50,
+      "recent_scores": [
+        50
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "359c87f0218b10b89ee9b7302c5a4534b6cf6304",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 编译型语言的构建与运行模型",
+      "question_key": "c21031e51ea962f254676cbace91c9480194bb27",
+      "aliases": [
+        "C++ 编译型语言的构建与运行模型"
+      ],
+      "detail": {
+        "question": "为什么通常说 C/C++ 程序是“先编译成机器码再运行”，这句话想强调的核心事实是什么？",
+        "missed_points": [
+          "源码经编译/链接形成机器码并由 OS 直接执行（核心事实）",
+          "运行阶段不依赖统一的字节码虚拟机解释层",
+          "这影响启动方式、性能特征、调试方式",
+          "过程可能包含预处理/编译/汇编/链接（补充）"
+        ],
+        "incorrect_points": [
+          "把重点仅落在“编译检查”过窄，题目强调的是“机器码 + 链接 + 运行模型”"
+        ],
+        "feedback": "需要把“编译链接生成可执行机器指令、运行时无统一 VM 解释层”说出来，并点出对性能/启动/调试的影响。",
+        "better_answer": "“先编译成机器码再运行”强调：C/C++ 源码通常经编译、汇编、链接生成可执行文件/机器指令，运行时由操作系统直接加载执行，而不是依赖统一的字节码虚拟机解释层。这通常带来更接近硬件的性能特征、不同的启动与调试方式；构建流程还包括预处理、编译、汇编、链接等步骤。"
+      },
+      "linked_chunks": [
+        "23152b1d6eb77768ea265a0ce5507367240f0104"
+      ],
+      "source_files": [],
+      "last_feedback": "需要把“编译链接生成可执行机器指令、运行时无统一 VM 解释层”说出来，并点出对性能/启动/调试的影响。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明源码通常先经过编译和链接形成可执行机器指令",
+        "指出运行阶段不依赖像字节码虚拟机那样的统一解释执行层",
+        "说明这影响启动方式、性能特征和调试方式",
+        "可补充具体过程还会包含预处理、编译、汇编、链接等步骤"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 40,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b60720350f1b805baa7699ce418377da4540dd78": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b60720350f1b805baa7699ce418377da4540dd78",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 内存模型与 happens-before 关系",
+      "question_key": "9bae21a87ab4676cc0e856508a3d5f80b11ed30e",
+      "aliases": [
+        "C++ 内存模型与 happens-before 关系"
+      ],
+      "detail": {
+        "question": "C++ 内存模型里的 happens-before 关系解决的核心问题是什么？",
+        "missed_points": [
+          "happens-before 定义多线程操作可见性与先后约束",
+          "先后不是看源码顺序，而是看标准承认的同步关系",
+          "缺乏足够 happens-before 约束会导致数据竞争",
+          "用于判断一个线程是否必须看到另一个线程写入（补充）"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。建议先建立三件套：happens-before、synchronizes-with、data race 的关系。",
+        "better_answer": "C++ 的 happens-before 用来在多线程下定义“哪些操作必须先于哪些操作发生并对其他线程可见”。它不是按源码顺序判断，而是按标准定义的同步关系（原子操作的内存序、锁、条件变量等）建立顺序与可见性。如果缺乏足够的 happens-before 约束，对共享数据的并发访问就可能形成数据竞争，从而导致未定义行为。"
+      },
+      "linked_chunks": [
+        "c1a7f0c2d74b4f3f9c1b18d6e2f0a9b6d3c4e501"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。建议先建立三件套：happens-before、synchronizes-with、data race 的关系。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明它用于定义多线程环境下操作可见性与先后约束",
+        "指出不是看源码顺序，而是看标准承认的同步关系",
+        "说明若缺乏足够的 happens-before 约束就可能发生数据竞争",
+        "可补充它为判断一个线程是否必须看到另一个线程的写入提供依据"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "d5e119a6cf97a18bdba5ff173b4d8447e421e6be": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d5e119a6cf97a18bdba5ff173b4d8447e421e6be",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "std::atomic 的原子性保证",
+      "question_key": "6a4a54437dc20d5a35ce9baca0a7f4519d255e0a",
+      "aliases": [
+        "std::atomic 的原子性保证"
+      ],
+      "detail": {
+        "question": "`std::atomic` 解决的核心问题是什么？它和“给普通变量加个 volatile”为什么不是一回事？",
+        "missed_points": [
+          "atomic 提供原子读写与同步语义",
+          "volatile 只约束编译器优化，不提供线程间原子同步保证",
+          "atomic 可避免某些共享变量访问的数据竞争",
+          "lock-free 与原子性不是一回事（补充）"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。面试高频点：`volatile != atomic`，volatile 不是并发同步工具。",
+        "better_answer": "`std::atomic` 解决的是多线程共享变量访问的原子性与内存模型下的同步语义问题：它提供标准定义的原子读写/读改写，并可用内存序建立线程间可见性关系，从而避免数据竞争。`volatile` 主要用于与硬件/信号等交互时抑制某些编译器优化，既不保证复合操作原子，也不提供线程间同步与顺序保证，因此不是“给普通变量加个 volatile 就线程安全”。"
+      },
+      "linked_chunks": [
+        "8e2c3b4a9d5f1a0c7b6e4d3c2a1f0e9d8c7b6a52"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。面试高频点：`volatile != atomic`，volatile 不是并发同步工具。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 atomic 提供符合内存模型的原子读写与同步语义",
+        "指出 volatile 主要约束编译器优化，不提供线程间原子同步保证",
+        "说明 atomic 能避免某些共享变量访问上的数据竞争",
+        "可补充 atomic 是否无锁与是否原子是两个不同问题"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "a7a8605dbaab35f3bdedf9b3f6a53e62dc2426ac": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "a7a8605dbaab35f3bdedf9b3f6a53e62dc2426ac",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 内存序与可见性语义",
+      "question_key": "9a9bd8a7aa4c08c9df3efe1e5db0dbb8c5623f9b",
+      "aliases": [
+        "C++ 内存序与可见性语义"
+      ],
+      "detail": {
+        "question": "`memory_order_relaxed` 为什么不能保证你想要的跨线程“先写数据、再发标志”语义？",
+        "missed_points": [
+          "relaxed 只保证该原子操作本身原子性，不提供足够排序约束",
+          "其他普通写入未必在另一线程按预期先于标志可见",
+          "发布-订阅需 release/acquire 或更强顺序",
+          "可能读到标志已变但数据未同步（补充）"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。建议把“flag + data”的发布订阅模式背熟：store-release / load-acquire。",
+        "better_answer": "`memory_order_relaxed` 只保证原子变量本次读/写自身是原子的，但不提供跨线程的顺序与可见性约束。因此在“先写数据、再发标志”的模式中，即使另一个线程看到标志变了，也不保证一定能看到之前对普通数据的写入（可能出现标志已更新但数据仍是旧值）。发布-订阅通常需要写标志用 release，读标志用 acquire（或更强的顺序）来建立必要的 happens-before。"
+      },
+      "linked_chunks": [
+        "4b9d2c7e1a6f0c3d8e5b1a7c9d2e4f6a8b0c1d53"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。建议把“flag + data”的发布订阅模式背熟：store-release / load-acquire。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 relaxed 只保证该原子操作本身的原子性，不提供足够排序约束",
+        "指出其他普通写入未必在另一线程按预期先于标志可见",
+        "说明发布-订阅类场景通常需要 release/acquire 或更强顺序",
+        "可补充错误使用 relaxed 可能读到标志已变但数据仍旧未同步"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "e060ec62a11e8a2e8714958358a12a905298a4bd": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "e060ec62a11e8a2e8714958358a12a905298a4bd",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "Rule of Zero Three Five",
+      "question_key": "37c160ed406a8472921286e9a65498b3082d87da",
+      "aliases": [
+        "Rule of Zero Three Five"
+      ],
+      "detail": {
+        "question": "C++ 的 Rule of Zero、Rule of Three、Rule of Five 分别在提醒什么？",
+        "missed_points": [
+          "围绕资源管理类的特殊成员函数设计",
+          "Rule of Three：拷贝构造/拷贝赋值/析构往往一起考虑",
+          "Rule of Five：加入移动构造/移动赋值",
+          "Rule of Zero：尽量用 RAII 成员管理资源，避免自写五大函数"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。这题是背诵题，建议按“三句话模板”记忆：Zero=交给成员；Three=拷贝+析构；Five=再加移动。",
+        "better_answer": "Rule of Three 提醒：如果一个类需要自定义析构函数，往往也需要自定义拷贝构造和拷贝赋值（资源所有权/深拷贝问题）。C++11 引入移动语义后扩展为 Rule of Five：再考虑移动构造和移动赋值。Rule of Zero 提醒：能把资源交给现成的 RAII 成员（如 `std::string/std::vector/unique_ptr`）管理时，最好不自写这些特殊成员函数。"
+      },
+      "linked_chunks": [
+        "a7c2d9e1f0b3c4d5e6f7a8b9c0d1e2f3a4b5c654"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。这题是背诵题，建议按“三句话模板”记忆：Zero=交给成员；Three=拷贝+析构；Five=再加移动。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明它们都围绕资源管理类的特殊成员函数设计",
+        "指出 Rule of Three 关注拷贝构造、拷贝赋值、析构往往需要一起考虑",
+        "说明 C++11 后移动语义引出 Rule of Five",
+        "指出若能把资源交给现成 RAII 成员管理，最好走 Rule of Zero"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "ea9a4f4054c53b16aad883e972dda69adca09dbb": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "ea9a4f4054c53b16aad883e972dda69adca09dbb",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "异常安全保证级别",
+      "question_key": "299ddcd6c99ef5d6265273c3f6a12b69a8cd87d4",
+      "aliases": [
+        "异常安全保证级别"
+      ],
+      "detail": {
+        "question": "C++ 里的 basic guarantee、strong guarantee、nothrow guarantee 分别是什么意思？",
+        "missed_points": [
+          "basic guarantee：异常后对象仍有效但状态可能改变",
+          "strong guarantee：失败如同未发生（回滚语义）",
+          "nothrow guarantee：保证不抛异常",
+          "这些级别影响容器/泛型代码设计（补充）"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。建议用一句话记忆：basic=不坏；strong=不变；nothrow=不抛。",
+        "better_answer": "basic guarantee：发生异常后程序不泄漏资源，对象仍处于有效可用状态，但其值/状态可能部分改变。strong guarantee：操作失败时对象状态保持不变，效果如同操作从未发生（具有回滚语义）。nothrow guarantee：操作承诺不抛异常。这些保证会影响容器在扩容、移动/拷贝元素时的策略选择。"
+      },
+      "linked_chunks": [
+        "0f1e2d3c4b5a69788796a5b4c3d2e1f0a9b8c756"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。建议用一句话记忆：basic=不坏；strong=不变；nothrow=不抛。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 basic 保证发生异常后对象仍处于有效但未必原值不变的状态",
+        "指出 strong 保证失败如同操作未发生，具有回滚语义",
+        "说明 nothrow 保证操作不抛异常",
+        "可补充这些保证级别会直接影响容器和泛型代码的设计"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "c5f0e14a623a0e78e0f1930e5484b2c628122c29": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "c5f0e14a623a0e78e0f1930e5484b2c628122c29",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "RTTI 与 dynamic_cast 的适用边界",
+      "question_key": "d594b9322b937ed373d63c3b4f2bc3cfd8b7593a",
+      "aliases": [
+        "RTTI 与 dynamic_cast 的适用边界"
+      ],
+      "detail": {
+        "question": "`dynamic_cast` 的适用边界是什么？为什么它通常要求基类具有多态性？",
+        "missed_points": [
+          "适用边界：安全向下转型/横向转型，依赖运行时类型检查",
+          "通常要求基类具备多态性（有虚函数）以提供 RTTI",
+          "失败语义：指针返回 null，引用抛 `bad_cast`（补充）"
+        ],
+        "incorrect_points": [
+          "只说“父类转子类”不完整，忽略了为什么需要多态（RTTI）以及失败行为"
+        ],
+        "feedback": "答到了最常见用途，但需要补“为什么需要虚函数/多态”以及失败时的行为差异（指针 vs 引用）。",
+        "better_answer": "`dynamic_cast` 主要用于多态继承体系中的安全向下转型（以及某些横向转型）：它在运行时检查对象的实际类型是否满足目标类型。通常要求基类是多态类型（至少有一个虚函数），这样运行时才有 RTTI/类型信息支撑该检查。转型失败时：对指针返回 `nullptr`，对引用会抛出 `std::bad_cast`。"
+      },
+      "linked_chunks": [
+        "1a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b57"
+      ],
+      "source_files": [],
+      "last_feedback": "答到了最常见用途，但需要补“为什么需要虚函数/多态”以及失败时的行为差异（指针 vs 引用）。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 dynamic_cast 主要用于继承层次中的安全向下转型或横向转型",
+        "指出运行时需要依赖多态类型信息判断实际对象类型",
+        "说明没有虚函数的基类通常不具备所需 RTTI 支撑",
+        "可补充转型失败时指针返回空、引用抛出异常"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "1f5f603a722f4c4fd362d9d380ae1baddb2881c2": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 70,
+      "last_score": 70,
+      "recent_scores": [
+        70
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "1f5f603a722f4c4fd362d9d380ae1baddb2881c2",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "模板实例化与编译期多态",
+      "question_key": "6c5e918c0d6a5f56072c042184574490b21077e2",
+      "aliases": [
+        "模板实例化与编译期多态"
+      ],
+      "detail": {
+        "question": "为什么说 C++ 模板体现的是编译期多态，而虚函数体现的是运行期多态？",
+        "missed_points": [
+          "模板会按具体类型实例化生成代码（实例化机制点）",
+          "虚函数依赖虚表/动态绑定而非重载",
+          "模板通常无额外动态分派成本但可能代码膨胀（补充）"
+        ],
+        "incorrect_points": [
+          "把模板主要描述成“函数重载”不准确：重载只是表象，核心是实例化与编译期生成"
+        ],
+        "feedback": "核心对比答到了。把模板的“实例化生成代码”和虚函数的“虚表动态绑定”补齐，会更标准。",
+        "better_answer": "模板体现编译期多态：编译器会在编译期根据具体类型进行模板实例化，生成对应的专用代码，调用分派不依赖运行时虚表。虚函数体现运行期多态：通过虚表/动态绑定，在运行时依据对象的实际动态类型决定调用哪个覆盖函数。模板通常没有动态分派开销，但可能导致代码膨胀。"
+      },
+      "linked_chunks": [
+        "2b4d6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e858"
+      ],
+      "source_files": [],
+      "last_feedback": "核心对比答到了。把模板的“实例化生成代码”和虚函数的“虚表动态绑定”补齐，会更标准。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明模板会在编译期按具体类型生成对应实例代码",
+        "指出模板分派通常不依赖运行时虚表",
+        "说明虚函数通过动态绑定在运行时根据对象实际类型决定调用目标",
+        "可补充模板带来零额外动态分派成本但可能导致代码膨胀"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 56,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b0f69025ad06b1d768ce5aee2d550389118f1716": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b0f69025ad06b1d768ce5aee2d550389118f1716",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "SFINAE 与重载决议",
+      "question_key": "7555e8ae8e51ee4124d8262aada0da23c0f433de",
+      "aliases": [
+        "SFINAE 与重载决议"
+      ],
+      "detail": {
+        "question": "SFINAE 解决的核心问题是什么？为什么它会影响模板重载决议？",
+        "missed_points": [
+          "模板替换失败不报错而是移出候选集（SFINAE 核心）",
+          "可让模板按类型特征有条件参与匹配",
+          "影响重载决议：哪些候选仍有效",
+          "典型用途：类型萃取/enable_if/条件启用禁用重载（补充）"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。建议背一句定义：SFINAE = substitution failure is not an error。",
+        "better_answer": "SFINAE 解决的问题是：当模板参数替换（substitution）过程中出现不满足条件/表达式非法时，不把它当作编译错误，而是将该模板候选从重载候选集中“静默移除”。因此它会影响模板重载决议：不同模板能基于类型特征有条件地参与匹配，最终决定哪个重载可用。常见写法是 `std::enable_if`、类型萃取等。"
+      },
+      "linked_chunks": [
+        "3c5e7f9b0d2f4e6c8a0b2d4f6e8a0c2e4a6b8c59"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。建议背一句定义：SFINAE = substitution failure is not an error。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明它允许模板替换失败时把该候选静默移出候选集而非直接报错",
+        "指出这让不同模板可按类型特征有条件参与匹配",
+        "说明最终会影响哪些重载候选仍然有效",
+        "可补充其典型用途是类型萃取、启用禁用某些模板重载"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b50fb49c10d2a45e036f06c4dced547848048da5": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b50fb49c10d2a45e036f06c4dced547848048da5",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "constexpr 与编译期计算",
+      "question_key": "c69d3a725070105bbff04b357647b97450866514",
+      "aliases": [
+        "constexpr 与编译期计算"
+      ],
+      "detail": {
+        "question": "`constexpr` 的核心价值是什么？为什么它不只是“给函数加一个修饰词”这么简单？",
+        "missed_points": [
+          "constexpr 允许表达式在满足条件时参与编译期求值",
+          "它约束对象/函数/构造过程可用于常量上下文",
+          "可减少运行期开销并提升接口表达力",
+          "constexpr 不等于一定编译期执行，取决于使用上下文"
+        ],
+        "incorrect_points": [],
+        "feedback": "未作答。建议把 `const / constexpr / consteval` 一起建立对比框架来背。",
+        "better_answer": "`constexpr` 的核心价值是让变量/函数/构造在满足条件时可用于常量表达式，从而参与编译期求值（例如数组长度、模板参数等常量上下文）。它不仅是“修饰词”，还对可用语义与可执行上下文提出约束，能减少运行期开销并提升接口表达力。同时 `constexpr` 不保证一定在编译期执行：是否编译期求值取决于调用/使用场景是否处于常量上下文。"
+      },
+      "linked_chunks": [
+        "4d6f8091a3c5e7f9b0d2f4e6c8a0b2d4f6e8a0d5a"
+      ],
+      "source_files": [],
+      "last_feedback": "未作答。建议把 `const / constexpr / consteval` 一起建立对比框架来背。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 constexpr 允许表达式在满足条件时参与编译期求值",
+        "指出它同时约束对象、函数或构造过程可用于常量上下文",
+        "说明这能减少运行期开销并提升接口表达力",
+        "可补充 constexpr 不等于一定在编译期执行，还取决于使用上下文"
+      ],
+      "last_reviewed_at": "2026-04-24T08:36:45.357Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "fd2e18f1d735fd1930967c4ff8d83b8094f19b92": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "fd2e18f1d735fd1930967c4ff8d83b8094f19b92",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 里 ISR",
+      "question_key": "c5a4db2bd704641e80faec1add6c51db63cf55f8",
+      "aliases": [
+        "Kafka 里 ISR"
+      ],
+      "detail": {
+        "question": "Kafka 的 ISR 机制解决的核心问题是什么？它为什么不是“所有副本都必须同步完成”这么简单？",
+        "missed_points": [
+          "ISR 机制的核心是在可用性与可靠性之间做折中",
+          "Kafka 的确认与选主围绕 ISR（而非所有副本）展开",
+          "落后过多的副本会被移出 ISR（以及进入 ISR 的条件）"
+        ],
+        "incorrect_points": [],
+        "feedback": "你抓住了“ISR 是同步副本集合”这一点，但缺少“为什么需要 ISR（可用性/可靠性折中）”以及它如何影响确认与选主的关键语义。",
+        "better_answer": "ISR（in-sync replicas）是与 leader 保持足够同步、被认为“可用”的副本集合。它要解决的是在副本复制中兼顾可用性与可靠性：不要求所有副本都同步完成，否则慢副本会拖垮写入可用性；而是围绕 ISR 来做写入确认与 leader 选举。落后超过阈值的副本会被踢出 ISR，追上后再加入。"
+      },
+      "linked_chunks": [
+        "591819e2441cec267f275a2312adb6448029239a"
+      ],
+      "source_files": [],
+      "last_feedback": "你抓住了“ISR 是同步副本集合”这一点，但缺少“为什么需要 ISR（可用性/可靠性折中）”以及它如何影响确认与选主的关键语义。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明 ISR 是与 leader 保持同步、被认为可用的副本集合",
+        "指出它要解决的是可用性与数据可靠性之间的折中",
+        "说明 Kafka 不是等待全部副本，而是围绕 ISR 集合做确认与选主",
+        "能提到落后过多的副本会被移出 ISR"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "f87682164d509e32771ef86fe031149ab7c749a9": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 50,
+      "last_score": 50,
+      "recent_scores": [
+        50
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "f87682164d509e32771ef86fe031149ab7c749a9",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 生产者 acks=all 的语义",
+      "question_key": "f87982f86a3c1a57fd7895ad947e8cba227040dc",
+      "aliases": [
+        "Kafka 生产者 acks=all 的语义"
+      ],
+      "detail": {
+        "question": "为什么说“acks=all 就是所有副本都确认后才返回”这句话不严谨？",
+        "missed_points": [
+          "acks=all 的确认范围是“当前 ISR”，不是全集副本",
+          "不在 ISR 的副本不参与本次成功判定",
+          "acks=all 需要结合 min.insync.replicas 才能完整描述“稳不稳”"
+        ],
+        "incorrect_points": [
+          "把 acks=all 直接等价为“所有副本都确认”仍然是不严谨的表述"
+        ],
+        "feedback": "你说到了“ISR 确认”，但题目要点是纠正“所有副本”的误解：acks=all 不是等全集副本，而是等 ISR，并且仍要看 ISR 是否够大（min.insync.replicas）。",
+        "better_answer": "“acks=all 等所有副本确认”不严谨，因为它等待的是当前 ISR 内的副本确认，而不是所有副本。落后被踢出 ISR 的副本不参与成功判定；同时 acks=all 还要结合 min.insync.replicas 才能约束 ISR 过小时写入是否允许，否则可能在 ISR 很小的情况下仍返回成功。"
+      },
+      "linked_chunks": [
+        "22b52389925d89edb78db2e0ea559d0a94a8c5f5",
+        "c7739d3787f032145cd4ab00d73e15b69a557e05"
+      ],
+      "source_files": [],
+      "last_feedback": "你说到了“ISR 确认”，但题目要点是纠正“所有副本”的误解：acks=all 不是等全集副本，而是等 ISR，并且仍要看 ISR 是否够大（min.insync.replicas）。",
+      "source_type": "note_readonly",
+      "expected_points": [
+        "指出确认范围是当前 ISR，而不是全集副本",
+        "说明不在 ISR 的副本不参与这次成功判定",
+        "指出 leader 本地写入后还需等待 ISR 内足够副本同步",
+        "能补充 acks=all 仍需结合 min.insync.replicas 才完整"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 40,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "94bce94879cc052d7621793bdfb3ade80cf627d3": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 60,
+      "last_score": 60,
+      "recent_scores": [
+        60
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "94bce94879cc052d7621793bdfb3ade80cf627d3",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "min.insync.replicas",
+      "question_key": "6f6b6ea185e8921ba4c6385e847e1c1555a1baa2",
+      "aliases": [
+        "min.insync.replicas"
+      ],
+      "detail": {
+        "question": "为什么只把 Producer 配成 acks=all 还不够稳？min.insync.replicas 在这里补上了什么约束？",
+        "missed_points": [
+          "acks=all 只描述确认策略，并不限制 ISR 最小规模",
+          "min.insync.replicas 的语义是“允许写入成功所需的最小同步副本数”",
+          "不满足 min.insync.replicas 时应失败（而不是假成功）"
+        ],
+        "incorrect_points": [
+          "把 min.insync.replicas 简化成“replicas 至少两个”过于粗糙，且应强调的是 ISR 内最小数而非配置的总副本数"
+        ],
+        "feedback": "方向对了：关键是“acks=all 不等于稳”，因为 ISR 可能缩小；但需要把约束说准确：约束的是 ISR 内最小同步副本数，以及不满足时的失败语义。",
+        "better_answer": "acks=all 只说明写入确认要等 ISR 内副本确认，但它不保证 ISR 规模够大：如果 ISR 因故障缩到 1，acks=all 也可能很快返回成功但几乎没有冗余。min.insync.replicas 用来约束“写入成功至少需要多少个 ISR 副本在同步”，当 ISR 数量小于该阈值时，acks=all 的写入应失败，从而避免在弱冗余下假成功。"
+      },
+      "linked_chunks": [
+        "f2b20b8c4d215358942b2c42757009ab9da9af91",
+        "100857c946f939d903a99d832148ebec35af723a"
+      ],
+      "source_files": [],
+      "last_feedback": "方向对了：关键是“acks=all 不等于稳”，因为 ISR 可能缩小；但需要把约束说准确：约束的是 ISR 内最小同步副本数，以及不满足时的失败语义。",
+      "source_type": "note_readonly",
+      "expected_points": [
+        "指出 acks=all 只描述确认策略，不限制 ISR 最小规模",
+        "说明如果 ISR 规模过小，acks=all 也可能在很弱冗余下成功",
+        "说明 min.insync.replicas 用于约束可接受写入时的最小同步副本数",
+        "能说出不满足时写入会失败而不是假成功"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 48,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "2d4c7b3c7c9831c629c54c32fa935bf10db528d0": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 20,
+      "last_score": 20,
+      "recent_scores": [
+        20
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "2d4c7b3c7c9831c629c54c32fa935bf10db528d0",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "acks=1 丢消息时序",
+      "question_key": "48c3d6eaaabd7b34ad8152cc2a3c356ead6b0105",
+      "aliases": [
+        "acks=1 丢消息时序"
+      ],
+      "detail": {
+        "question": "acks=1 在什么精确时序下会出现“Producer 认为写成功，但最终消息还是丢了”？",
+        "missed_points": [
+          "acks=1 的返回时机：leader 本地写入后即返回成功",
+          "follower 可能尚未复制完成",
+          "leader 在 follower 追上前宕机会导致消息不在可持续副本集合里",
+          "因此 producer 收到成功但消息仍可能丢失"
+        ],
+        "incorrect_points": [
+          "把丢消息时序归因于“ISR 中只有一个节点”，没有回答 acks=1 的精确时序问题"
+        ],
+        "feedback": "这题必须按时间线说清楚“leader 何时返回成功、follower 何时复制、leader 何时宕机”，只谈 ISR 规模无法回答。",
+        "better_answer": "acks=1 下，leader 把消息追加到本地日志后就向 producer 返回成功；此时 follower 可能还没复制到该条消息。如果在 follower 复制完成前 leader 宕机，而新的 leader 选自未包含该消息的副本（或该消息未进入可持续集合），就会出现 producer 认为成功但最终消息丢失的情况。"
+      },
+      "linked_chunks": [
+        "a9d337e52f8868ff3558c0eab287f03acc220b5d"
+      ],
+      "source_files": [],
+      "last_feedback": "这题必须按时间线说清楚“leader 何时返回成功、follower 何时复制、leader 何时宕机”，只谈 ISR 规模无法回答。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明 leader 写本地日志后就向 producer 返回成功",
+        "指出 follower 可能尚未完成复制",
+        "说明此时 leader 宕机且未同步数据无法被新 leader 接管",
+        "结论是 producer 已收到成功但消息未进入可持续副本集合"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 16,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "1bbca6917dab96577bf9d784d4be5ccd6d10b24b": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 70,
+      "last_score": 70,
+      "recent_scores": [
+        70
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "1bbca6917dab96577bf9d784d4be5ccd6d10b24b",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 里 Topic、Partition、Broker 三者的关系",
+      "question_key": "fce173bfcaff9562e365f3bba5305dabaf78c959",
+      "aliases": [
+        "Kafka 里 Topic、Partition、Broker 三者的关系"
+      ],
+      "detail": {
+        "question": "Kafka 里 Topic、Partition、Broker 三者分别是什么关系？为什么面试里不能把它们混成一层概念？",
+        "missed_points": [
+          "Topic 是逻辑分类/命名空间",
+          "Partition 是顺序与并行度的物理分片单位（顺序边界在 partition 内）",
+          "Broker 是承载分区副本的服务器节点",
+          "消费与顺序语义通常以 partition 为边界，不能把三者混成一层"
+        ],
+        "incorrect_points": [],
+        "feedback": "结构关系基本对，但需要把三者的“层级/职责”说清：Topic（逻辑）—Partition（物理分片+顺序单位）—Broker（承载副本的节点）。",
+        "better_answer": "Topic 是消息的逻辑分类；Partition 是 Topic 的物理分片，也是顺序性与并行度的基本单位；Broker 是 Kafka 集群里的服务器节点，负责承载各个 partition 的副本（leader/follower）。三者不能混为一层：Topic 不是存储节点，Partition 才是顺序边界，Broker 才是承载副本的机器。"
+      },
+      "linked_chunks": [
+        "46c7eb90d98ef5957dc7547713541c9b36416fe2"
+      ],
+      "source_files": [],
+      "last_feedback": "结构关系基本对，但需要把三者的“层级/职责”说清：Topic（逻辑）—Partition（物理分片+顺序单位）—Broker（承载副本的节点）。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "说明 Topic 是逻辑分类",
+        "说明 Partition 是 Topic 的物理分片和顺序单位",
+        "说明 Broker 是承载 partition 副本的服务器节点",
+        "指出副本分布在 broker 上，消费和顺序语义通常以 partition 为边界"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 56,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "a6bfcb12181f2f7ef0a6d17337c9cfe7761b6df5": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "a6bfcb12181f2f7ef0a6d17337c9cfe7761b6df5",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 的顺序性默认成立的边界",
+      "question_key": "4d42dcf761beb39db80f3f38d1338c227172843f",
+      "aliases": [
+        "Kafka 的顺序性默认成立的边界"
+      ],
+      "detail": {
+        "question": "Kafka 的“有序”默认到底成立到什么边界？为什么不能直接说 Kafka 天然保证全局顺序？",
+        "missed_points": [
+          "多 partition 之间无全局顺序的原因（并发写入/分区并行）",
+          "producer 重试、并发发送可能影响感知顺序",
+          "业务要更强顺序通常需要按 key 路由到同一 partition"
+        ],
+        "incorrect_points": [],
+        "feedback": "核心边界你说对了：只保证到 partition。再补两点会更完整：如何做到（按 key 固定分区）以及哪些因素会扰动顺序感知（重试/并发）。",
+        "better_answer": "Kafka 默认的有序性一般只保证在单个 partition 内（追加日志）。跨 partition 没有天然全局顺序，因为分区之间并行写入/并行消费。若业务要求更强顺序，通常需要用 key 分区让同一 key 的消息路由到同一 partition；同时要注意 producer 的重试、并发发送也可能导致感知顺序变化。"
+      },
+      "linked_chunks": [
+        "55ea72176f6b77b46bbc498d7c16507440d30260"
+      ],
+      "source_files": [],
+      "last_feedback": "核心边界你说对了：只保证到 partition。再补两点会更完整：如何做到（按 key 固定分区）以及哪些因素会扰动顺序感知（重试/并发）。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "指出顺序性通常只在单 partition 内成立",
+        "说明多个 partition 之间不存在天然全局顺序",
+        "能提到 producer 重试、并发发送也可能影响感知顺序",
+        "指出业务若要求更强顺序通常需要按 key 路由到同一 partition"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "8015c802119c15c7615fd1ee81e9e7cd7f39c2bc": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "8015c802119c15c7615fd1ee81e9e7cd7f39c2bc",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 落盘与顺序 I/O",
+      "question_key": "b89edc6383bdd4038a5b9daeaf7ab275fad73640",
+      "aliases": [
+        "Kafka 落盘与顺序 I/O"
+      ],
+      "detail": {
+        "question": "有人说 Kafka 快是因为“不落盘”，这句话错在哪里？",
+        "missed_points": [
+          "性能来自顺序 I/O、追加写日志",
+          "批量写/批量拉取与页缓存（page cache）利用",
+          "零拷贝等机制对吞吐的帮助",
+          "可靠性与性能并非通过放弃持久化交换"
+        ],
+        "incorrect_points": [],
+        "feedback": "你只纠正了“不落盘”的事实，但题目要解释“错在哪里”以及 Kafka 快的真正原因。",
+        "better_answer": "“Kafka 快是因为不落盘”错在 Kafka 实际是落盘的（写入日志文件）。它快主要来自顺序追加写、批量处理、充分利用 page cache、以及零拷贝等设计，吞吐高并不是靠放弃持久化换来的。"
+      },
+      "linked_chunks": [
+        "3fc6849800819c7f399597d47c6a5c81caf42698"
+      ],
+      "source_files": [],
+      "last_feedback": "你只纠正了“不落盘”的事实，但题目要解释“错在哪里”以及 Kafka 快的真正原因。",
+      "source_type": "bagu_local",
+      "expected_points": [
+        "指出 Kafka 是会落盘的，不是不落盘",
+        "说明其性能来自顺序 I/O、批量写、页缓存等设计",
+        "能提到零拷贝和顺序追加日志对吞吐的帮助",
+        "指出可靠性与性能并不是通过完全放弃持久化换来的"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "ecb2cd8f2bcd5e0e23e65058fc9f387f83e9ed51": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 60,
+      "last_score": 60,
+      "recent_scores": [
+        60
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "ecb2cd8f2bcd5e0e23e65058fc9f387f83e9ed51",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 分区副本选主语义",
+      "question_key": "affd0dc2d5bb7836d3030cf5f1842d944e3ba486",
+      "aliases": [
+        "Kafka 分区副本选主语义"
+      ],
+      "detail": {
+        "question": "Kafka 为什么通常只允许 ISR 中的副本竞选 leader？这么做直接避免了哪类问题？",
+        "missed_points": [
+          "限制选主范围是为了降低数据回退和日志分叉风险",
+          "落后副本上位可能丢失已确认消息（已 ack 的消息不在其日志中）",
+          "这是可用性与一致性/可靠性之间的取舍"
+        ],
+        "incorrect_points": [
+          "把主要收益说成“减少额外同步开销”不够关键，核心是避免数据回退/丢确认消息"
+        ],
+        "feedback": "方向对，但需要把“直接避免的问题类型”讲出来：落后副本上位导致回退/分叉/丢已确认数据。",
+        "better_answer": "通常只允许 ISR 内副本竞选 leader，因为 ISR 副本与 leader 日志最接近。限制选主范围可以直接降低数据回退、日志分叉以及“已确认消息丢失”的风险：如果让落后太多的副本上位，它可能缺少先前已被确认的记录，上位后会造成已 ack 数据不可用或回退。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "方向对，但需要把“直接避免的问题类型”讲出来：落后副本上位导致回退/分叉/丢已确认数据。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 ISR 中副本与 leader 日志更接近",
+        "指出限制选主范围是为了降低数据回退和日志分叉风险",
+        "说明落后太多的副本若直接上位可能丢失已确认消息",
+        "能补充这是一种可用性和一致性之间的取舍"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 48,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "099e053e2f6837859770983dfde62e71c4d7b890": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 5,
+      "last_score": 5,
+      "recent_scores": [
+        5
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "099e053e2f6837859770983dfde62e71c4d7b890",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 消费者位移提交语义",
+      "question_key": "8410b68088aa6f0a1ce203f858c44fafbd832050",
+      "aliases": [
+        "Kafka 消费者位移提交语义"
+      ],
+      "detail": {
+        "question": "为什么说 Kafka 消费者的位移提交位置，本质上决定了“最多一次”和“至少一次”的边界？",
+        "missed_points": [
+          "位移是消费进度而不是消息删除指针",
+          "先提交后处理可能导致丢消息（最多一次）",
+          "先处理后提交可能导致重复消费（至少一次）",
+          "消费语义取决于“处理”和“提交”的先后"
+        ],
+        "incorrect_points": [],
+        "feedback": "这是 Kafka 消费语义的核心题，建议优先补：提交位移的位置决定丢失还是重复。",
+        "better_answer": "消费者位移（offset）本质是“我处理到哪里了”的进度标记，不是消息删除指针。若先提交位移再处理消息，处理失败时重启会从更靠后位置继续，导致消息丢失（最多一次）；若先处理再提交位移，提交前宕机会在重启后重复处理同一批消息（至少一次）。因此提交时机决定了“最多一次/至少一次”的边界。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "这是 Kafka 消费语义的核心题，建议优先补：提交位移的位置决定丢失还是重复。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明位移是消费进度而不是消息删除指针",
+        "指出先提交后处理可能导致消息丢失",
+        "指出先处理后提交可能导致重复消费",
+        "总结消费语义依赖处理与提交的先后顺序"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 4,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "0c18bf7e66d213831870926713081d9632b255d2": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "0c18bf7e66d213831870926713081d9632b255d2",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 消费者组再均衡",
+      "question_key": "76eeeb2e223c6d623922941a9f80ac53a463d91b",
+      "aliases": [
+        "Kafka 消费者组再均衡"
+      ],
+      "detail": {
+        "question": "Kafka Consumer Group 发生 Rebalance 时，为什么常常会让业务侧感知到抖动？",
+        "missed_points": [
+          "rebalance 会重新分配 partition 所有权",
+          "期间会 revoke/assign 导致暂停拉取或短暂停顿",
+          "位移处理/本地状态不当会引发重复或延迟",
+          "成员变更、超时、分区变化都会触发 rebalance"
+        ],
+        "incorrect_points": [],
+        "feedback": "需要先掌握 rebalance 的过程（撤销分区、重新分配、恢复消费）以及它对业务的停顿与重复影响。",
+        "better_answer": "Consumer Group rebalance 会把 partition 的所有权在消费者之间重新分配。再均衡过程中，部分消费者会撤销分区、暂停拉取、提交位移并等待重新分配，业务会感知到短暂停顿/抖动；如果位移提交或本地状态（例如缓存、事务）处理不当，还可能出现重复消费或延迟升高。成员增减、心跳超时、主题分区数变化等都可能触发 rebalance。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "需要先掌握 rebalance 的过程（撤销分区、重新分配、恢复消费）以及它对业务的停顿与重复影响。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明再均衡会重新分配 partition 所有权",
+        "指出期间部分消费者会暂停拉取或撤销分区",
+        "说明未妥善处理位移和本地状态时会出现重复或延迟",
+        "能提到成员变更、超时、主题分区变化都会触发 rebalance"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "7ded528b4fb1682d351fe574e73a3fe68811c05b": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "7ded528b4fb1682d351fe574e73a3fe68811c05b",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 里的 Image 和 Container",
+      "question_key": "78bcd7e500c1d1282793445b788d7c6e11fd70c6",
+      "aliases": [
+        "Docker 里的 Image 和 Container"
+      ],
+      "detail": {
+        "question": "Docker 里的 Image 和 Container 分别是什么？为什么不能把 Container 理解成“一个运行中的镜像文件”？",
+        "missed_points": [
+          "image 是只读模板（文件系统+元数据），偏静态产物",
+          "container 在镜像之上叠加可写层",
+          "container 运行时包含隔离环境（namespace/cgroup 等），偏动态进程实例"
+        ],
+        "incorrect_points": [],
+        "feedback": "概念基本对，但需要用“只读镜像层 + 容器可写层 + 隔离的运行环境（进程）”来明确为什么容器不是“运行中的镜像文件”。",
+        "better_answer": "Image 是只读的镜像模板，包含文件系统快照与元数据；Container 是基于某个 image 创建出来的运行实例，本质是宿主机上的一组受隔离约束的进程，并在只读镜像层之上叠加一个可写层。一个偏静态产物，一个偏动态运行实例，因此容器不能理解成“运行中的镜像文件”。"
+      },
+      "linked_chunks": [
+        "e714196219ceb25df36a610b7e7d261077a59dae"
+      ],
+      "source_files": [],
+      "last_feedback": "概念基本对，但需要用“只读镜像层 + 容器可写层 + 隔离的运行环境（进程）”来明确为什么容器不是“运行中的镜像文件”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 image 是只读模板，包含文件系统和元数据",
+        "说明 container 是镜像之上的运行实例",
+        "指出 container 运行时会叠加可写层及隔离环境",
+        "说明二者一个偏静态产物，一个偏动态进程实例"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "c4cc9bda7266f25cc0c1247be532435aaa5c87be": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "c4cc9bda7266f25cc0c1247be532435aaa5c87be",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Dockerfile 的分层缓存",
+      "question_key": "3268e4922b3bcc493f5397b87cb44481dab134f4",
+      "aliases": [
+        "Dockerfile 的分层缓存"
+      ],
+      "detail": {
+        "question": "Dockerfile 的分层缓存为什么会受到指令顺序强烈影响？",
+        "missed_points": [
+          "每条会生成层的指令通常对应一层缓存",
+          "前层一旦失效会导致后续层连带失效的原因（构建 DAG/依赖）",
+          "典型优化：先复制依赖清单再安装依赖，再复制源码"
+        ],
+        "incorrect_points": [],
+        "feedback": "逻辑对了，再补一个“典型例子”就更像面试答案：比如 Node/Python 先拷贝 lockfile/requirements 再安装依赖。",
+        "better_answer": "Dockerfile 的缓存通常按指令逐层复用：每条生成层的指令形成一层缓存，上层建立在下层结果之上。前面的层一旦因内容变化而失效，会导致后续层全部重建。所以应把稳定依赖放前面、频繁变更内容放后面，例如先 `COPY package-lock.json`/`requirements.txt` 再 `RUN npm/pip install`，最后再复制源码。"
+      },
+      "linked_chunks": [
+        "bc248d8bcb968280489a7f466ae09fc98874a080"
+      ],
+      "source_files": [],
+      "last_feedback": "逻辑对了，再补一个“典型例子”就更像面试答案：比如 Node/Python 先拷贝 lockfile/requirements 再安装依赖。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明每条会生成层的指令通常对应一层缓存",
+        "指出上层依赖下层，前面层失效会导致后续层连带失效",
+        "说明应把稳定依赖和高频变更内容分层放置",
+        "能举出先复制依赖清单再安装依赖的典型优化思路"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.941Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "f747b24c18e7009e61f2018e446d8232a14ea9ac": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 50,
+      "last_score": 50,
+      "recent_scores": [
+        50
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "f747b24c18e7009e61f2018e446d8232a14ea9ac",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 里 volume 和 bind mount 的区别",
+      "question_key": "63c76ca29c3f1dfa2d7378e94690739f41143c1f",
+      "aliases": [
+        "Docker 里 volume 和 bind mount 的区别"
+      ],
+      "detail": {
+        "question": "Docker 里 volume 和 bind mount 的区别是什么？各自更适合什么场景？",
+        "missed_points": [
+          "bind mount：直接映射宿主机指定路径",
+          "volume：由 Docker 管理生命周期与存储位置",
+          "bind mount 更适合开发态源码挂载",
+          "volume 更适合持久化数据与跨容器复用"
+        ],
+        "incorrect_points": [
+          "把两者描述混乱（“前者/后者”指代不清），且“安全/高效 vs 灵活”的结论缺乏关键维度（可移植性、生命周期、备份恢复）"
+        ],
+        "feedback": "你大概知道有两类挂载，但需要把定义说清并对应场景：bind=宿主机路径；volume=Docker 管理的卷。",
+        "better_answer": "bind mount 是把宿主机的某个指定路径直接挂载进容器；volume 是由 Docker 管理的存储单元，宿主机路径通常由 Docker 决定并负责生命周期管理。一般开发态挂源码更适合 bind mount（方便编辑），生产态持久化数据/跨容器共享更适合 volume（更可移植、易管理与备份）。"
+      },
+      "linked_chunks": [
+        "0610ab299edcefab17f23e7589a7d2650266e750"
+      ],
+      "source_files": [],
+      "last_feedback": "你大概知道有两类挂载，但需要把定义说清并对应场景：bind=宿主机路径；volume=Docker 管理的卷。",
+      "source_type": "note_readonly",
+      "expected_points": [
+        "说明 bind mount 直接映射宿主机指定路径",
+        "说明 volume 由 Docker 管理生命周期和存储位置",
+        "指出 bind mount 更适合开发态源码挂载",
+        "指出 volume 更适合持久化数据和跨容器复用"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 40,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "484d1f877e2ddc0bf9fea9cb40904495f55c9b3a": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "484d1f877e2ddc0bf9fea9cb40904495f55c9b3a",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 镜像分层与联合文件系统",
+      "question_key": "01f33ffa8e2ae0511838d425ef95282d0ba12ae3",
+      "aliases": [
+        "Docker 镜像分层与联合文件系统"
+      ],
+      "detail": {
+        "question": "Docker 镜像为什么适合做分层复用？联合文件系统在这里承担了什么角色？",
+        "missed_points": [
+          "镜像由多层只读层叠加组成",
+          "相同底层层可被多个镜像共享以节省空间",
+          "联合文件系统把多层合并为统一视图",
+          "容器在镜像层之上叠加可写层"
+        ],
+        "incorrect_points": [],
+        "feedback": "需要补“分层复用 + unionfs 合并视图 + 容器可写层”的三件套。",
+        "better_answer": "Docker 镜像由多层只读层叠加组成，不同镜像若共享相同底层层，可以复用这些层从而节省存储与分发成本。联合文件系统（如 overlayfs）负责把多层合并成对容器可见的统一文件系统视图；容器运行时再在这些只读层之上叠加一个可写层来承载变更。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "需要补“分层复用 + unionfs 合并视图 + 容器可写层”的三件套。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明镜像由多层只读层叠加组成",
+        "指出多个镜像可以共享底层相同层以节省空间",
+        "说明联合文件系统负责把多层视图合并成统一文件系统视图",
+        "能提到容器在其上再叠加可写层"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "f04fbcf2b376178d80b1f588ecc2865b552a2817": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 30,
+      "last_score": 30,
+      "recent_scores": [
+        30
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "f04fbcf2b376178d80b1f588ecc2865b552a2817",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 容器网络命名空间",
+      "question_key": "7282064bcb0a98cc9185a11295c06dc8f2ba978f",
+      "aliases": [
+        "Docker 容器网络命名空间"
+      ],
+      "detail": {
+        "question": "为什么说 Docker 容器默认不是“拥有独立虚拟机网卡”，而是基于 Linux 网络命名空间做隔离？",
+        "missed_points": [
+          "容器本质是宿主机上的进程而不是虚拟机",
+          "默认网络隔离主要依赖 Linux network namespace",
+          "常见通过 veth pair 接入 bridge 网络",
+          "与虚拟机的完整硬件/网卡虚拟化不同"
+        ],
+        "incorrect_points": [
+          "把“网络命名空间隔离”的问题回答成“端口映射”"
+        ],
+        "feedback": "端口映射是使用层面现象，这题要解释隔离机制：network namespace + veth + bridge。",
+        "better_answer": "Docker 容器本质还是宿主机上的进程，默认的网络隔离主要靠 Linux 的 network namespace 来隔离网络栈（接口、路由、iptables 等）。常见实现是给容器一端 veth，把另一端接到宿主机的 bridge（如 docker0）。这与虚拟机通过虚拟化整套硬件/网卡不同，所以不能说容器“拥有独立虚拟机网卡”。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "端口映射是使用层面现象，这题要解释隔离机制：network namespace + veth + bridge。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明容器本质仍是宿主机上的进程",
+        "指出网络隔离主要依赖 network namespace",
+        "说明常见是通过 veth pair 接入 bridge 网络",
+        "指出这与虚拟机模拟完整硬件栈不同"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 24,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "c89b26282a4636d8e205b5d343ed0aa3cbe75e13": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 70,
+      "last_score": 70,
+      "recent_scores": [
+        70
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "c89b26282a4636d8e205b5d343ed0aa3cbe75e13",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 容器退出语义",
+      "question_key": "f39703f39ad026a98d31b067990774d12b1a38cb",
+      "aliases": [
+        "Docker 容器退出语义"
+      ],
+      "detail": {
+        "question": "为什么一个 Docker 容器里主进程退出后，容器通常也就退出了？",
+        "missed_points": [
+          "容器生命周期通常绑定 PID 1",
+          "容器不是完整 OS，而是为主进程提供隔离运行环境",
+          "多进程场景常需要 init/tini 或进程管理方式"
+        ],
+        "incorrect_points": [],
+        "feedback": "结论对，再把“PID 1 绑定”与“容器不是 OS”补上就完整了。",
+        "better_answer": "容器的生命周期通常绑定在容器内的 PID 1 主进程上：容器并不是完整操作系统，而是围绕主进程提供文件系统/网络/资源等隔离环境。PID 1 退出后，容器内不再有维持该隔离运行上下文的主体，因此容器通常也就退出。若要管理多个子进程，常用 tini/dumb-init 或进程管理器来承担 PID 1 职责。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "结论对，再把“PID 1 绑定”与“容器不是 OS”补上就完整了。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明容器生命周期通常绑定其 PID 1 主进程",
+        "指出容器不是完整 OS，而是围绕主进程构建的隔离环境",
+        "说明主进程退出后运行上下文不再有维持对象",
+        "能提到守护多个子进程时常需要 init 进程或进程管理方式"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 56,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "5aa981dd0005500935d33f7bf2ceec99aa9d18bc": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 10,
+      "last_score": 10,
+      "recent_scores": [
+        10
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "5aa981dd0005500935d33f7bf2ceec99aa9d18bc",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 镜像体积优化",
+      "question_key": "4ae61443193378f5f72f830e3206d1206a87d8c4",
+      "aliases": [
+        "Docker 镜像体积优化"
+      ],
+      "detail": {
+        "question": "为什么在 Docker 镜像优化里，多阶段构建往往比“在一个阶段里最后再 rm 掉构建产物”更有效？",
+        "missed_points": [
+          "镜像层是追加式的，后续 rm 不会抹掉前层写入的内容",
+          "单阶段 rm 只是在新层里“删除”，前层体积仍在",
+          "多阶段构建只把最终产物复制到新阶段",
+          "因此能显著减小体积并减少依赖/攻击面"
+        ],
+        "incorrect_points": [
+          "未回答问题要点，缺少对“分层追加导致 rm 不减体积”的解释"
+        ],
+        "feedback": "这题的关键是镜像分层不可变：你在后面 rm 只是加了一层删除标记，前层内容还在。",
+        "better_answer": "在单阶段里最后 `rm` 构建产物通常不够有效，因为镜像层是追加式的：构建产物写进了前面的层，即使后续层把它删除，前层的体积仍会保留在镜像中。多阶段构建可以在前一阶段完成编译，只把最终产物 `COPY --from` 到一个干净的新阶段，从而避免把编译依赖和中间文件带入最终镜像，体积与安全面都会更好。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "这题的关键是镜像分层不可变：你在后面 rm 只是加了一层删除标记，前层内容还在。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明镜像层是追加式的，前面层写入的内容不会因后续 rm 真正消失",
+        "指出多阶段构建可以只把最终产物复制到新阶段",
+        "说明这样能避免把编译依赖和中间文件带入最终镜像",
+        "能提到安全面和传输成本也会随之降低"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 8,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "50f86e9af22ced5612d566c95f09378e43553d69": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 70,
+      "last_score": 70,
+      "recent_scores": [
+        70
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "50f86e9af22ced5612d566c95f09378e43553d69",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 索引最左前缀原则",
+      "question_key": "7548f4bdad20d45778ba409f6a7be925229e9ab2",
+      "aliases": [
+        "MySQL 索引最左前缀原则"
+      ],
+      "detail": {
+        "question": "MySQL 联合索引为什么强调最左前缀原则？它影响的是哪一类查找能力？",
+        "missed_points": [
+          "联合索引按列顺序组织键值（有序性从最左列开始）",
+          "必须从最左开始连续匹配才能更好利用索引的有序性",
+          "遇到范围条件后，后续列的索引利用能力会受限（如无法用于进一步排序/精确定位）"
+        ],
+        "incorrect_points": [],
+        "feedback": "最左前缀你说对了，再补“为什么有序性只能从最左开始”以及“范围条件会截断利用”即可。",
+        "better_answer": "联合索引的键值按定义顺序组织（先按第 1 列，再按第 2 列……）。只有从最左列开始连续匹配，才能利用索引的有序性进行有效定位/扫描；如果跳过前导列，后续列在索引上不再形成可直接利用的有序区间。并且一旦在某列上使用范围条件，后续列的索引利用能力通常会受影响。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "最左前缀你说对了，再补“为什么有序性只能从最左开始”以及“范围条件会截断利用”即可。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明联合索引按定义顺序组织键值",
+        "指出从最左列开始连续匹配时更容易利用索引有序性",
+        "说明跳过前导列通常无法直接利用后续列做有效定位",
+        "能提到范围条件后索引利用能力会受影响"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 56,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "bb74c4d509ec79b78d03e3f0033da27d94a48b00": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "bb74c4d509ec79b78d03e3f0033da27d94a48b00",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 覆盖索引",
+      "question_key": "064459ab03f9dd7eb838d6cba48ccb66783ea230",
+      "aliases": [
+        "MySQL 覆盖索引"
+      ],
+      "detail": {
+        "question": "覆盖索引为什么通常能减少随机 I/O？",
+        "missed_points": [
+          "覆盖索引：查询列都能从索引中拿到",
+          "无需回表到聚簇索引/数据页取整行",
+          "减少额外随机 I/O 与访问路径长度",
+          "是否覆盖取决于 select 的列"
+        ],
+        "incorrect_points": [],
+        "feedback": "建议先把两个概念背熟：聚簇索引/回表/覆盖索引。覆盖索引就是“不回表”。",
+        "better_answer": "覆盖索引是指查询所需的列都包含在某个索引里，MySQL 可以直接从索引叶子节点返回结果而无需回表读取聚簇索引的数据页。这样通常能减少一次额外随机 I/O 与访问路径长度，从而更快。是否是覆盖索引取决于 `SELECT` 列表与条件列是否都在该索引中。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "建议先把两个概念背熟：聚簇索引/回表/覆盖索引。覆盖索引就是“不回表”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明查询所需列都能从索引中直接拿到",
+        "指出无需再回表到聚簇索引或数据页取完整记录",
+        "说明这会减少额外 I/O 和访问路径长度",
+        "能补充覆盖索引是否成立与 select 列表直接相关"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "3a73d624011e6f212b7e4d9fcb30f9f72e2e128f": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 65,
+      "last_score": 65,
+      "recent_scores": [
+        65
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "3a73d624011e6f212b7e4d9fcb30f9f72e2e128f",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB 聚簇索引",
+      "question_key": "861f0ffe6b4b3955f3f869ef016d20e67c475b01",
+      "aliases": [
+        "InnoDB 聚簇索引"
+      ],
+      "detail": {
+        "question": "InnoDB 为什么说主键索引是聚簇索引？这个结论会带来什么查询代价差异？",
+        "missed_points": [
+          "聚簇索引的含义：数据行按主键组织存放在主键 B+Tree 叶子节点",
+          "二级索引叶子节点通常存主键值而非整行",
+          "通过二级索引查整行往往需要回表",
+          "主键设计影响页分裂与局部性（自增 vs 随机）"
+        ],
+        "incorrect_points": [
+          "表达上把“主键索引=索引往下找到的数据包含整行”说对了，但缺少对二级索引回表机制的对比说明"
+        ],
+        "feedback": "你抓住了“主键叶子存整行”，但面试常追问的是“二级索引为什么要回表”和“主键选择的代价”。",
+        "better_answer": "InnoDB 的主键索引是聚簇索引：数据行按主键顺序组织并存放在主键 B+Tree 的叶子节点上。二级索引的叶子节点通常只存二级索引键 + 主键值，因此用二级索引查到主键后，还需要回到聚簇索引按主键取整行（回表）。主键设计会影响插入的页分裂与局部性，自增主键通常更友好。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "你抓住了“主键叶子存整行”，但面试常追问的是“二级索引为什么要回表”和“主键选择的代价”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明数据行按主键组织存放在聚簇索引叶子节点",
+        "指出二级索引叶子节点通常存主键值而不是整行",
+        "说明通过二级索引查完整行往往需要回表",
+        "能提到主键设计会影响页分裂和局部性"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 52,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "19bd5419fb70c82353f86318f05c1f6080172918": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "19bd5419fb70c82353f86318f05c1f6080172918",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 事务的 ACID 与隔离性边界",
+      "question_key": "230825f2b3df668fbb8218ef3c241927ebd52a60",
+      "aliases": [
+        "MySQL 事务的 ACID 与隔离性边界"
+      ],
+      "detail": {
+        "question": "MySQL 事务里的 ACID 各自是什么意思？其中面试里最容易和锁机制混淆的是哪一项？",
+        "missed_points": [
+          "原子性/一致性/隔离性/持久性的准确含义",
+          "一致性是事务前后满足约束与业务规则的目标状态",
+          "隔离性描述并发事务的可见性控制",
+          "锁只是实现隔离性的手段之一（还有 MVCC 等）"
+        ],
+        "incorrect_points": [],
+        "feedback": "你记住了四个词，但需要能用一句话分别解释，并点出“一致性 vs 隔离性 vs 锁”的关系。",
+        "better_answer": "A=原子性：事务内操作要么全成功要么全失败；C=一致性：事务前后数据库从一个满足约束/业务规则的状态到另一个满足规则的状态；I=隔离性：并发事务之间的可见性与相互影响被控制到一定程度（隔离级别）；D=持久性：提交后的结果在故障后仍能恢复。面试里最容易与锁混淆的是隔离性：锁只是实现隔离性的手段之一，MVCC 也在实现隔离性。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "你记住了四个词，但需要能用一句话分别解释，并点出“一致性 vs 隔离性 vs 锁”的关系。",
+      "source_type": "expanded",
+      "expected_points": [
+        "准确说明原子性、一致性、隔离性、持久性",
+        "指出隔离性描述并发事务互相可见性的控制",
+        "说明一致性是事务前后满足业务和约束规则的目标状态",
+        "能指出锁只是实现隔离性的手段之一"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "254bd87b21cdbd379a8ff059167dc93413aa9634": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 60,
+      "last_score": 60,
+      "recent_scores": [
+        60
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "254bd87b21cdbd379a8ff059167dc93413aa9634",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MVCC 与 Read View",
+      "question_key": "4fee93019bf7e1d93b1baa448c70d9cfb51d6630",
+      "aliases": [
+        "MVCC 与 Read View"
+      ],
+      "detail": {
+        "question": "MySQL 的 MVCC 为什么能让普通读尽量不加锁？Read View 在里面起什么作用？",
+        "missed_points": [
+          "MVCC 通过版本链保留历史版本",
+          "一致性读根据 Read View 判断哪个版本可见",
+          "因此普通读尽量不加锁、读写互不阻塞（在一定边界内）",
+          "当前读 vs 一致性读的区别（当前读可能加锁）"
+        ],
+        "incorrect_points": [],
+        "feedback": "你说到了“独立视图”，但需要把 MVCC 的三件套说全：版本链 + Read View 可见性判断 + 当前读/一致性读差异。",
+        "better_answer": "InnoDB 的 MVCC 通过 undo/版本链保留历史版本，使得一致性读可以不直接加锁去读数据。Read View 记录当前事务可见的活跃事务集合/边界，一致性读会沿版本链找到对当前 Read View 可见的版本，从而尽量做到读不阻塞写、写不阻塞读。需要区分当前读（如 `SELECT ... FOR UPDATE`）可能会加锁，与普通一致性读不同。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "你说到了“独立视图”，但需要把 MVCC 的三件套说全：版本链 + Read View 可见性判断 + 当前读/一致性读差异。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 MVCC 通过版本链保留历史版本",
+        "指出一致性读根据 Read View 判断哪个版本可见",
+        "说明这样普通读不必直接阻塞写，写也不必阻塞读",
+        "能提到当前读与一致性读的区别"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 48,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d238d7ed2ca91d6e4d90ac469dfe78de7bc3a486": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 30,
+      "last_score": 30,
+      "recent_scores": [
+        30
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d238d7ed2ca91d6e4d90ac469dfe78de7bc3a486",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "幻读与间隙锁",
+      "question_key": "1c66951e86dedc686f2b4db384e72f7ffe54dc83",
+      "aliases": [
+        "幻读与间隙锁"
+      ],
+      "detail": {
+        "question": "MySQL 在可重复读下为什么还需要间隙锁或 next-key lock 来处理幻读问题？",
+        "missed_points": [
+          "幻读是“满足条件的记录集合变化”，不是同一行值变化",
+          "仅锁住已存在记录无法阻止新记录插入",
+          "间隙锁/next-key lock 通过锁住索引区间限制插入",
+          "主要出现在当前读场景"
+        ],
+        "incorrect_points": [
+          "把幻读误解为“同一行没有变化”"
+        ],
+        "feedback": "幻读的关键是“集合变化（新插入/删除）”，而不是同一行的值变没变；因此才需要锁区间而不是只锁记录。",
+        "better_answer": "幻读指在同一事务的两次查询中，满足条件的记录集合发生变化（例如插入了新的满足条件的行），并不是同一行的值变化。仅对已存在记录加记录锁不能阻止其他事务在区间内插入新记录。间隙锁或 next-key lock 会锁住索引区间（记录+间隙），从而约束该范围内的插入，主要出现在当前读场景下用于避免幻读。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "幻读的关键是“集合变化（新插入/删除）”，而不是同一行的值变没变；因此才需要锁区间而不是只锁记录。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明幻读不是同一行值变化，而是满足条件的记录集合发生变化",
+        "指出仅锁住已存在记录不足以阻止新记录插入",
+        "说明间隙锁或 next-key lock 可以约束索引区间上的插入",
+        "能提到这主要出现在当前读场景"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 24,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "32e04c65ee06027430e285de51040fd7a794e0ff": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "32e04c65ee06027430e285de51040fd7a794e0ff",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 慢查询优化路径",
+      "question_key": "44a19eeb8ef9bc4d19f984e352614a27a39324fb",
+      "aliases": [
+        "MySQL 慢查询优化路径"
+      ],
+      "detail": {
+        "question": "面对一条 MySQL 慢查询，为什么不能一上来就说“加索引就行”？",
+        "missed_points": [
+          "慢查询原因可能是扫描/排序/回表/锁等待/返回量/网络等",
+          "应先看执行计划与实际瓶颈（explain/慢日志/剖析）",
+          "索引可能选错、带来维护成本",
+          "SQL 改写、分页方式、数据分布同样关键"
+        ],
+        "incorrect_points": [],
+        "feedback": "有“不能无脑加索引”的意识是对的，但需要给出完整的排查路径与常见瓶颈类型。",
+        "better_answer": "慢查询不一定靠加索引解决：可能是全表扫描、排序/临时表、回表随机 I/O、锁等待、返回数据量过大、网络/应用处理等。应先看执行计划与实际耗时点（`EXPLAIN`、慢日志、profile/trace），再决定是补索引、改写 SQL、调整分页、减少返回列/行、优化数据分布或处理锁竞争；索引也有维护与写放大成本，选错反而更差。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "有“不能无脑加索引”的意识是对的，但需要给出完整的排查路径与常见瓶颈类型。",
+      "source_type": "expanded",
+      "expected_points": [
+        "指出慢查询可能来自扫描、排序、回表、锁等待、网络或返回量过大等多种原因",
+        "说明需要先看执行计划和实际瓶颈",
+        "指出索引可能改善过滤，但也可能带来维护成本或选错索引",
+        "能提到 SQL 改写、分页方式、数据分布也很关键"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "4ab2cbe09299066aa2e89b1ee384aec578f001d9": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "4ab2cbe09299066aa2e89b1ee384aec578f001d9",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "事务提交与 redo log",
+      "question_key": "bf0547c8f5cff2810915bd79d07674bdb03fafb3",
+      "aliases": [
+        "事务提交与 redo log"
+      ],
+      "detail": {
+        "question": "InnoDB 为什么需要 redo log？它和“数据页立刻刷盘”相比解决了什么性能问题？",
+        "missed_points": [
+          "redo log 用于崩溃恢复（记录页修改）",
+          "提交不必立刻刷脏页到数据文件",
+          "顺序写日志比随机刷数据页成本低",
+          "WAL：先写日志再择机刷脏页"
+        ],
+        "incorrect_points": [],
+        "feedback": "redo log 是 InnoDB 性能与持久性的核心，建议背一段“WAL + 顺序写 + 延迟刷脏页 + 崩溃恢复”。",
+        "better_answer": "InnoDB 需要 redo log 来支持崩溃恢复与提升提交性能：事务提交时不必把修改过的脏页立刻刷回数据文件（随机 I/O 很贵），而是先把 redo 日志顺序写入（WAL：write-ahead logging），再在后台择机刷脏页。这样既能在崩溃后通过 redo 恢复到一致状态，又能把高成本的随机写转换为更便宜的顺序写。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "redo log 是 InnoDB 性能与持久性的核心，建议背一段“WAL + 顺序写 + 延迟刷脏页 + 崩溃恢复”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 redo log 记录物理页修改意图或结果以支持崩溃恢复",
+        "指出事务提交不必每次都把脏页立刻刷回数据文件",
+        "说明顺序写日志通常比随机刷数据页成本更低",
+        "能提到 WAL 思想：先记日志再择机刷脏页"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "ce294e2afef78734b7e74019ed09401435e99279": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 55,
+      "last_score": 55,
+      "recent_scores": [
+        55
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "ce294e2afef78734b7e74019ed09401435e99279",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 单线程事件循环与 I/O 多路复用模型",
+      "question_key": "2bb86d95a950a14d8f52b380a86382fc32c321ca",
+      "aliases": [
+        "Redis 单线程事件循环与 I/O 多路复用模型"
+      ],
+      "detail": {
+        "question": "为什么常说 Redis 是单线程的，但这句话又不能说得太绝对？",
+        "missed_points": [
+          "核心命令执行是单线程事件循环",
+          "网络事件依赖 I/O 多路复用",
+          "后台线程可能做持久化/删除等辅助工作（以及新版本 I/O 线程等）",
+          "需要总结“单线程”指的是命令执行模型而非所有工作"
+        ],
+        "incorrect_points": [],
+        "feedback": "回答方向对，但表达太泛；建议用一句话钉住：单线程主要指命令执行/事件循环，其他线程是辅助。",
+        "better_answer": "常说 Redis 单线程，主要指核心命令处理长期采用单线程事件循环来执行（避免复杂锁竞争），网络事件通过 I/O 多路复用驱动；但 Redis 也会有后台线程做持久化、AOF 重写、异步删除、以及部分版本的 I/O 线程等辅助工作，所以不能把它理解成“进程里永远只有一个线程”。"
+      },
+      "linked_chunks": [
+        "f5904db37b59f549837c9727e684eea8aab97bb0"
+      ],
+      "source_files": [],
+      "last_feedback": "回答方向对，但表达太泛；建议用一句话钉住：单线程主要指命令执行/事件循环，其他线程是辅助。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明核心命令执行路径长期以单线程事件循环为主",
+        "指出网络事件处理依赖 I/O 多路复用",
+        "说明某些版本和模块在后台线程、I/O 线程上有辅助工作",
+        "总结不能把 Redis 简化成“整个进程永远只有一个线程”"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 44,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "7183c92127c6f1a963f46d7ed82238ebabcbc12c": {
+      "attempt_count": 1,
+      "correct_count": 1,
+      "wrong_count": 0,
+      "streak_correct": 1,
+      "streak_wrong": 0,
+      "best_score": 85,
+      "last_score": 85,
+      "recent_scores": [
+        85
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 1,
+      "mastery_level": "familiar",
+      "next_review_priority": 35,
+      "concept_id": "7183c92127c6f1a963f46d7ed82238ebabcbc12c",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 键过期机制与淘汰策略",
+      "question_key": "ef3bb88454b08d74dc36d4733727e5dee264f818",
+      "aliases": [
+        "Redis 键过期机制与淘汰策略"
+      ],
+      "detail": {
+        "question": "Redis 的过期删除和内存淘汰为什么是两套不同问题？",
+        "missed_points": [
+          "可补充惰性删除/定期删除与淘汰策略不是一回事"
+        ],
+        "incorrect_points": [],
+        "feedback": "核心点命中且结构清晰。再补一句“惰性/定期删除≠淘汰策略”会更完整。",
+        "better_answer": "过期删除解决的是“带 TTL 的键到期如何失效”（惰性删除+定期删除）；内存淘汰解决的是“达到 maxmemory 后要保留谁/淘汰谁”（LRU/LFU/volatile/allkeys 等策略）。一个键即使没过期也可能被淘汰；而惰性/定期删除也不能替代淘汰策略，因为淘汰发生在内存压力下、与是否到期无关。"
+      },
+      "linked_chunks": [
+        "c2d5e6a47b2f5d9d0c3c8d9b0c1d2e3f4a5b6c7d"
+      ],
+      "source_files": [],
+      "last_feedback": "核心点命中且结构清晰。再补一句“惰性/定期删除≠淘汰策略”会更完整。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明过期删除关注的是带 TTL 键是否到时失效",
+        "说明内存淘汰关注的是达到 maxmemory 后保留谁、淘汰谁",
+        "指出一个键即使未过期也可能因淘汰策略被驱逐",
+        "能提到惰性删除和定期删除并不能等价于淘汰策略"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 88,
+      "stability": 100,
+      "pool": "mastered_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "b72fda1505737c853bfd6d8215e187c135f3b2f1": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "b72fda1505737c853bfd6d8215e187c135f3b2f1",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 持久化机制（RDB/AOF 与 AOF 重写）",
+      "question_key": "2d3c55412cf5b9f4bbcac445073d0ce3cfa0f48f",
+      "aliases": [
+        "Redis 持久化机制（RDB/AOF 与 AOF 重写）"
+      ],
+      "detail": {
+        "question": "RDB 和 AOF 的核心差异是什么？为什么很多场景不会只靠其中一种？",
+        "missed_points": [
+          "RDB：恢复快但两次快照间可能丢较多数据",
+          "AOF：更细粒度但体积与重放成本更高",
+          "运行开销与数据安全性的取舍",
+          "AOF 重写的意义与机制（不是简单压缩）"
+        ],
+        "incorrect_points": [],
+        "feedback": "方向正确，已经能解释“为什么不只靠一种”。再把三维取舍（安全性/恢复速度/运行开销）说完整即可。",
+        "better_answer": "RDB 是定期生成数据快照，文件紧凑、恢复快，但两次快照间故障可能丢失较多数据；AOF 记录写命令，通常更细粒度、数据更安全，但文件可能更大、回放恢复更慢且有额外写放大。很多场景会混合使用以平衡恢复速度与数据完整性，并通过 AOF 重写控制 AOF 体积与回放成本。"
+      },
+      "linked_chunks": [
+        "d3e6f7b58c306eae1d4d9eac1d2e3f4a5b6c7d8e"
+      ],
+      "source_files": [],
+      "last_feedback": "方向正确，已经能解释“为什么不只靠一种”。再把三维取舍（安全性/恢复速度/运行开销）说完整即可。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 RDB 偏快照，恢复快但两次快照间可能丢较多数据",
+        "说明 AOF 记录写命令，通常更细粒度但体积和重放成本更高",
+        "指出二者在恢复速度、数据安全性、运行开销上有取舍",
+        "能提到混合使用是为了平衡恢复效率和数据完整性"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "b2dcf9b5eadd13c4331d238497563d1f097bec96": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b2dcf9b5eadd13c4331d238497563d1f097bec96",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Big Key 与 Hot Key 识别与治理",
+      "question_key": "63b8fd95d2eeb4122758baf97060448b18201ddc",
+      "aliases": [
+        "Redis Big Key 与 Hot Key 识别与治理"
+      ],
+      "detail": {
+        "question": "Redis 里的 Big Key 和 Hot Key 分别会造成什么不同类型的问题？",
+        "missed_points": [
+          "Big Key：删除阻塞、网络传输大、迁移/扩容困难、可能阻塞事件循环",
+          "Hot Key：访问倾斜导致单点 CPU/带宽热点、延迟抖动",
+          "二者本质不同但可能同时存在",
+          "治理：拆分、渐进删除、过期、旁路/本地缓存、读写分散等"
+        ],
+        "incorrect_points": [],
+        "feedback": "建议先背“Big vs Hot 的问题类型对比 + 3 个治理手段”。",
+        "better_answer": "Big Key 指单个 key 的 value 体积很大或元素很多，常导致删除阻塞、单次传输数据量过大、迁移/rehash 困难甚至卡住事件循环；Hot Key 指访问频率极高导致请求集中在少数 key 上，引发单点 CPU/网络热点与延迟抖动。两者可能同时存在但问题类型不同。治理上常用拆分 key、设置合理过期/分片、渐进删除、旁路缓存或本地缓存、读写分散等。"
+      },
+      "linked_chunks": [
+        "c3b1d0f451f35c109c73d8bf26b968b836d6a4ae"
+      ],
+      "source_files": [],
+      "last_feedback": "建议先背“Big vs Hot 的问题类型对比 + 3 个治理手段”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 Big Key 更容易带来删除阻塞、网络传输大、迁移困难等问题",
+        "说明 Hot Key 更容易导致单点访问倾斜和 CPU/网络热点",
+        "指出二者可能同时存在但本质问题不同",
+        "能提到拆分、过期、旁路缓存或本地缓存等治理思路"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d64068f8833db9f990aed41693ed5bb275f86481": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d64068f8833db9f990aed41693ed5bb275f86481",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Pipeline 机制与网络往返优化",
+      "question_key": "98b3ad44012391567d0f612a31f94f18466cfa13",
+      "aliases": [
+        "Redis Pipeline 机制与网络往返优化"
+      ],
+      "detail": {
+        "question": "Redis Pipeline 为什么能显著提升吞吐，但它并没有把多条命令变成事务？",
+        "missed_points": [
+          "pipeline 通过减少 RTT/系统调用提升吞吐",
+          "命令仍按顺序执行但不具备事务原子提交语义",
+          "不会自动隔离失败或回滚中间结果",
+          "适合批量独立命令"
+        ],
+        "incorrect_points": [],
+        "feedback": "Pipeline 是高频面试点：核心一句话是“批量发，少 RTT，但不提供事务语义”。",
+        "better_answer": "Redis Pipeline 把多条命令一次性发送到服务端，主要减少网络往返 RTT 与系统调用开销，从而显著提升吞吐。命令仍会按协议顺序执行，但 pipeline 不提供 MULTI/EXEC 那样的事务队列语义，更没有回滚；中间某条失败也不会自动撤销已执行的命令。因此它适合批量独立命令场景。"
+      },
+      "linked_chunks": [
+        "86a54a03d2286fb60c1fcb5deeed8699f63fdfde"
+      ],
+      "source_files": [],
+      "last_feedback": "Pipeline 是高频面试点：核心一句话是“批量发，少 RTT，但不提供事务语义”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 pipeline 主要减少 RTT 和系统调用开销",
+        "指出命令仍会按协议顺序执行，但不具备事务性的原子提交语义",
+        "说明中间结果不会因为 pipeline 自动隔离失败或回滚",
+        "能提到它适合批量独立命令场景"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d5b2f483eef946653dfe356fde145f60a17f8df3": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d5b2f483eef946653dfe356fde145f60a17f8df3",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 事务（MULTI/EXEC）语义与一致性边界",
+      "question_key": "10205771bc1f63127bc26a0e9ef7ca86e5d75e79",
+      "aliases": [
+        "Redis 事务（MULTI/EXEC）语义与一致性边界"
+      ],
+      "detail": {
+        "question": "为什么说 Redis 的 MULTI/EXEC 不能等价理解成数据库里的强事务？",
+        "missed_points": [
+          "MULTI/EXEC 主要保证命令串行执行",
+          "不提供关系型数据库那种回滚机制",
+          "WATCH 是乐观并发控制，不是完整隔离级别",
+          "运行期某条命令报错不会回滚之前已成功命令"
+        ],
+        "incorrect_points": [],
+        "feedback": "Redis 事务的面试点是“串行但不回滚、不隔离到数据库级”。",
+        "better_answer": "Redis 的 MULTI/EXEC 更像把命令入队后一次性串行执行，保证执行期间不被其他命令插队，但它不提供关系型数据库那种强事务能力：没有传统意义的回滚机制；WATCH 只是乐观并发控制（检测 key 是否被改动）而不是完整隔离级别；且执行中某条命令运行期报错不会自动回滚之前已成功执行的命令。"
+      },
+      "linked_chunks": [
+        "7a70550fa449817da85702b2ac500fad9de5fa69"
+      ],
+      "source_files": [],
+      "last_feedback": "Redis 事务的面试点是“串行但不回滚、不隔离到数据库级”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 Redis 事务主要保证队列中的命令串行执行",
+        "指出它不提供传统关系型数据库那种回滚机制",
+        "说明 WATCH 只能做乐观并发控制，不代表完整隔离级别",
+        "能提到执行中某条命令运行期报错不会自动回滚前面成功命令"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "c9acd4bfcbe69a14eac36f1fd9637b1a3edacdba": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "c9acd4bfcbe69a14eac36f1fd9637b1a3edacdba",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 分布式锁实现要点（SET NX PX 与续期/漂移）",
+      "question_key": "f1372918e29e93013f218500ad39b4e7c13787a4",
+      "aliases": [
+        "Redis 分布式锁实现要点（SET NX PX 与续期/漂移）"
+      ],
+      "detail": {
+        "question": "为什么 Redis 分布式锁里只说“SET NX PX”还不够？真正容易出问题的边界在哪里？",
+        "missed_points": [
+          "锁值需要唯一 token 才能安全释放（不能无脑 del）",
+          "业务可能超过过期时间，需要续期/看门狗",
+          "时钟漂移、GC 停顿、网络抖动影响有效性判断",
+          "这是工程折中而非严格线性一致锁"
+        ],
+        "incorrect_points": [],
+        "feedback": "分布式锁常考“安全释放 + 续期 + 失效边界”。建议把这三条背熟再谈 Redlock 争议。",
+        "better_answer": "只说“SET NX PX”不够，因为真正容易出问题的边界在：1）必须用唯一值（token）标识锁持有者，释放时要校验 token，不能无脑 `DEL`，否则可能删掉别人的锁；2）业务执行可能超过过期时间，需要续期/看门狗机制，否则锁过期后会出现并发进入；3）时钟漂移、GC 停顿、网络抖动会让你对“锁是否仍有效”的判断偏离现实。因此 Redis 锁更多是工程折中方案，不等同于严格线性一致的分布式锁。"
+      },
+      "linked_chunks": [
+        "cd197ab02b1b7d14db8bbd883067fb7ee39fe91f"
+      ],
+      "source_files": [],
+      "last_feedback": "分布式锁常考“安全释放 + 续期 + 失效边界”。建议把这三条背熟再谈 Redlock 争议。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明锁需要唯一值以便安全释放，不能无脑 del",
+        "指出业务执行时间可能超过过期时间，需要考虑续期",
+        "说明时钟漂移、GC 停顿、网络抖动会影响锁有效性判断",
+        "能提到这类锁更偏工程折中而非严格线性一致锁"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "e5a40050ed28fab383e35427ffda987128f07922": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "e5a40050ed28fab383e35427ffda987128f07922",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Stream 数据结构与消费组模型",
+      "question_key": "9ed87b3389a077e8bd991d7f2adfc61aa8855c26",
+      "aliases": [
+        "Redis Stream 数据结构与消费组模型"
+      ],
+      "detail": {
+        "question": "Redis Stream 的消费组为什么不能简单类比成 Kafka Consumer Group？",
+        "missed_points": [
+          "二者都能组内分摊但模型不同",
+          "Stream 消息驻留在 Redis 结构中，保留/确认机制不同",
+          "pending list、XACK、消费者状态管理是关键点",
+          "分区扩展性与持久化语义与 Kafka 不同"
+        ],
+        "incorrect_points": [],
+        "feedback": "Stream 的关键是 PEL（pending entries list）与 ack/claim 机制，而 Kafka 是分区+offset+再均衡。",
+        "better_answer": "Redis Stream 的消费组与 Kafka Consumer Group 都能组内分摊，但底层模型不同：Stream 消息仍驻留在 Redis 的数据结构中，消费确认依赖 pending list（PEL）、`XACK` 等机制以及消费者状态管理；Kafka 则以分区日志与 offset 为核心。两者在扩展性（Kafka 分区扩展）、持久化语义、重放与确认机制上差异明显，因此不能简单类比。"
+      },
+      "linked_chunks": [
+        "963470a79c2bcf82694b7e16d29691474b34a322"
+      ],
+      "source_files": [],
+      "last_feedback": "Stream 的关键是 PEL（pending entries list）与 ack/claim 机制，而 Kafka 是分区+offset+再均衡。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明二者都支持组内分摊消费，但底层模型不同",
+        "指出 Stream 消息仍驻留在 Redis 数据结构中，保留与确认机制不同",
+        "说明 pending list、XACK、消费者状态管理是其关键点",
+        "能提到分区扩展性和持久化语义与 Kafka 不同"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "04f6c4c55bb310c6b4bcf9b83fe60c8b467a156b": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "04f6c4c55bb310c6b4bcf9b83fe60c8b467a156b",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "线程安全与可重入性定义",
+      "question_key": "bc3b37e319f8c012d67750101f169ab1e90b5ac2",
+      "aliases": [
+        "线程安全与可重入性定义"
+      ],
+      "detail": {
+        "question": "线程安全和可重入性为什么不是同一个概念？",
+        "missed_points": [
+          "线程安全：多线程并发调用结果是否正确",
+          "可重入：函数被中断后再次进入不依赖不安全共享状态",
+          "线程安全实现可能依赖锁但函数未必可重入",
+          "可举全局状态/不可重入库函数作为反例"
+        ],
+        "incorrect_points": [],
+        "feedback": "建议背一个对比模板：线程安全看“并发正确性”，可重入看“中断/重入时是否依赖共享可变状态”。",
+        "better_answer": "线程安全关注的是多个线程并发调用时，程序结果是否仍然正确（不发生数据竞争/破坏不变式）；可重入强调函数在执行过程中被中断、再次进入时仍能正确运行，通常要求不依赖不可控的共享可变状态。一个线程安全的函数可能靠锁保护共享状态，但它仍可能不可重入（例如在信号处理/中断重入场景下会死锁或破坏状态）。"
+      },
+      "linked_chunks": [
+        "9c8593cf5a32f751904d4a07f271d2fa8a319cdc"
+      ],
+      "source_files": [],
+      "last_feedback": "建议背一个对比模板：线程安全看“并发正确性”，可重入看“中断/重入时是否依赖共享可变状态”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明线程安全关注多线程并发调用时结果是否正确",
+        "说明可重入强调函数被中断后再次进入仍不依赖不安全共享状态",
+        "指出线程安全实现可能依赖锁，但函数未必可重入",
+        "能举出使用全局状态或不可重入库函数的反例"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "b998e01632191a10790735dae5e768d2eae5083c": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "b998e01632191a10790735dae5e768d2eae5083c",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "并发中的 ABA 问题与版本号方案",
+      "question_key": "42d9066b649d772e132bb2f07ed75647af694c69",
+      "aliases": [
+        "并发中的 ABA 问题与版本号方案"
+      ],
+      "detail": {
+        "question": "CAS 里的 ABA 问题到底是什么？为什么“值没变”不等于“状态没变”？",
+        "missed_points": [
+          "ABA：值从 A 变 B 又回 A",
+          "CAS 只比较当前值看不出中间变化",
+          "会让依赖状态历史的算法出错",
+          "版本号/时间戳/标记指针等缓解"
+        ],
+        "incorrect_points": [],
+        "feedback": "ABA 是 CAS 高频题：核心一句话是“值相同不代表期间没变”。",
+        "better_answer": "ABA 问题指某个内存位置的值从 A 变成 B 又变回 A。CAS 只比较当前值是否为 A，因此会误以为“没发生变化”，但中间的变化可能已经破坏了算法依赖的状态历史（例如节点被弹出又复用）。常见缓解是引入版本号/时间戳（如 AtomicStampedReference）、带标记指针等，把“值+版本”一起比较。"
+      },
+      "linked_chunks": [
+        "75665130079a4273b6f6f5dec5edd378996888da"
+      ],
+      "source_files": [],
+      "last_feedback": "ABA 是 CAS 高频题：核心一句话是“值相同不代表期间没变”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明某位置可能从 A 变成 B 又变回 A",
+        "指出 CAS 只比较当前值时看不出中间发生过变化",
+        "说明这会让依赖状态历史的并发算法出错",
+        "能提到版本号、时间戳或带标记指针是常见缓解方式"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.942Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d7b8e8f8d3079d8d732050f0f55eaabd59c58b76": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "d7b8e8f8d3079d8d732050f0f55eaabd59c58b76",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "无锁队列与 CAS 重试策略",
+      "question_key": "c5f197716d8c4b74ab30e9058d33ec4d473899fd",
+      "aliases": [
+        "无锁队列与 CAS 重试策略"
+      ],
+      "detail": {
+        "question": "为什么无锁队列使用 CAS 时通常要设计重试循环？重试过多又会带来什么问题？",
+        "missed_points": [
+          "CAS 失败表示并发竞争，需要重读状态再尝试",
+          "无锁算法正确性常依赖自旋重试",
+          "高竞争下会 CPU 空转、尾延迟上升",
+          "退避策略或降级锁是常见缓解"
+        ],
+        "incorrect_points": [],
+        "feedback": "无锁不等于“一次就成功”，面试常看你是否理解 CAS 重试与高竞争下的代价。",
+        "better_answer": "无锁队列使用 CAS 时通常需要重试循环，因为 CAS 失败意味着其他线程并发修改了共享状态，当前线程需要重新读取最新状态并再次尝试才能保证正确性。但重试过多在高竞争下会导致 CPU 空转（自旋）、缓存一致性开销增大、尾延迟上升。常见缓解包括指数退避、减少竞争热点、或在极端情况下退化为锁方案。"
+      },
+      "linked_chunks": [
+        "0dc5a921c89972ef724228cd6ce5c29cac9f31ee"
+      ],
+      "source_files": [],
+      "last_feedback": "无锁不等于“一次就成功”，面试常看你是否理解 CAS 重试与高竞争下的代价。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 CAS 失败表示有并发竞争，需重新读取最新状态再尝试",
+        "指出无锁不代表一次必成，算法正确性常依赖自旋重试",
+        "说明高竞争下会造成 CPU 空转和尾延迟上升",
+        "能提到退避策略或降级锁方案是常见缓解手段"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "29cb1190f90a69f8beaa865330dd58b79035d430": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "29cb1190f90a69f8beaa865330dd58b79035d430",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "内存屏障与编译器重排序",
+      "question_key": "a244613ad438733c9374cbfce8ae663a64d917a0",
+      "aliases": [
+        "内存屏障与编译器重排序"
+      ],
+      "detail": {
+        "question": "为什么并发程序里“代码按你写的顺序执行”这句话靠不住？内存屏障在这里解决什么问题？",
+        "missed_points": [
+          "编译器与 CPU 可能重排序",
+          "单线程等价重排在多线程下破坏可见性/时序假设",
+          "内存屏障约束特定读写重排并加强可见性",
+          "常与原子变量/锁的语义一起出现"
+        ],
+        "incorrect_points": [],
+        "feedback": "并发里最要命的是“可见性+重排序”。建议先掌握 acquire/release 的直觉，再看更强的 seq_cst。",
+        "better_answer": "“按代码顺序执行”在并发下靠不住，因为编译器和 CPU 可能为了性能重排序指令。单线程看来等价的重排，在多线程下会破坏你对可见性与先后关系的假设。内存屏障（或语言层的原子/锁语义）用于约束特定读写的重排序并建立可见性保证，从而让某些操作在其他线程看来满足所需的 happens-before 关系。"
+      },
+      "linked_chunks": [
+        "59fd2be22799216d5793b00360e770dbe1a52cd3"
+      ],
+      "source_files": [],
+      "last_feedback": "并发里最要命的是“可见性+重排序”。建议先掌握 acquire/release 的直觉，再看更强的 seq_cst。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明编译器和 CPU 都可能为了性能进行指令重排序",
+        "指出单线程看似等价的重排在多线程下可能破坏可见性和时序假设",
+        "说明内存屏障用于约束特定读写操作的重排并加强可见性保证",
+        "能提到这通常与原子变量或锁语义一起出现"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "8aa177c19ab6d7203e85c4cd5c333903966b0640": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "8aa177c19ab6d7203e85c4cd5c333903966b0640",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "伪共享（false sharing）与缓存行对齐",
+      "question_key": "aa397936d0cfb2cf72f5ecbb17eed7831889888a",
+      "aliases": [
+        "伪共享（false sharing）与缓存行对齐"
+      ],
+      "detail": {
+        "question": "伪共享为什么会让两个互不相关的变量彼此拖慢？",
+        "missed_points": [
+          "两个变量可能落在同一缓存行",
+          "不同核心写各自变量导致缓存行频繁失效/同步",
+          "开销来自缓存一致性而非锁竞争",
+          "填充/对齐到不同缓存行可缓解"
+        ],
+        "incorrect_points": [],
+        "feedback": "伪共享要点是“缓存行是一致性单位”，不是变量级别。",
+        "better_answer": "伪共享发生在两个逻辑无关的变量恰好落在同一个缓存行时：即使两个线程各写各的变量，也会因为缓存一致性协议以缓存行为单位而导致该缓存行在不同核心之间频繁失效与同步，从而互相拖慢。性能损失来自缓存一致性开销而不是锁竞争。常见优化是填充/对齐，让热点变量落在不同缓存行。"
+      },
+      "linked_chunks": [
+        "1e8dcff8d6df810e0d4e39b01808a1651a16c14e"
+      ],
+      "source_files": [],
+      "last_feedback": "伪共享要点是“缓存行是一致性单位”，不是变量级别。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明两个变量虽然逻辑独立，但可能落在同一缓存行",
+        "指出不同核心修改各自变量会导致缓存行频繁失效和同步",
+        "说明性能损失来自缓存一致性开销而非锁竞争本身",
+        "能提到填充或对齐到不同缓存行是常见优化手段"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "e2f1892aa963fdc38a5c4e131d0d9afc55db8e5c": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "e2f1892aa963fdc38a5c4e131d0d9afc55db8e5c",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "背压（backpressure）机制与限流策略",
+      "question_key": "fe5e1a0f346e7305d12241f0ca065f046e3455f9",
+      "aliases": [
+        "背压（backpressure）机制与限流策略"
+      ],
+      "detail": {
+        "question": "并发系统里为什么需要背压？它和简单限流有什么区别？",
+        "missed_points": [
+          "背压：下游处理不过来向上游传递拥塞信号",
+          "目标是避免队列无限堆积、延迟失控、资源打爆",
+          "限流更像固定入口约束，不一定反映下游实时承载",
+          "实现手段：队列水位线、令牌桶、窗口等"
+        ],
+        "incorrect_points": [],
+        "feedback": "背压的关键词是“反馈”，限流的关键词是“入口控制”。",
+        "better_answer": "背压是下游处理不过来时向上游传递拥塞/减速信号，让系统在负载升高时主动降低输入或降低生产速度，避免队列无限堆积、延迟失控和资源被打爆。简单限流更像对入口做固定约束（比如 QPS 上限），不一定能反映下游的实时承载能力。背压常用队列长度水位线、窗口、令牌桶/漏桶等机制实现。"
+      },
+      "linked_chunks": [
+        "0a911a084200943111221d5d9eae0d14cd8e4012"
+      ],
+      "source_files": [],
+      "last_feedback": "背压的关键词是“反馈”，限流的关键词是“入口控制”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明背压是下游处理不过来时向上游传递拥塞信号",
+        "指出其目标是避免队列无限堆积、延迟失控和资源打爆",
+        "说明简单限流更像固定入口约束，不一定反映下游实时承载能力",
+        "能提到队列长度、水位线、令牌桶等可作为实现手段"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "3bf94edbbe33e17aa471799266999fcb40acb78a": {
+      "attempt_count": 1,
+      "correct_count": 1,
+      "wrong_count": 0,
+      "streak_correct": 1,
+      "streak_wrong": 0,
+      "best_score": 90,
+      "last_score": 90,
+      "recent_scores": [
+        90
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 1,
+      "mastery_level": "familiar",
+      "next_review_priority": 35,
+      "concept_id": "3bf94edbbe33e17aa471799266999fcb40acb78a",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "死锁形成条件",
+      "question_key": "7e3806133946755b72166713c498cb919cf75960",
+      "aliases": [
+        "死锁形成条件"
+      ],
+      "detail": {
+        "question": "并发程序里的死锁为什么通常要同时满足多个条件？至少说出其中四个经典必要条件。",
+        "missed_points": [],
+        "incorrect_points": [],
+        "feedback": "四个必要条件都答到了，表述基本准确。",
+        "better_answer": "死锁经典四必要条件：互斥、请求并保持、不可剥夺、循环等待。工程上常通过破坏其中之一来预防死锁（如资源有序分配破坏循环等待、超时/回退破坏请求并保持等）。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "四个必要条件都答到了，表述基本准确。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明互斥条件",
+        "说明请求并保持条件",
+        "说明不可剥夺条件",
+        "说明循环等待条件"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 92,
+      "stability": 100,
+      "pool": "mastered_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "be569c11f9784c8fbb33aa9f4b64e770002f78f9": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "be569c11f9784c8fbb33aa9f4b64e770002f78f9",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "生产者消费者模型中的条件变量",
+      "question_key": "6f2c46f75c0278a9e55fe59cb008bf3fee54f48f",
+      "aliases": [
+        "生产者消费者模型中的条件变量"
+      ],
+      "detail": {
+        "question": "为什么生产者消费者模型里经常要把条件变量和互斥锁配合使用，而不是只靠自旋轮询？",
+        "missed_points": [
+          "条件变量避免忙等，节省 CPU",
+          "互斥锁保护共享队列与条件检查的原子性",
+          "等待/唤醒围绕同一受保护状态进行",
+          "需要 while 反复检查以处理伪唤醒/竞争唤醒"
+        ],
+        "incorrect_points": [],
+        "feedback": "这题是并发基础：条件变量解决“等条件”而不是“抢锁”，必须与互斥锁一起保护条件判断。",
+        "better_answer": "生产者消费者模型用条件变量是为了在“条件不满足”时让线程睡眠等待，避免自旋忙等浪费 CPU；互斥锁用于保护共享队列与“检查条件+入队/出队”的原子性。等待与唤醒必须围绕同一份受保护状态进行，并且通常用 `while` 循环重新检查条件以应对伪唤醒或竞争唤醒。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "这题是并发基础：条件变量解决“等条件”而不是“抢锁”，必须与互斥锁一起保护条件判断。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明条件变量用于等待某条件成立，避免忙等浪费 CPU",
+        "指出互斥锁用于保护共享队列和条件检查的原子性",
+        "说明等待和唤醒需围绕同一受保护状态进行",
+        "能提到伪唤醒或竞争唤醒时要用 while 重新检查条件"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "bb64a8ef271821c4c36adc9b179cac8687160326": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 70,
+      "last_score": 70,
+      "recent_scores": [
+        70
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "bb64a8ef271821c4c36adc9b179cac8687160326",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 滑动窗口与流量控制（rwnd）",
+      "question_key": "897142ba7304d46cdcf22298422b662a520e5646",
+      "aliases": [
+        "TCP 滑动窗口与流量控制（rwnd）"
+      ],
+      "detail": {
+        "question": "TCP 的滑动窗口为什么不只是“为了提高吞吐多发几包”这么简单？rwnd 控制的到底是什么？",
+        "missed_points": [
+          "明确区分流量控制（rwnd）与拥塞控制（cwnd）的关注点不同",
+          "强调窗口的核心是“发送端在未逐包确认前可飞行的数据量上限”"
+        ],
+        "incorrect_points": [],
+        "feedback": "主要点答到了，差一步在于把 rwnd 与 cwnd 的区别讲清，会显得更专业。",
+        "better_answer": "TCP 滑动窗口不仅是“提高吞吐多发几包”，而是允许发送方在未逐包确认前保持一定的在途数据量（pipeline），从而提高链路利用率。rwnd（接收窗口）反映接收方当前可用的接收缓冲能力，是流量控制手段，用来防止发送方把接收方缓冲打爆；它与拥塞控制（cwnd，关注网络路径拥塞）是不同维度的约束。"
+      },
+      "linked_chunks": [
+        "7186f9d3b781517583589e1067e98261abe0aa96"
+      ],
+      "source_files": [],
+      "last_feedback": "主要点答到了，差一步在于把 rwnd 与 cwnd 的区别讲清，会显得更专业。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明滑动窗口允许发送方在未逐包确认前连续发送一定数据",
+        "指出 rwnd 反映接收方当前可接收缓冲能力",
+        "说明它属于流量控制，避免发送方压垮接收方",
+        "能区分它与拥塞控制关注点不同"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.943Z",
+      "mastery_score": 56,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "a06c75144f71fb6cbab10df73ad1e914590f759f": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "a06c75144f71fb6cbab10df73ad1e914590f759f",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 重传机制（RTO/快速重传/SACK）",
+      "question_key": "abe48b92e8a650e33b097ccd1ee3f9bdfc514525",
+      "aliases": [
+        "TCP 重传机制（RTO/快速重传/SACK）"
+      ],
+      "detail": {
+        "question": "TCP 为什么既需要超时重传，又需要快速重传？两者分别弥补什么问题？",
+        "missed_points": [
+          "更清晰地区分：超时处理“没有足够信号的丢包/黑洞”，快速重传处理“有 dup ACK 信号的丢包”",
+          "补充 SACK 帮助精确确认已收到区间，减少不必要重传"
+        ],
+        "incorrect_points": [],
+        "feedback": "核心机制讲到了，建议补一句 SACK 的价值，以及把两者适用情形对比得更明确。",
+        "better_answer": "TCP 需要超时重传（RTO）作为兜底：当丢包后收不到足够反馈信号时，定时器到期仍能触发重传；但单靠 RTO 往往太慢，会显著拉高时延。快速重传利用重复 ACK（dup ACK）在超时前更早推断某个报文段丢失并触发重传，从而降低恢复时延。SACK 还能让发送方更精确知道哪些数据已到达，减少不必要的重传。"
+      },
+      "linked_chunks": [
+        "74972dddb42b0aa3e4dbfd441ef7ccd644b2e1bc"
+      ],
+      "source_files": [],
+      "last_feedback": "核心机制讲到了，建议补一句 SACK 的价值，以及把两者适用情形对比得更明确。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明超时重传依赖定时器，能兜底丢包恢复",
+        "指出等待 RTO 往往太慢，会拉高时延",
+        "说明快速重传通过重复 ACK 更早推断某报文段丢失",
+        "能提到 SACK 可帮助发送方更精确知道哪些数据已收到"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "045e18cc1b676937ebec2b58ff4fb8812ca21f78": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "045e18cc1b676937ebec2b58ff4fb8812ca21f78",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP Keepalive 机制与应用层心跳对比",
+      "question_key": "c323c40ace497f0e6f8b37dc72a8d93f4c43cc45",
+      "aliases": [
+        "TCP Keepalive 机制与应用层心跳对比"
+      ],
+      "detail": {
+        "question": "TCP Keepalive 和应用层心跳为什么不能互相简单替代？",
+        "missed_points": [
+          "keepalive 是传输层探测长时间失活连接",
+          "默认间隔/语义较粗，不一定满足业务实时性",
+          "应用层心跳可携带业务语义并自定义超时策略",
+          "二者可并存，解决不同层次问题"
+        ],
+        "incorrect_points": [],
+        "feedback": "这题要点是“层次不同、语义不同、时间尺度不同”，所以无法互相简单替代。",
+        "better_answer": "TCP keepalive 是传输层用于探测连接是否长时间失活的机制，默认间隔与策略通常较粗且不一定适合业务实时性；应用层心跳由业务协议定义，可以更灵活地控制频率、超时阈值，并携带业务语义（如负载、会话状态）。两者解决不同层次的问题，可以并存，不能简单互相替代。"
+      },
+      "linked_chunks": [
+        "0d1608622614cb2807ccebce2d637e08534892d9"
+      ],
+      "source_files": [],
+      "last_feedback": "这题要点是“层次不同、语义不同、时间尺度不同”，所以无法互相简单替代。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 keepalive 是传输层探测连接是否长时间失活的机制",
+        "指出其间隔和语义通常较粗，默认不一定适合业务实时性",
+        "说明应用层心跳可以携带业务语义并更灵活控制超时策略",
+        "能提到二者可以并存，解决不同层次的问题"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "c30bfce5d4c103cfe4af75c06de22a52ce289cf0": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "c30bfce5d4c103cfe4af75c06de22a52ce289cf0",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "DNS 解析流程与缓存层级",
+      "question_key": "4b1ebe15b61c647799f0717641495e69acecf6f1",
+      "aliases": [
+        "DNS 解析流程与缓存层级"
+      ],
+      "detail": {
+        "question": "DNS 解析为什么不是“客户端直接问根服务器拿结果”这么简单？",
+        "missed_points": [
+          "先查浏览器/系统/hosts/本地缓存等层级",
+          "通常先问本地 DNS 解析器（递归解析）",
+          "解析器再迭代查询根/TLD/权威服务器",
+          "缓存与 TTL 影响性能与一致性"
+        ],
+        "incorrect_points": [],
+        "feedback": "建议背“解析链路 + 缓存层级 + 递归/迭代发生位置”。",
+        "better_answer": "DNS 解析不是客户端直接问根服务器：客户端通常先查浏览器缓存、系统缓存、hosts 等；随后向本地 DNS 解析器发起递归查询。本地解析器再迭代地向根服务器、顶级域（TLD）服务器、权威服务器查询并缓存结果。缓存与 TTL 会显著影响性能与一致性。"
+      },
+      "linked_chunks": [
+        "0207182946e366802b44358d68b2cce537b4ea71"
+      ],
+      "source_files": [],
+      "last_feedback": "建议背“解析链路 + 缓存层级 + 递归/迭代发生位置”。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明本地会先查浏览器、系统、hosts 或本地缓存等层级",
+        "指出递归解析通常先问本地 DNS 解析器",
+        "说明解析器再逐级查询根、顶级域、权威服务器",
+        "能提到缓存和 TTL 对性能与一致性都有影响"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "6fede2ea7cb9f94efc121a7ec114608b9eab1c43": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "6fede2ea7cb9f94efc121a7ec114608b9eab1c43",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "HTTP 缓存语义（Cache-Control/ETag/Last-Modified",
+      "question_key": "7e0a0a123cdebf807c545ecc0c42a04426560800",
+      "aliases": [
+        "HTTP 缓存语义（Cache-Control/ETag/Last-Modified"
+      ],
+      "detail": {
+        "question": "为什么 ETag 和 Last-Modified 都属于协商缓存，但它们解决的问题粒度并不一样？",
+        "missed_points": [
+          "二者都是协商缓存的再验证机制",
+          "Last-Modified 受时间精度与更新时间限制",
+          "ETag 更细粒度（内容级标识），可强/弱校验",
+          "强校验与弱校验语义差异"
+        ],
+        "incorrect_points": [],
+        "feedback": "ETag vs Last-Modified 的关键是“粒度与可靠性”：时间戳容易碰撞/精度不足，ETag 可更精确表达内容变更。",
+        "better_answer": "ETag 与 Last-Modified 都用于协商缓存的再验证：客户端带条件请求让服务端判断资源是否变更。Last-Modified 的粒度受时间精度与文件系统更新时间限制，可能出现“内容变了但时间没变/精度不够”的问题；ETag 通常能提供更细粒度的内容标识，还可区分强/弱校验语义，因此在变更判断上更精确。"
+      },
+      "linked_chunks": [
+        "ad9af8fe493dc4a31e6947f23aad2cb0c3bbbf6d"
+      ],
+      "source_files": [],
+      "last_feedback": "ETag vs Last-Modified 的关键是“粒度与可靠性”：时间戳容易碰撞/精度不足，ETag 可更精确表达内容变更。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明二者都可用于资源是否变更的再验证",
+        "指出 Last-Modified 粒度受时间精度和文件系统更新时间限制",
+        "说明 ETag 通常能表达更细粒度或内容级变更标识",
+        "能提到强校验与弱校验语义差异"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "7fb50ae336c98f42097c37d4b6efb9906dbba899": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "7fb50ae336c98f42097c37d4b6efb9906dbba899",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "QUIC 协议基础（0-RTT 与连接迁移）",
+      "question_key": "e2b5067c4e92cf9da3ab8b74a8ff98e7bfaf7791",
+      "aliases": [
+        "QUIC 协议基础（0-RTT 与连接迁移）"
+      ],
+      "detail": {
+        "question": "QUIC 为什么能支持连接迁移，而传统基于 TCP 的连接迁移很困难？",
+        "missed_points": [
+          "QUIC 使用连接 ID 标识连接，不强绑定四元组",
+          "网络切换导致 IP/端口变化时连接仍可延续",
+          "TCP 强依赖四元组，变化后常被视为新连接",
+          "这对移动网络切换更友好"
+        ],
+        "incorrect_points": [],
+        "feedback": "连接迁移是 QUIC 的标志特性：关键在于连接 ID 解耦了四元组。",
+        "better_answer": "QUIC 在用户态运行并使用连接 ID（Connection ID）来标识连接，不强绑定于 IP/端口四元组，因此在网络切换（如 Wi‑Fi 到蜂窝）导致 IP/端口变化时，连接仍可通过相同连接 ID 继续。TCP 连接强依赖四元组，四元组变化通常会被视为新连接，迁移因此很困难。"
+      },
+      "linked_chunks": [
+        "7368723c100c51ee3b082084f18fdb000f8b4ef6"
+      ],
+      "source_files": [],
+      "last_feedback": "连接迁移是 QUIC 的标志特性：关键在于连接 ID 解耦了四元组。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明 QUIC 在用户态并使用连接 ID 标识连接，而非强绑定四元组",
+        "指出网络切换时 IP/端口变化不必必然导致连接失效",
+        "说明 TCP 连接强依赖四元组，迁移后通常被视为新连接",
+        "能提到这对移动网络切换场景更友好"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "eac358ee4403ede4a8d55757ff7cc02a4ebfaa4c": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 0,
+      "streak_correct": 0,
+      "streak_wrong": 0,
+      "best_score": 75,
+      "last_score": 75,
+      "recent_scores": [
+        75
+      ],
+      "failure_streak": 0,
+      "recovery_streak": 0,
+      "mastery_level": "unstable",
+      "next_review_priority": 80,
+      "concept_id": "eac358ee4403ede4a8d55757ff7cc02a4ebfaa4c",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 三次握手",
+      "question_key": "d04462b5ffba5b368d185ef8ade28687387733fe",
+      "aliases": [
+        "TCP 三次握手"
+      ],
+      "detail": {
+        "question": "TCP 建立连接为什么是三次握手，而不是两次就够？",
+        "missed_points": [
+          "第三次握手让服务端确认客户端已收到 SYN-ACK",
+          "避免旧连接请求报文导致的错误建连问题",
+          "初始序列号协商也是握手的重要内容"
+        ],
+        "incorrect_points": [],
+        "feedback": "基本过程你能讲通，再补“为什么两次不够（服务端无法确认客户端收到 SYN-ACK/旧报文问题）”会更到位。",
+        "better_answer": "三次握手的关键不只是“打招呼”，而是让双方确认自己和对方的收发能力可用，并完成初始序列号协商。两次不够在于：服务端在发出 SYN-ACK 后，需要通过第三次 ACK 确认客户端确实收到了 SYN-ACK，否则可能出现半连接或旧 SYN 报文导致的错误建连问题。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "基本过程你能讲通，再补“为什么两次不够（服务端无法确认客户端收到 SYN-ACK/旧报文问题）”会更到位。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明双方都需要确认自己和对方的收发能力基本可用",
+        "指出第三次握手让服务端确认客户端已收到自己的 SYN-ACK",
+        "说明这有助于避免旧连接请求报文导致的错误建连问题",
+        "能提到初始序列号协商也在握手阶段完成"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 60,
+      "stability": 100,
+      "pool": "unstable_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "bf6d993b654ef966452536bce9cc4f3dfe04bffe": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 45,
+      "last_score": 45,
+      "recent_scores": [
+        45
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "bf6d993b654ef966452536bce9cc4f3dfe04bffe",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 四次挥手与 TIME_WAIT",
+      "question_key": "47b30032cb087fc900cfa731db2653918f4197e9",
+      "aliases": [
+        "TCP 四次挥手与 TIME_WAIT"
+      ],
+      "detail": {
+        "question": "为什么 TCP 主动关闭方通常要进入 TIME_WAIT，而不是最后一个 ACK 发完就彻底结束？",
+        "missed_points": [
+          "TIME_WAIT 让主动方在对端未收到最后 ACK 时还能重发",
+          "等待让旧连接迟到报文自然消失，避免污染新连接",
+          "TIME_WAIT 时长通常与 2MSL 相关",
+          "协议必要性与工程代价（端口占用）"
+        ],
+        "incorrect_points": [
+          "把 TIME_WAIT 的核心目的说成“确认对方正确关闭”过于笼统，缺少重发最后 ACK 与清除迟到报文两大要点"
+        ],
+        "feedback": "你说到“需要确认”，但 TIME_WAIT 的两个核心目的要背下来：重发最后 ACK、消除旧报文影响新连接。",
+        "better_answer": "主动关闭方进入 TIME_WAIT 的主要原因：1）如果被动方没收到最后的 ACK，会重发 FIN，主动方在 TIME_WAIT 期间还能重发 ACK，保证可靠终止；2）等待一段时间让旧连接中的迟到报文在网络中自然消失，避免与后续复用同一四元组的新连接混淆。TIME_WAIT 通常持续 2MSL，带来端口占用的工程影响但有协议层必要性。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "你说到“需要确认”，但 TIME_WAIT 的两个核心目的要背下来：重发最后 ACK、消除旧报文影响新连接。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明需要保证被动方若没收到最后 ACK 时，主动方还能重发",
+        "指出等待一段时间可让旧连接中的迟到报文在网络中自然消失",
+        "说明 TIME_WAIT 持续时间通常与两个 MSL 相关",
+        "能提到它会带来端口占用但有协议层必要性"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 36,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "3f80980f589d92eb8fc70f1f215884a054b35c81": {
+      "attempt_count": 1,
+      "correct_count": 0,
+      "wrong_count": 1,
+      "streak_correct": 0,
+      "streak_wrong": 1,
+      "best_score": 0,
+      "last_score": 0,
+      "recent_scores": [
+        0
+      ],
+      "failure_streak": 1,
+      "recovery_streak": 0,
+      "mastery_level": "weak",
+      "next_review_priority": 100,
+      "concept_id": "3f80980f589d92eb8fc70f1f215884a054b35c81",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL join 执行与驱动表选择",
+      "question_key": "e081643294ed0ea2900bd93c455fad4a3333dd3f",
+      "aliases": [
+        "MySQL join 执行与驱动表选择"
+      ],
+      "detail": {
+        "question": "MySQL 做多表 join 时，为什么驱动表选择不当会让性能急剧恶化？",
+        "missed_points": [
+          "嵌套循环 join 下外层表每多一行都会触发内层访问成本",
+          "驱动表选择不当会放大匹配次数导致恶化",
+          "高选择性条件/合适索引可减少驱动行数",
+          "优化器基于统计信息选计划，统计失真可能选错"
+        ],
+        "incorrect_points": [],
+        "feedback": "join 性能核心在“驱动行数 * 内层访问成本”。建议背一个嵌套循环 join 的成本模型。",
+        "better_answer": "MySQL 多表 join 常见实现是嵌套循环 join：外层（驱动表）每返回一行，就要去内层做一次匹配访问。因此如果驱动表选择了高基数、过滤性差的表，会把内层访问次数成倍放大，性能急剧恶化。选择高选择性条件的表作为驱动表、为内层匹配列建立合适索引能显著降低成本。优化器会基于统计信息选择计划，但统计失真时可能选错驱动表。"
+      },
+      "linked_chunks": [],
+      "source_files": [],
+      "last_feedback": "join 性能核心在“驱动行数 * 内层访问成本”。建议背一个嵌套循环 join 的成本模型。",
+      "source_type": "expanded",
+      "expected_points": [
+        "说明嵌套循环 join 下外层表每多一行都会触发内层访问成本",
+        "指出如果先扫描高基数或过滤性差的表，会放大后续匹配次数",
+        "说明合适索引和高选择性条件有助于减少驱动行数",
+        "能提到优化器会基于统计信息选执行计划，但统计失真时可能选错"
+      ],
+      "last_reviewed_at": "2026-04-24T09:02:43.944Z",
+      "mastery_score": 0,
+      "stability": 94,
+      "pool": "wrong_pool",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    }
+  }
 }

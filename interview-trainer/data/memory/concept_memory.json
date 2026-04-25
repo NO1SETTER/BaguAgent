@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-04-21T14:14:26.208Z",
+  "updated_at": "2026-04-24T09:02:43.944Z",
   "concepts": {
     "591819e2441cec267f275a2312adb6448029239a": {
       "attempt_count": 1,
@@ -1388,6 +1388,1686 @@
       "linked_chunks": [],
       "created_at": "2026-04-21T14:14:26.208Z",
       "updated_at": "2026-04-21T14:14:26.208Z"
+    },
+    "b1c4f5f36a1e4c8c9b2b7c8a9b0c1d2e3f4a5b6c": {
+      "concept_id": "b1c4f5f36a1e4c8c9b2b7c8a9b0c1d2e3f4a5b6c",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 核心数据类型与底层实现（string/hash/list/set/zse",
+      "aliases": [
+        "Redis 核心数据类型与底层实现（string/hash/list/set/zse"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "c2d5e6a47b2f5d9d0c3c8d9b0c1d2e3f4a5b6c7d": {
+      "concept_id": "c2d5e6a47b2f5d9d0c3c8d9b0c1d2e3f4a5b6c7d",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 键过期机制与淘汰策略（TTL/LRU/LFU/volatile/allk",
+      "aliases": [
+        "Redis 键过期机制与淘汰策略（TTL/LRU/LFU/volatile/allk"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "d3e6f7b58c306eae1d4d9eac1d2e3f4a5b6c7d8e": {
+      "concept_id": "d3e6f7b58c306eae1d4d9eac1d2e3f4a5b6c7d8e",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 持久化机制（RDB/AOF 与 AOF 重写）",
+      "aliases": [
+        "Redis 持久化机制（RDB/AOF 与 AOF 重写）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "e4f708c69d417fbf2e5eafbd2e3f4a5b6c7d8e9f": {
+      "concept_id": "e4f708c69d417fbf2e5eafbd2e3f4a5b6c7d8e9f",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 复制机制与主从一致性模型",
+      "aliases": [
+        "Redis 复制机制与主从一致性模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "f50919d7ae5280c03f6fb0ce3f4a5b6c7d8e9f0a": {
+      "concept_id": "f50919d7ae5280c03f6fb0ce3f4a5b6c7d8e9f0a",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Sentinel 高可用与故障转移流程",
+      "aliases": [
+        "Redis Sentinel 高可用与故障转移流程"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "0a1b2c3d4e5f60718293a4b5c6d7e8f9012345ab": {
+      "concept_id": "0a1b2c3d4e5f60718293a4b5c6d7e8f9012345ab",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Cluster 分片机制与哈希槽（hash slot）路由",
+      "aliases": [
+        "Redis Cluster 分片机制与哈希槽（hash slot）路由"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "1b2c3d4e5f60718293a4b5c6d7e8f9012345abc": {
+      "concept_id": "1b2c3d4e5f60718293a4b5c6d7e8f9012345abc",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Lua 脚本执行模型与原子性边界",
+      "aliases": [
+        "Redis Lua 脚本执行模型与原子性边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "2c3d4e5f60718293a4b5c6d7e8f9012345abcd": {
+      "concept_id": "2c3d4e5f60718293a4b5c6d7e8f9012345abcd",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "线程与进程的调度模型与上下文切换开销",
+      "aliases": [
+        "线程与进程的调度模型与上下文切换开销"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "3d4e5f60718293a4b5c6d7e8f9012345abcde": {
+      "concept_id": "3d4e5f60718293a4b5c6d7e8f9012345abcde",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "临界区保护与互斥同步原语（mutex/spinlock）",
+      "aliases": [
+        "临界区保护与互斥同步原语（mutex/spinlock）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "4e5f60718293a4b5c6d7e8f9012345abcdef": {
+      "concept_id": "4e5f60718293a4b5c6d7e8f9012345abcdef",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "条件变量与生产者消费者同步模型",
+      "aliases": [
+        "条件变量与生产者消费者同步模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "5f60718293a4b5c6d7e8f9012345abcdef0": {
+      "concept_id": "5f60718293a4b5c6d7e8f9012345abcdef0",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "读写锁语义与锁粒度设计取舍",
+      "aliases": [
+        "读写锁语义与锁粒度设计取舍"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "60718293a4b5c6d7e8f9012345abcdef01": {
+      "concept_id": "60718293a4b5c6d7e8f9012345abcdef01",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "死锁产生条件与避免策略（破坏四要素）",
+      "aliases": [
+        "死锁产生条件与避免策略（破坏四要素）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "718293a4b5c6d7e8f9012345abcdef012": {
+      "concept_id": "718293a4b5c6d7e8f9012345abcdef012",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "原子操作与内存可见性（happens-before 关系）",
+      "aliases": [
+        "原子操作与内存可见性（happens-before 关系）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "8293a4b5c6d7e8f9012345abcdef0123": {
+      "concept_id": "8293a4b5c6d7e8f9012345abcdef0123",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "线程池模型与任务队列背压机制",
+      "aliases": [
+        "线程池模型与任务队列背压机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "93a4b5c6d7e8f9012345abcdef01234": {
+      "concept_id": "93a4b5c6d7e8f9012345abcdef01234",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 三次握手与连接状态机（SYN/SYN-ACK/ACK）",
+      "aliases": [
+        "TCP 三次握手与连接状态机（SYN/SYN-ACK/ACK）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "a4b5c6d7e8f9012345abcdef012345": {
+      "concept_id": "a4b5c6d7e8f9012345abcdef012345",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 四次挥手与 TIME_WAIT 语义",
+      "aliases": [
+        "TCP 四次挥手与 TIME_WAIT 语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "b5c6d7e8f9012345abcdef0123456": {
+      "concept_id": "b5c6d7e8f9012345abcdef0123456",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 拥塞控制算法（慢启动/拥塞避免/快重传/快恢复）",
+      "aliases": [
+        "TCP 拥塞控制算法（慢启动/拥塞避免/快重传/快恢复）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "c6d7e8f9012345abcdef01234567": {
+      "concept_id": "c6d7e8f9012345abcdef01234567",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "HTTP/1.1 长连接与队头阻塞（HOL blocking）",
+      "aliases": [
+        "HTTP/1.1 长连接与队头阻塞（HOL blocking）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "d7e8f9012345abcdef012345678": {
+      "concept_id": "d7e8f9012345abcdef012345678",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "HTTP/2 多路复用与流控机制",
+      "aliases": [
+        "HTTP/2 多路复用与流控机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "e8f9012345abcdef0123456789": {
+      "concept_id": "e8f9012345abcdef0123456789",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TLS 握手流程与证书链校验",
+      "aliases": [
+        "TLS 握手流程与证书链校验"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:50:53.873Z",
+      "updated_at": "2026-04-24T02:50:53.873Z"
+    },
+    "f5904db37b59f549837c9727e684eea8aab97bb0": {
+      "concept_id": "f5904db37b59f549837c9727e684eea8aab97bb0",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 单线程事件循环与 I/O 多路复用模型",
+      "aliases": [
+        "Redis 单线程事件循环与 I/O 多路复用模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "de8a6130041c3b65f1a5c927aa96cb26fdc1dec2": {
+      "concept_id": "de8a6130041c3b65f1a5c927aa96cb26fdc1dec2",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 内存管理与 jemalloc 分配器",
+      "aliases": [
+        "Redis 内存管理与 jemalloc 分配器"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "c3b1d0f451f35c109c73d8bf26b968b836d6a4ae": {
+      "concept_id": "c3b1d0f451f35c109c73d8bf26b968b836d6a4ae",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Big Key 与 Hot Key 识别与治理",
+      "aliases": [
+        "Redis Big Key 与 Hot Key 识别与治理"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "86a54a03d2286fb60c1fcb5deeed8699f63fdfde": {
+      "concept_id": "86a54a03d2286fb60c1fcb5deeed8699f63fdfde",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Pipeline 机制与网络往返优化",
+      "aliases": [
+        "Redis Pipeline 机制与网络往返优化"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "7a70550fa449817da85702b2ac500fad9de5fa69": {
+      "concept_id": "7a70550fa449817da85702b2ac500fad9de5fa69",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 事务（MULTI/EXEC）语义与一致性边界",
+      "aliases": [
+        "Redis 事务（MULTI/EXEC）语义与一致性边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "cd197ab02b1b7d14db8bbd883067fb7ee39fe91f": {
+      "concept_id": "cd197ab02b1b7d14db8bbd883067fb7ee39fe91f",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 分布式锁实现要点（SET NX PX 与续期/漂移）",
+      "aliases": [
+        "Redis 分布式锁实现要点（SET NX PX 与续期/漂移）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "963470a79c2bcf82694b7e16d29691474b34a322": {
+      "concept_id": "963470a79c2bcf82694b7e16d29691474b34a322",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Stream 数据结构与消费组模型",
+      "aliases": [
+        "Redis Stream 数据结构与消费组模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "e52d159d953ac0b1761339350840d9196bfb2a9f": {
+      "concept_id": "e52d159d953ac0b1761339350840d9196bfb2a9f",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 数据结构编码（ziplist/listpack/quicklist/in",
+      "aliases": [
+        "Redis 数据结构编码（ziplist/listpack/quicklist/in"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "75665130079a4273b6f6f5dec5edd378996888da": {
+      "concept_id": "75665130079a4273b6f6f5dec5edd378996888da",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "并发中的 ABA 问题与版本号方案",
+      "aliases": [
+        "并发中的 ABA 问题与版本号方案"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "0dc5a921c89972ef724228cd6ce5c29cac9f31ee": {
+      "concept_id": "0dc5a921c89972ef724228cd6ce5c29cac9f31ee",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "无锁队列与 CAS 重试策略",
+      "aliases": [
+        "无锁队列与 CAS 重试策略"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "9c8593cf5a32f751904d4a07f271d2fa8a319cdc": {
+      "concept_id": "9c8593cf5a32f751904d4a07f271d2fa8a319cdc",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "线程安全与可重入性定义",
+      "aliases": [
+        "线程安全与可重入性定义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "59fd2be22799216d5793b00360e770dbe1a52cd3": {
+      "concept_id": "59fd2be22799216d5793b00360e770dbe1a52cd3",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "内存屏障与编译器重排序",
+      "aliases": [
+        "内存屏障与编译器重排序"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "1e8dcff8d6df810e0d4e39b01808a1651a16c14e": {
+      "concept_id": "1e8dcff8d6df810e0d4e39b01808a1651a16c14e",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "伪共享（false sharing）与缓存行对齐",
+      "aliases": [
+        "伪共享（false sharing）与缓存行对齐"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "0a911a084200943111221d5d9eae0d14cd8e4012": {
+      "concept_id": "0a911a084200943111221d5d9eae0d14cd8e4012",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "背压（backpressure）机制与限流策略（令牌桶/漏桶）",
+      "aliases": [
+        "背压（backpressure）机制与限流策略（令牌桶/漏桶）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "7186f9d3b781517583589e1067e98261abe0aa96": {
+      "concept_id": "7186f9d3b781517583589e1067e98261abe0aa96",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 滑动窗口与流量控制（rwnd）",
+      "aliases": [
+        "TCP 滑动窗口与流量控制（rwnd）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "74972dddb42b0aa3e4dbfd441ef7ccd644b2e1bc": {
+      "concept_id": "74972dddb42b0aa3e4dbfd441ef7ccd644b2e1bc",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 重传机制（RTO/快速重传/SACK）",
+      "aliases": [
+        "TCP 重传机制（RTO/快速重传/SACK）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "0d1608622614cb2807ccebce2d637e08534892d9": {
+      "concept_id": "0d1608622614cb2807ccebce2d637e08534892d9",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP Keepalive 机制与应用层心跳对比",
+      "aliases": [
+        "TCP Keepalive 机制与应用层心跳对比"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "0207182946e366802b44358d68b2cce537b4ea71": {
+      "concept_id": "0207182946e366802b44358d68b2cce537b4ea71",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "DNS 解析流程与缓存层级",
+      "aliases": [
+        "DNS 解析流程与缓存层级"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "ad9af8fe493dc4a31e6947f23aad2cb0c3bbbf6d": {
+      "concept_id": "ad9af8fe493dc4a31e6947f23aad2cb0c3bbbf6d",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "HTTP 缓存语义（Cache-Control/ETag/Last-Modified",
+      "aliases": [
+        "HTTP 缓存语义（Cache-Control/ETag/Last-Modified"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "7368723c100c51ee3b082084f18fdb000f8b4ef6": {
+      "concept_id": "7368723c100c51ee3b082084f18fdb000f8b4ef6",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "QUIC 协议基础（0-RTT 与连接迁移）",
+      "aliases": [
+        "QUIC 协议基础（0-RTT 与连接迁移）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T02:55:30.673Z",
+      "updated_at": "2026-04-24T02:55:30.673Z"
+    },
+    "d9c8384ad4537f59c02b165dbec1b67c4c3aaeea": {
+      "concept_id": "d9c8384ad4537f59c02b165dbec1b67c4c3aaeea",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 的强类型机制",
+      "aliases": [
+        "Python 的强类型机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.355Z",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "8efffdd19a47ea5006566d86f2b9571697d6f698": {
+      "concept_id": "8efffdd19a47ea5006566d86f2b9571697d6f698",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "CPython 的 GIL 锁机制",
+      "aliases": [
+        "CPython 的 GIL 锁机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.355Z",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "ba35d4f43bb474edf8c67fa9e0d0ea778722d259": {
+      "concept_id": "ba35d4f43bb474edf8c67fa9e0d0ea778722d259",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 多进程绕开 GIL 的方式",
+      "aliases": [
+        "Python 多进程绕开 GIL 的方式"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.355Z",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "4a9bacf084c71e520a0d5415708bb811b0ca7033": {
+      "concept_id": "4a9bacf084c71e520a0d5415708bb811b0ca7033",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "range 对象的语义",
+      "aliases": [
+        "range 对象的语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.355Z",
+      "updated_at": "2026-04-24T08:36:45.355Z"
+    },
+    "af03ee71e9e6193f8bbdaeff05972cbdef31203f": {
+      "concept_id": "af03ee71e9e6193f8bbdaeff05972cbdef31203f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "生成器与普通可迭代对象的区别",
+      "aliases": [
+        "生成器与普通可迭代对象的区别"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "f815d5eec7a1ff33298711320cb79bcf6414d5fb": {
+      "concept_id": "f815d5eec7a1ff33298711320cb79bcf6414d5fb",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 可变性语义",
+      "aliases": [
+        "Python 可变性语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "804a3199dab9044030ea7048ed7ecfd8f3bd6f47": {
+      "concept_id": "804a3199dab9044030ea7048ed7ecfd8f3bd6f47",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 字典的底层组织与有序性",
+      "aliases": [
+        "Python 字典的底层组织与有序性"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "34cf038b95f4a1d582a2738a51e74775fc7539f7": {
+      "concept_id": "34cf038b95f4a1d582a2738a51e74775fc7539f7",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 容器扩容机制",
+      "aliases": [
+        "Python 容器扩容机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "d675f7f262303ec84d09ac4187e93857f64436a1": {
+      "concept_id": "d675f7f262303ec84d09ac4187e93857f64436a1",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 引用计数与循环垃圾回收",
+      "aliases": [
+        "Python 引用计数与循环垃圾回收"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "f1d705422a63f833af6297123bb890340bcc6298": {
+      "concept_id": "f1d705422a63f833af6297123bb890340bcc6298",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 描述符协议",
+      "aliases": [
+        "Python 描述符协议"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "d8f3a3cdfe1dbf2f74acf96f7ff28cd61ba64a03": {
+      "concept_id": "d8f3a3cdfe1dbf2f74acf96f7ff28cd61ba64a03",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "with 语句中的异常处理语义",
+      "aliases": [
+        "with 语句中的异常处理语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "35ac5e0b70aec5b5759e2f9409e72ed5b82620a3": {
+      "concept_id": "35ac5e0b70aec5b5759e2f9409e72ed5b82620a3",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "元组的可哈希性边界",
+      "aliases": [
+        "元组的可哈希性边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "ac1971263168113fe16a9c973f58b06bf8b7d35f": {
+      "concept_id": "ac1971263168113fe16a9c973f58b06bf8b7d35f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "asyncio 事件循环的单线程协作模型",
+      "aliases": [
+        "asyncio 事件循环的单线程协作模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "9b035b47fe979f585ec6f9d1fb42d61e957cc231": {
+      "concept_id": "9b035b47fe979f585ec6f9d1fb42d61e957cc231",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "asyncio.Queue 的线程安全边界",
+      "aliases": [
+        "asyncio.Queue 的线程安全边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "1c458a6b15d50776a9ea641b71d376075fb2693f": {
+      "concept_id": "1c458a6b15d50776a9ea641b71d376075fb2693f",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 字符串格式化方案对比",
+      "aliases": [
+        "Python 字符串格式化方案对比"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.356Z",
+      "updated_at": "2026-04-24T08:36:45.356Z"
+    },
+    "b179b0e50a8de1ae978027603139a5ce48b8f135": {
+      "concept_id": "b179b0e50a8de1ae978027603139a5ce48b8f135",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "map 与 filter 的惰性求值特性",
+      "aliases": [
+        "map 与 filter 的惰性求值特性"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "dab369d5c7057a1c5a3302a61232e3203fb064e7": {
+      "concept_id": "dab369d5c7057a1c5a3302a61232e3203fb064e7",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "迭代协议与可迭代对象判定",
+      "aliases": [
+        "迭代协议与可迭代对象判定"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b1d052e910027f7c22f9b7bf75a6a2f1476a8143": {
+      "concept_id": "b1d052e910027f7c22f9b7bf75a6a2f1476a8143",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "Python 上下文管理器的资源释放语义",
+      "aliases": [
+        "Python 上下文管理器的资源释放语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "14ecc8a38fe1de6c109c14bbb246847f7b2ee810": {
+      "concept_id": "14ecc8a38fe1de6c109c14bbb246847f7b2ee810",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "循环引用对象的回收边界",
+      "aliases": [
+        "循环引用对象的回收边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "e2863526ee6f04386a7179a219c1fd39a5cffd50": {
+      "concept_id": "e2863526ee6f04386a7179a219c1fd39a5cffd50",
+      "topic_id": "python",
+      "topic": "Python",
+      "name": "描述符与方法绑定机制",
+      "aliases": [
+        "描述符与方法绑定机制"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "359c87f0218b10b89ee9b7302c5a4534b6cf6304": {
+      "concept_id": "359c87f0218b10b89ee9b7302c5a4534b6cf6304",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 编译型语言的构建与运行模型",
+      "aliases": [
+        "C++ 编译型语言的构建与运行模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b60720350f1b805baa7699ce418377da4540dd78": {
+      "concept_id": "b60720350f1b805baa7699ce418377da4540dd78",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 内存模型与 happens-before 关系",
+      "aliases": [
+        "C++ 内存模型与 happens-before 关系"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "d5e119a6cf97a18bdba5ff173b4d8447e421e6be": {
+      "concept_id": "d5e119a6cf97a18bdba5ff173b4d8447e421e6be",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "std::atomic 的原子性保证",
+      "aliases": [
+        "std::atomic 的原子性保证"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "a7a8605dbaab35f3bdedf9b3f6a53e62dc2426ac": {
+      "concept_id": "a7a8605dbaab35f3bdedf9b3f6a53e62dc2426ac",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "C++ 内存序与可见性语义",
+      "aliases": [
+        "C++ 内存序与可见性语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "e060ec62a11e8a2e8714958358a12a905298a4bd": {
+      "concept_id": "e060ec62a11e8a2e8714958358a12a905298a4bd",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "Rule of Zero Three Five",
+      "aliases": [
+        "Rule of Zero Three Five"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "ea9a4f4054c53b16aad883e972dda69adca09dbb": {
+      "concept_id": "ea9a4f4054c53b16aad883e972dda69adca09dbb",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "异常安全保证级别",
+      "aliases": [
+        "异常安全保证级别"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "c5f0e14a623a0e78e0f1930e5484b2c628122c29": {
+      "concept_id": "c5f0e14a623a0e78e0f1930e5484b2c628122c29",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "RTTI 与 dynamic_cast 的适用边界",
+      "aliases": [
+        "RTTI 与 dynamic_cast 的适用边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "1f5f603a722f4c4fd362d9d380ae1baddb2881c2": {
+      "concept_id": "1f5f603a722f4c4fd362d9d380ae1baddb2881c2",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "模板实例化与编译期多态",
+      "aliases": [
+        "模板实例化与编译期多态"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b0f69025ad06b1d768ce5aee2d550389118f1716": {
+      "concept_id": "b0f69025ad06b1d768ce5aee2d550389118f1716",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "SFINAE 与重载决议",
+      "aliases": [
+        "SFINAE 与重载决议"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "b50fb49c10d2a45e036f06c4dced547848048da5": {
+      "concept_id": "b50fb49c10d2a45e036f06c4dced547848048da5",
+      "topic_id": "cplusplus",
+      "topic": "C++",
+      "name": "constexpr 与编译期计算",
+      "aliases": [
+        "constexpr 与编译期计算"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T08:36:45.357Z",
+      "updated_at": "2026-04-24T08:36:45.357Z"
+    },
+    "fd2e18f1d735fd1930967c4ff8d83b8094f19b92": {
+      "concept_id": "fd2e18f1d735fd1930967c4ff8d83b8094f19b92",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 里 ISR",
+      "aliases": [
+        "Kafka 里 ISR"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "f87682164d509e32771ef86fe031149ab7c749a9": {
+      "concept_id": "f87682164d509e32771ef86fe031149ab7c749a9",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 生产者 acks=all 的语义",
+      "aliases": [
+        "Kafka 生产者 acks=all 的语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "94bce94879cc052d7621793bdfb3ade80cf627d3": {
+      "concept_id": "94bce94879cc052d7621793bdfb3ade80cf627d3",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "min.insync.replicas",
+      "aliases": [
+        "min.insync.replicas"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "2d4c7b3c7c9831c629c54c32fa935bf10db528d0": {
+      "concept_id": "2d4c7b3c7c9831c629c54c32fa935bf10db528d0",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "acks=1 丢消息时序",
+      "aliases": [
+        "acks=1 丢消息时序"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "1bbca6917dab96577bf9d784d4be5ccd6d10b24b": {
+      "concept_id": "1bbca6917dab96577bf9d784d4be5ccd6d10b24b",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 里 Topic、Partition、Broker 三者的关系",
+      "aliases": [
+        "Kafka 里 Topic、Partition、Broker 三者的关系"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "a6bfcb12181f2f7ef0a6d17337c9cfe7761b6df5": {
+      "concept_id": "a6bfcb12181f2f7ef0a6d17337c9cfe7761b6df5",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 的顺序性默认成立的边界",
+      "aliases": [
+        "Kafka 的顺序性默认成立的边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "8015c802119c15c7615fd1ee81e9e7cd7f39c2bc": {
+      "concept_id": "8015c802119c15c7615fd1ee81e9e7cd7f39c2bc",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 落盘与顺序 I/O",
+      "aliases": [
+        "Kafka 落盘与顺序 I/O"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "ecb2cd8f2bcd5e0e23e65058fc9f387f83e9ed51": {
+      "concept_id": "ecb2cd8f2bcd5e0e23e65058fc9f387f83e9ed51",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 分区副本选主语义",
+      "aliases": [
+        "Kafka 分区副本选主语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "099e053e2f6837859770983dfde62e71c4d7b890": {
+      "concept_id": "099e053e2f6837859770983dfde62e71c4d7b890",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 消费者位移提交语义",
+      "aliases": [
+        "Kafka 消费者位移提交语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "0c18bf7e66d213831870926713081d9632b255d2": {
+      "concept_id": "0c18bf7e66d213831870926713081d9632b255d2",
+      "topic_id": "kafka",
+      "topic": "Kafka",
+      "name": "Kafka 消费者组再均衡",
+      "aliases": [
+        "Kafka 消费者组再均衡"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "7ded528b4fb1682d351fe574e73a3fe68811c05b": {
+      "concept_id": "7ded528b4fb1682d351fe574e73a3fe68811c05b",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 里的 Image 和 Container",
+      "aliases": [
+        "Docker 里的 Image 和 Container"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "c4cc9bda7266f25cc0c1247be532435aaa5c87be": {
+      "concept_id": "c4cc9bda7266f25cc0c1247be532435aaa5c87be",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Dockerfile 的分层缓存",
+      "aliases": [
+        "Dockerfile 的分层缓存"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.941Z",
+      "updated_at": "2026-04-24T09:02:43.941Z"
+    },
+    "f747b24c18e7009e61f2018e446d8232a14ea9ac": {
+      "concept_id": "f747b24c18e7009e61f2018e446d8232a14ea9ac",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 里 volume 和 bind mount 的区别",
+      "aliases": [
+        "Docker 里 volume 和 bind mount 的区别"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "484d1f877e2ddc0bf9fea9cb40904495f55c9b3a": {
+      "concept_id": "484d1f877e2ddc0bf9fea9cb40904495f55c9b3a",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 镜像分层与联合文件系统",
+      "aliases": [
+        "Docker 镜像分层与联合文件系统"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "f04fbcf2b376178d80b1f588ecc2865b552a2817": {
+      "concept_id": "f04fbcf2b376178d80b1f588ecc2865b552a2817",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 容器网络命名空间",
+      "aliases": [
+        "Docker 容器网络命名空间"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "c89b26282a4636d8e205b5d343ed0aa3cbe75e13": {
+      "concept_id": "c89b26282a4636d8e205b5d343ed0aa3cbe75e13",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 容器退出语义",
+      "aliases": [
+        "Docker 容器退出语义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "5aa981dd0005500935d33f7bf2ceec99aa9d18bc": {
+      "concept_id": "5aa981dd0005500935d33f7bf2ceec99aa9d18bc",
+      "topic_id": "docker",
+      "topic": "Docker",
+      "name": "Docker 镜像体积优化",
+      "aliases": [
+        "Docker 镜像体积优化"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "50f86e9af22ced5612d566c95f09378e43553d69": {
+      "concept_id": "50f86e9af22ced5612d566c95f09378e43553d69",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 索引最左前缀原则",
+      "aliases": [
+        "MySQL 索引最左前缀原则"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "bb74c4d509ec79b78d03e3f0033da27d94a48b00": {
+      "concept_id": "bb74c4d509ec79b78d03e3f0033da27d94a48b00",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 覆盖索引",
+      "aliases": [
+        "MySQL 覆盖索引"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "3a73d624011e6f212b7e4d9fcb30f9f72e2e128f": {
+      "concept_id": "3a73d624011e6f212b7e4d9fcb30f9f72e2e128f",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "InnoDB 聚簇索引",
+      "aliases": [
+        "InnoDB 聚簇索引"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "19bd5419fb70c82353f86318f05c1f6080172918": {
+      "concept_id": "19bd5419fb70c82353f86318f05c1f6080172918",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 事务的 ACID 与隔离性边界",
+      "aliases": [
+        "MySQL 事务的 ACID 与隔离性边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "254bd87b21cdbd379a8ff059167dc93413aa9634": {
+      "concept_id": "254bd87b21cdbd379a8ff059167dc93413aa9634",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MVCC 与 Read View",
+      "aliases": [
+        "MVCC 与 Read View"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d238d7ed2ca91d6e4d90ac469dfe78de7bc3a486": {
+      "concept_id": "d238d7ed2ca91d6e4d90ac469dfe78de7bc3a486",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "幻读与间隙锁",
+      "aliases": [
+        "幻读与间隙锁"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "32e04c65ee06027430e285de51040fd7a794e0ff": {
+      "concept_id": "32e04c65ee06027430e285de51040fd7a794e0ff",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL 慢查询优化路径",
+      "aliases": [
+        "MySQL 慢查询优化路径"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "4ab2cbe09299066aa2e89b1ee384aec578f001d9": {
+      "concept_id": "4ab2cbe09299066aa2e89b1ee384aec578f001d9",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "事务提交与 redo log",
+      "aliases": [
+        "事务提交与 redo log"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "ce294e2afef78734b7e74019ed09401435e99279": {
+      "concept_id": "ce294e2afef78734b7e74019ed09401435e99279",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 单线程事件循环与 I/O 多路复用模型",
+      "aliases": [
+        "Redis 单线程事件循环与 I/O 多路复用模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "7183c92127c6f1a963f46d7ed82238ebabcbc12c": {
+      "concept_id": "7183c92127c6f1a963f46d7ed82238ebabcbc12c",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 键过期机制与淘汰策略",
+      "aliases": [
+        "Redis 键过期机制与淘汰策略"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "b72fda1505737c853bfd6d8215e187c135f3b2f1": {
+      "concept_id": "b72fda1505737c853bfd6d8215e187c135f3b2f1",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 持久化机制（RDB/AOF 与 AOF 重写）",
+      "aliases": [
+        "Redis 持久化机制（RDB/AOF 与 AOF 重写）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "b2dcf9b5eadd13c4331d238497563d1f097bec96": {
+      "concept_id": "b2dcf9b5eadd13c4331d238497563d1f097bec96",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Big Key 与 Hot Key 识别与治理",
+      "aliases": [
+        "Redis Big Key 与 Hot Key 识别与治理"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d64068f8833db9f990aed41693ed5bb275f86481": {
+      "concept_id": "d64068f8833db9f990aed41693ed5bb275f86481",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Pipeline 机制与网络往返优化",
+      "aliases": [
+        "Redis Pipeline 机制与网络往返优化"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d5b2f483eef946653dfe356fde145f60a17f8df3": {
+      "concept_id": "d5b2f483eef946653dfe356fde145f60a17f8df3",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 事务（MULTI/EXEC）语义与一致性边界",
+      "aliases": [
+        "Redis 事务（MULTI/EXEC）语义与一致性边界"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "c9acd4bfcbe69a14eac36f1fd9637b1a3edacdba": {
+      "concept_id": "c9acd4bfcbe69a14eac36f1fd9637b1a3edacdba",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis 分布式锁实现要点（SET NX PX 与续期/漂移）",
+      "aliases": [
+        "Redis 分布式锁实现要点（SET NX PX 与续期/漂移）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "e5a40050ed28fab383e35427ffda987128f07922": {
+      "concept_id": "e5a40050ed28fab383e35427ffda987128f07922",
+      "topic_id": "redis",
+      "topic": "Redis",
+      "name": "Redis Stream 数据结构与消费组模型",
+      "aliases": [
+        "Redis Stream 数据结构与消费组模型"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "04f6c4c55bb310c6b4bcf9b83fe60c8b467a156b": {
+      "concept_id": "04f6c4c55bb310c6b4bcf9b83fe60c8b467a156b",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "线程安全与可重入性定义",
+      "aliases": [
+        "线程安全与可重入性定义"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "b998e01632191a10790735dae5e768d2eae5083c": {
+      "concept_id": "b998e01632191a10790735dae5e768d2eae5083c",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "并发中的 ABA 问题与版本号方案",
+      "aliases": [
+        "并发中的 ABA 问题与版本号方案"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.942Z"
+    },
+    "d7b8e8f8d3079d8d732050f0f55eaabd59c58b76": {
+      "concept_id": "d7b8e8f8d3079d8d732050f0f55eaabd59c58b76",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "无锁队列与 CAS 重试策略",
+      "aliases": [
+        "无锁队列与 CAS 重试策略"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.942Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "29cb1190f90a69f8beaa865330dd58b79035d430": {
+      "concept_id": "29cb1190f90a69f8beaa865330dd58b79035d430",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "内存屏障与编译器重排序",
+      "aliases": [
+        "内存屏障与编译器重排序"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.943Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "8aa177c19ab6d7203e85c4cd5c333903966b0640": {
+      "concept_id": "8aa177c19ab6d7203e85c4cd5c333903966b0640",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "伪共享（false sharing）与缓存行对齐",
+      "aliases": [
+        "伪共享（false sharing）与缓存行对齐"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.943Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "e2f1892aa963fdc38a5c4e131d0d9afc55db8e5c": {
+      "concept_id": "e2f1892aa963fdc38a5c4e131d0d9afc55db8e5c",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "背压（backpressure）机制与限流策略",
+      "aliases": [
+        "背压（backpressure）机制与限流策略"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.943Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "3bf94edbbe33e17aa471799266999fcb40acb78a": {
+      "concept_id": "3bf94edbbe33e17aa471799266999fcb40acb78a",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "死锁形成条件",
+      "aliases": [
+        "死锁形成条件"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.943Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "be569c11f9784c8fbb33aa9f4b64e770002f78f9": {
+      "concept_id": "be569c11f9784c8fbb33aa9f4b64e770002f78f9",
+      "topic_id": "concurrency_programming",
+      "topic": "并发编程",
+      "name": "生产者消费者模型中的条件变量",
+      "aliases": [
+        "生产者消费者模型中的条件变量"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.943Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "bb64a8ef271821c4c36adc9b179cac8687160326": {
+      "concept_id": "bb64a8ef271821c4c36adc9b179cac8687160326",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 滑动窗口与流量控制（rwnd）",
+      "aliases": [
+        "TCP 滑动窗口与流量控制（rwnd）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.943Z",
+      "updated_at": "2026-04-24T09:02:43.943Z"
+    },
+    "a06c75144f71fb6cbab10df73ad1e914590f759f": {
+      "concept_id": "a06c75144f71fb6cbab10df73ad1e914590f759f",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 重传机制（RTO/快速重传/SACK）",
+      "aliases": [
+        "TCP 重传机制（RTO/快速重传/SACK）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "045e18cc1b676937ebec2b58ff4fb8812ca21f78": {
+      "concept_id": "045e18cc1b676937ebec2b58ff4fb8812ca21f78",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP Keepalive 机制与应用层心跳对比",
+      "aliases": [
+        "TCP Keepalive 机制与应用层心跳对比"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "c30bfce5d4c103cfe4af75c06de22a52ce289cf0": {
+      "concept_id": "c30bfce5d4c103cfe4af75c06de22a52ce289cf0",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "DNS 解析流程与缓存层级",
+      "aliases": [
+        "DNS 解析流程与缓存层级"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "6fede2ea7cb9f94efc121a7ec114608b9eab1c43": {
+      "concept_id": "6fede2ea7cb9f94efc121a7ec114608b9eab1c43",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "HTTP 缓存语义（Cache-Control/ETag/Last-Modified",
+      "aliases": [
+        "HTTP 缓存语义（Cache-Control/ETag/Last-Modified"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "7fb50ae336c98f42097c37d4b6efb9906dbba899": {
+      "concept_id": "7fb50ae336c98f42097c37d4b6efb9906dbba899",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "QUIC 协议基础（0-RTT 与连接迁移）",
+      "aliases": [
+        "QUIC 协议基础（0-RTT 与连接迁移）"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "eac358ee4403ede4a8d55757ff7cc02a4ebfaa4c": {
+      "concept_id": "eac358ee4403ede4a8d55757ff7cc02a4ebfaa4c",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 三次握手",
+      "aliases": [
+        "TCP 三次握手"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "bf6d993b654ef966452536bce9cc4f3dfe04bffe": {
+      "concept_id": "bf6d993b654ef966452536bce9cc4f3dfe04bffe",
+      "topic_id": "computer_networking",
+      "topic": "计算机网络",
+      "name": "TCP 四次挥手与 TIME_WAIT",
+      "aliases": [
+        "TCP 四次挥手与 TIME_WAIT"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
+    },
+    "3f80980f589d92eb8fc70f1f215884a054b35c81": {
+      "concept_id": "3f80980f589d92eb8fc70f1f215884a054b35c81",
+      "topic_id": "sql_mysql",
+      "topic": "SQL/MySQL",
+      "name": "MySQL join 执行与驱动表选择",
+      "aliases": [
+        "MySQL join 执行与驱动表选择"
+      ],
+      "source_type": "generated",
+      "source_files": [],
+      "linked_chunks": [],
+      "created_at": "2026-04-24T09:02:43.944Z",
+      "updated_at": "2026-04-24T09:02:43.944Z"
     }
   },
   "topics": {},
